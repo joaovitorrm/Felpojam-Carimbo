@@ -1,14 +1,20 @@
 {
   "name": "felpojam-carimbo",
   "private": true,
+  "main": "./out/main/index.js",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "vite": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "electron-vite preview",
+    "dev": "electron-vite dev",
+    "prebuild": "electron-vite build"
   },
   "devDependencies": {
+    "electron": "^40.4.1",
+    "electron-vite": "^5.0.0",
     "typescript": "~5.9.3",
     "vite": "^7.3.1"
   }
