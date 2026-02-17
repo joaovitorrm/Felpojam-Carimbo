@@ -1,16 +1,26 @@
-import { AssetManager } from "../core/AssetManager";
 import { Scene } from "../core/Scene";
+import type Level from "../world/Level";
+import { LevelLoader } from "../world/LevelLoader";
+import bedroom from "../assets/data/levels/bedroom.json";
+import type { LevelData } from "../types/LevelData";
+
+const level = bedroom as LevelData;
 
 export default class BedroomScene extends Scene {
 
-    private background: HTMLImageElement = AssetManager.instance.get('bedroom');
+    private level: Level;
+
+    constructor() {
+        super();
+        this.level = LevelLoader.load(level);
+    }
 
     render(ctx: CanvasRenderingContext2D): void {
-        ctx.drawImage(this.background, 0, 0, ctx.canvas.width, ctx.canvas.height);
+        this.level.render(ctx);
     }
 
     update(deltaTime: number): void {
-        
+        this.level.update(deltaTime);
     }
 
     onEnter(): void {

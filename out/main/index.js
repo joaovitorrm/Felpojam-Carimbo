@@ -6,8 +6,8 @@ const __dirname = import.meta.dirname;
 const require2 = __cjs_mod__.createRequire(import.meta.url);
 function createWindow() {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1280,
+    height: 720,
     webPreferences: {
       preload: join(__dirname, "../preload/index.mjs")
     }

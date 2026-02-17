@@ -1,7 +1,9 @@
 import BedroomScene from "./BedroomScene";
-import StartScreen from "./StartScene";
+import StartScreen from "./MenuScene";
 
 export const scenes = {
-    startScreen: (args: any[]) => new StartScreen(),
-    bedroom: (args: any[]) => new BedroomScene()
+    startScreen: StartScreen,
+    bedroom: BedroomScene
 } as const
+
+export type ScenesTypes = keyof typeof scenes;

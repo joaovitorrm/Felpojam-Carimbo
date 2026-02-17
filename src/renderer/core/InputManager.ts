@@ -54,6 +54,10 @@ export default class InputManager {
         return this.mouse.isDown;
     }
 
+    public isMouseConsumed() {
+        return this.mouse.consumed;
+    }
+
     public isMouseUp() {
         return !this.mouse.isDown;
     }

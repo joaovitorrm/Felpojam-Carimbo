@@ -18,7 +18,7 @@ export default class SceneManager {
         return this._instance;
     }
 
-    public setCurrentScene(scene: keyof typeof scenes, ...args: any[]) {
+    public setCurrentScene(scene: keyof typeof scenes) {
         if (this.currentScene) {
             this.currentScene.onExit();
         }
@@ -26,7 +26,7 @@ export default class SceneManager {
         if (this.loadedScenes.has(scene)) {
             this.currentScene = this.loadedScenes.get(scene)!;
         } else {
-            this.currentScene = scenes[scene](args);
+            this.currentScene = new scenes[scene]();
             this.loadedScenes.set(scene, this.currentScene);
         }
 

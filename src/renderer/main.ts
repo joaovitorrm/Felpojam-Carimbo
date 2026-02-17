@@ -17,7 +17,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.addEventListener('mousedown', (_) => inputManager.onMouseDown());
     document.addEventListener('mouseup', (_) => inputManager.onMouseUp());
-    document.addEventListener('mousemove', (e) => inputManager.onMouseMove(e.clientX, e.clientY));
+    document.addEventListener('mousemove', (e) => {
+        const rect = gameCanvas.getBoundingClientRect();
+        inputManager.onMouseMove((e.clientX - rect.left), (e.clientY - rect.top))
+    });
 
     const game = new Game();
 
@@ -41,5 +44,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     loop();
-    
+
 });
