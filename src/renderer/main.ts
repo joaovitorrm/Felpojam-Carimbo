@@ -3,6 +3,10 @@ import Game from "./core/Game";
 import InputManager from "./core/InputManager";
 
 const gameCanvas = document.getElementById('game-canvas') as HTMLCanvasElement;
+
+gameCanvas.width = 1280;
+gameCanvas.height = 720;
+
 const ctx = gameCanvas.getContext('2d') as CanvasRenderingContext2D;
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -17,9 +21,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const game = new Game();
 
+    let lastTime = performance.now();
+
     const loop = () => {
-        game.update(16);
+
+        const currentTime = performance.now();
+        const deltaTime = (currentTime - lastTime) / 1000;
+        lastTime = currentTime;
+
+        if (deltaTime > 0.1) {
+            requestAnimationFrame(loop);
+            return;
+        };
+
+        game.update(deltaTime);
         game.render(ctx);
+
         requestAnimationFrame(loop);
     }
 

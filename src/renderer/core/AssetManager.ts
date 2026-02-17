@@ -26,9 +26,7 @@ export class AssetManager {
         return new Promise((resolve, reject) => {
             const img = new Image();
             img.src = path;
-
-            console.log(path);
-
+            
             img.onload = () => {
                 this._images.set(key, img);
                 resolve();
