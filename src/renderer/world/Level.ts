@@ -2,6 +2,8 @@ import type { AssetKey } from "../assets/assets";
 import { AssetManager } from "../core/AssetManager";
 import type { Entity } from "../entities/base/Entity";
 
+// CLASSE QUE CRIA O LEVEL, ADICIONANDO FUNDO E LIDANDO COM RENDER E UPDATE
+
 export default class Level {
 
     public background: HTMLImageElement;

@@ -1,6 +1,8 @@
 import SceneManager from "./SceneManager";
 import { UiManager } from "./UiManager";
 
+// CLASSE GAME QUE RODA AS CLASSES PRINCIPAIS
+
 export default class Game {
 
     private sceneManager: SceneManager = SceneManager.instance;

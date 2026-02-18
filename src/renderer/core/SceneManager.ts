@@ -1,6 +1,8 @@
 import type { Scene } from "./Scene";
 import { scenes } from "../scenes/Scenes";
 
+// CLASSE QUE LIDA COM AS TELAS DO JOGO, LIDANDO COM TROCA DE TELAS E GERENCIAMENTO
+
 export default class SceneManager {
 
     private static _instance: SceneManager;

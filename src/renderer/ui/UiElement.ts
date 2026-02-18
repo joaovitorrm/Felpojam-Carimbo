@@ -1,4 +1,4 @@
-// TODO
+// ELEMENTO GENERICO A SER IMPLEMENTADO
 export abstract class UiElement {
     abstract render(ctx: CanvasRenderingContext2D): void;
     abstract update(deltaTime: number): void;

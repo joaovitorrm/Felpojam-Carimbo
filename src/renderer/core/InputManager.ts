@@ -1,5 +1,7 @@
 import { Rect } from "../util/utils";
 
+// CLASSE QUE LIDA COM AS INFORMAÇÕES DE INPUT DO USUÁRIO
+
 export default class InputManager {
 
     private keys: Map<string, boolean> = new Map();

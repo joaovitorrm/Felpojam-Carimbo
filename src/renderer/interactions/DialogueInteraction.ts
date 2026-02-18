@@ -1,6 +1,8 @@
 import DialogSystem from "../systems/DialogueSystem";
 import type { Interaction } from "./Interaction";
 
+// TIPO DE INTERAÇÃO QUE INICIA UM DIALOGO
+
 export default class DialogInteraction implements Interaction {
 
     constructor(public dialog: string, public stage: string) {}

@@ -3,6 +3,8 @@ import type { Interaction } from "../../interactions/Interaction";
 import { Rect } from "../../util/utils";
 import { InteractiveObject } from "./InteractiveObjects";
 
+// DEFINE O QUE UM NPC DEVE TER
+
 export default class NPC extends InteractiveObject {
 
     constructor(

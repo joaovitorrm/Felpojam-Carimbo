@@ -1,3 +1,5 @@
+// DEFINE O QUE É UMA ENTIDADE
+
 export abstract class Entity {
     constructor(
         public x: number,

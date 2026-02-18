@@ -1,5 +1,7 @@
 import { dialogs } from "../assets/data/dialogues/dialogs";
 
+// SISTEMA DE DIALOGO
+
 interface DialogType {
     [key: string]: {
         [key: string]: {

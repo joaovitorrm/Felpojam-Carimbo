@@ -1,5 +1,7 @@
 import { assets, type AssetKey } from "../assets/assets";
 
+// CLASSE SINGLETON QUE LIDA COM O CARREGAMENTO E GERENCIAMENTO DE IMAGENS
+
 export class AssetManager {
 
     private static _instance: AssetManager;

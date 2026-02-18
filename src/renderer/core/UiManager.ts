@@ -1,6 +1,9 @@
 import { DialogBox } from "../ui/DialogBox";
 import type { UiElement } from "../ui/UiElement";
 
+// CLASSE QUE LIDA COM AS INFORMAÇÕES QUE APARECEM POR CIMA DA CENA
+// SENDO CAIXAS DE TEXTO, MENSAGENS DE HOVER, ETC
+
 export class UiManager {
 
     private uiElements: UiElement[] = [];

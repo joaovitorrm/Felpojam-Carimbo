@@ -2,6 +2,8 @@ import DialogSystem from "../systems/DialogueSystem";
 import { Rect } from "../util/utils";
 import { UiElement } from "./UiElement";
 
+// ELEMENTO DO TIPO CAIXA DE DIALOGO
+
 export class DialogBox extends UiElement {
     private rect: Rect;
 

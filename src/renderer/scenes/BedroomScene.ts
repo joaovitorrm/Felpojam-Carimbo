@@ -6,6 +6,8 @@ import type { LevelData } from "../types/LevelData";
 
 const level = bedroom as LevelData;
 
+// CENA DO QUARTO
+
 export default class BedroomScene extends Scene {
 
     private level: Level;

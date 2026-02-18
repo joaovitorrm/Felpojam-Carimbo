@@ -1,6 +1,8 @@
 import DialogInteraction from "../../interactions/DialogueInteraction";
 import type { Interaction } from "../../interactions/Interaction";
 
+// CLASSE QUE CRIA AS INTERAÇÕES DEPENDENDO DO TIPO DE INTERAÇÃO
+
 export class InteractionFactory {
     static create(data: any) : Interaction {
         switch (data.type) {

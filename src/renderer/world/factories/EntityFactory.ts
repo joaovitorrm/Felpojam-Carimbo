@@ -4,6 +4,8 @@ import NPC from "../../entities/base/NPC";
 import type { EntityData } from "../../types/EntityData";
 import { InteractionFactory } from "./InteractionFactory";
 
+// CLASSE QUE PEGA AS INFORMAÇÕES DO JSON DO LEVEL E CRIA OS NPC
+
 export default class EntityFactory {
     private constructor() {}
 
