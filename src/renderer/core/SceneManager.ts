@@ -1,5 +1,6 @@
 import type { Scene } from "./Scene";
 import { scenes } from "../scenes/Scenes";
+import type InputManager from "./InputManager";
 
 // CLASSE QUE LIDA COM AS TELAS DO JOGO, LIDANDO COM TROCA DE TELAS E GERENCIAMENTO
 
@@ -41,9 +42,9 @@ export default class SceneManager {
         return this.currentScene;
     }
 
-    public update(deltaTime: number) {
+    public update(deltaTime: number, input: InputManager) {
         if (this.currentScene) {
-            this.currentScene.update(deltaTime);
+            this.currentScene.update(deltaTime, input);
         }
     }
 

@@ -1,5 +1,6 @@
 import { DialogBox } from "../ui/DialogBox";
 import type { UiElement } from "../ui/UiElement";
+import InputManager from "./InputManager";
 
 // CLASSE QUE LIDA COM AS INFORMAÇÕES QUE APARECEM POR CIMA DA CENA
 // SENDO CAIXAS DE TEXTO, MENSAGENS DE HOVER, ETC
@@ -27,9 +28,9 @@ export class UiManager {
         }
     }
 
-    public update(deltaTime: number): void {
+    public update(input: InputManager): void {
         for (const uiElement of this.uiElements) {
-            uiElement.update(deltaTime);
+            uiElement.update(input);
         }
     }
 }

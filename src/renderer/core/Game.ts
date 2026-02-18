@@ -1,3 +1,4 @@
+import InputManager from "./InputManager";
 import SceneManager from "./SceneManager";
 import { UiManager } from "./UiManager";
 
@@ -18,7 +19,10 @@ export default class Game {
     }
 
     update(deltaTime: number) {
-        this.sceneManager.update(deltaTime);
-        this.uiManager.update(deltaTime);
+
+        const input = InputManager.instance;
+
+        this.sceneManager.update(deltaTime, input);
+        this.uiManager.update(input);
     }
 }

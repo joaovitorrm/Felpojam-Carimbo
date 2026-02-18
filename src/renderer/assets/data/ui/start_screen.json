@@ -1,0 +1,19 @@
+{
+    "background": "menu",
+    "buttons": [
+        {
+            "id": "start",
+            "text": "Novo Jogo",
+            "x": 450,
+            "y": 250,
+            "action": "startGame"
+        },
+        {
+            "id": "exit",
+            "text": "Sair",
+            "x": 700,
+            "y": 250,
+            "action": "quit"
+        }
+    ]
+}

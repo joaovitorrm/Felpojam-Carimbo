@@ -1,5 +1,5 @@
 import BedroomScene from "./BedroomScene";
-import StartScreen from "./MenuScene";
+import StartScreen from "./StartScene";
 
 // DEFINE QUAIS CENAS SERÃO CARREGADAS MANTENDO TIPAGEM FORTE
 

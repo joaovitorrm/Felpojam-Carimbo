@@ -6,7 +6,7 @@ import caolho from "../assets/images/characters/caolhopng.png";
 // DIZ QUAIS IMAGENS SERÃO CARREGADAS PARA O JOGO
 
 export const assets = {
-    start: startScene,
+    menu: startScene,
     bedroom: bedroomScene,
     door,
     caolho

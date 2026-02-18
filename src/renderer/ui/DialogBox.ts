@@ -1,3 +1,4 @@
+import type InputManager from "../core/InputManager";
 import DialogSystem from "../systems/DialogueSystem";
 import { Rect } from "../util/utils";
 import { UiElement } from "./UiElement";
@@ -5,11 +6,9 @@ import { UiElement } from "./UiElement";
 // ELEMENTO DO TIPO CAIXA DE DIALOGO
 
 export class DialogBox extends UiElement {
-    private rect: Rect;
 
     constructor(x: number, y: number, width: number, height: number, private fontSize: number = 24, private color: string = "white", private background: string = "black") {
-        super();
-        this.rect = new Rect(x, y, width, height);
+        super(new Rect(x, y, width, height));        
     }
 
     render(ctx: CanvasRenderingContext2D): void {
@@ -23,9 +22,11 @@ export class DialogBox extends UiElement {
         ctx.fillText(DialogSystem.instance.currentDialog, this.rect.centerX, this.rect.centerY);
     }
 
-    update(deltaTime: number): void {}
-
-    interact(): void {}
-
-    hover(): void {}
+    update(input: InputManager): void {
+        if (input.getMouseRect().collide(this.rect)) {
+            if (input.isMouseDown() && !input.isMouseConsumed()) {
+                input.consumeMouse();
+            }
+        }
+    }    
 }
