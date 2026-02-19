@@ -2,7 +2,7 @@ import type { LevelData } from "../../../types/LevelData";
 
 
 export const bedroom: LevelData = {
-    id: "classroom",
+    id: "bedroom",
 
     background: "bedroom",
 

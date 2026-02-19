@@ -1,4 +1,5 @@
-import Scene from "../scenes/Scene";
+import GameScene from "../scenes/GameScene";
+import Scene from "../scenes/GameScene";
 import type { SceneType } from "../types/SceneType";
 import type GameContext from "./GameContext";
 
@@ -20,7 +21,7 @@ export default class SceneManager {
         if (this.loadedScenes.has(scene)) {
             this.currentScene = this.loadedScenes.get(scene)!;
         } else {
-            this.currentScene = new Scene(this.context, "bedroom");
+            this.currentScene = new GameScene(this.context, "bedroom");
             this.loadedScenes.set(scene, this.currentScene);
         }
 

@@ -2,14 +2,16 @@ import { levels, type LevelsKey } from "../assets/data/levels/levels";
 import type GameContext from "../core/GameContext";
 import type { Entity } from "../entities/base/Entity";
 import type { LevelData } from "../types/LevelData";
+import { SceneType } from "../types/SceneType";
 
-export default class Scene {
+export default class GameScene extends SceneType {
 
     private background : HTMLImageElement | null = null;
     private entities : Entity[] = [];
 
-    constructor(private context : GameContext, levelId: LevelsKey) {
-        const level = levels[levelId];
+    constructor(private context : GameContext, sceneId: LevelsKey) {
+        super();
+        const level = levels[sceneId];
 
         this.createBackground(level);
         this.createNPCs(level);
