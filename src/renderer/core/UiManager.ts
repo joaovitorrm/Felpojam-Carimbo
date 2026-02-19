@@ -1,36 +1,47 @@
+import type { DialogNode } from "../types/DialogTypes";
 import { DialogBox } from "../ui/DialogBox";
 import type { UiElement } from "../ui/UiElement";
-import InputManager from "./InputManager";
+import { Rect } from "../util/utils";
+import type GameContext from "./GameContext";
 
-// CLASSE QUE LIDA COM AS INFORMAÇÕES QUE APARECEM POR CIMA DA CENA
-// SENDO CAIXAS DE TEXTO, MENSAGENS DE HOVER, ETC
+export default class UiManager {
+    private elements: UiElement[] = [];
+    private dialogBox: DialogBox;
 
-export class UiManager {
+    constructor(private context: GameContext) {
+        this.dialogBox = new DialogBox(new Rect(50, 800, 1000, 300));
 
-    private uiElements: UiElement[] = [];
-
-    private static _instance: UiManager;
-
-    private constructor() {
-        this.uiElements.push(new DialogBox(90, 500, 1100, 200, 30, "white", "hsla(0, 0%, 6%, 0.9)"));
+        this.init();
     }
 
-    public static get instance(): UiManager {
-        if (!this._instance) {
-            this._instance = new UiManager();
+    init() {
+        this.context.eventBus.on("dialog:start", this.handleDialog);
+    }
+
+    private handleDialog = (dialogData: DialogNode) => {
+        console.log("A");
+        this.dialogBox.show(dialogData.text);
+    }
+
+    add(element: UiElement) {
+        this.elements.push(element);
+    }
+
+    remove(element: UiElement) {
+        this.elements = this.elements.filter(e => e !== element);
+    }
+
+    update(dt: number) {
+        for (const e of this.elements) {
+            if (!e.update) return;
+            e.update(dt);
         }
-        return this._instance;
     }
 
-    public render(ctx: CanvasRenderingContext2D): void {
-        for (const uiElement of this.uiElements) {
-            uiElement.render(ctx);
-        }
-    }
-
-    public update(input: InputManager): void {
-        for (const uiElement of this.uiElements) {
-            uiElement.update(input);
+    render(ctx: CanvasRenderingContext2D) {
+        this.dialogBox.render(ctx);
+        for (const e of this.elements) {
+            e.render(ctx);
         }
     }
 }

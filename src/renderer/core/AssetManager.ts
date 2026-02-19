@@ -4,17 +4,9 @@ import { assets, type AssetKey } from "../assets/assets";
 
 export class AssetManager {
 
-    private static _instance: AssetManager;
     private _images = new Map<AssetKey, HTMLImageElement>();
 
-    private constructor() {}
-
-    public static get instance(): AssetManager {
-        if (!this._instance) {
-            this._instance = new AssetManager();
-        }
-        return this._instance;
-    }
+    constructor() {}
 
     public async loadAll(): Promise<void> {
         const promises = Object.entries(assets).map(

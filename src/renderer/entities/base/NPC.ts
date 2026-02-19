@@ -1,5 +1,5 @@
-import InputManager from "../../core/InputManager";
-import type { Interaction } from "../../interactions/Interaction";
+import type GameContext from "../../core/GameContext";
+import type { DialogTree } from "../../types/DialogTypes";
 import { Rect } from "../../util/utils";
 import { InteractiveObject } from "./InteractiveObjects";
 
@@ -8,33 +8,35 @@ import { InteractiveObject } from "./InteractiveObjects";
 export default class NPC extends InteractiveObject {
 
     constructor(
-        x: number, 
-        y: number, 
-        width: number, 
-        height: number, 
+        private id: string,
+        rect: Rect,
         private sprite: HTMLImageElement,
-        private handleInteraction: Interaction
+        private dialogTree: DialogTree,
+        private context: GameContext
     ) {
-        super(x, y, width, height);
+        super(rect);
     }
     hover(): void {
         
     }
     interact(): void {
-        this.handleInteraction.interact();
+        this.context.dialogSystem.start(this.dialogTree, "start");
     }
+
     render(ctx: CanvasRenderingContext2D): void {
-        ctx.drawImage(this.sprite, this.x, this.y, this.width, this.height);
+        ctx.drawImage(this.sprite, this.rect.x, this.rect.y, this.rect.width, this.rect.height);
     }
     update(deltaTime: number): void {
-        const input = InputManager.instance;
-
-        if (input.getMouseRect().collide(new Rect(this.x, this.y, this.width, this.height))) {
+        if (this.context.inputManager.getMouseRect().collide(new Rect(this.rect.x, this.rect.y, this.rect.width, this.rect.height))) {
             this.hover();
-            if (input.isMouseDown() && !input.isMouseConsumed()) {
-                input.consumeMouse();
+            if (this.context.inputManager.isMouseDown() && !this.context.inputManager.isMouseConsumed()) {
+                this.context.inputManager.consumeMouse();
                 this.interact();
             }
         }
+    }
+
+    public getId() : string {
+        return this.id;
     }
 }

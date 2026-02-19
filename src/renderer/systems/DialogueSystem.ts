@@ -1,43 +1,68 @@
-import { dialogs } from "../assets/data/dialogues/dialogs";
+import { DialogState } from "../core/DialogState";
+import type GameContext from "../core/GameContext";
+import type { DialogNode, DialogTree } from "../types/DialogTypes";
 
-// SISTEMA DE DIALOGO
 
-interface DialogType {
-    [key: string]: {
-        [key: string]: {
-            player?: string;
-            npc?: string;
-            next?: string;
-            options?: { text: string; next: string }[];
+export class DialogSystem {
+    private state = new DialogState();
+
+    private currentTree!: DialogTree;
+    private currentNode!: DialogNode;
+    private currentKey!: string;
+
+    constructor(private context: GameContext) {}
+
+    start(tree: DialogTree, startKey: string) {
+        this.currentTree = tree;
+        this.goTo(startKey);
+    }
+
+    private goTo(key: string) {
+        const node = this.currentTree[key];
+
+        this.context.eventBus.emit("dialog:start", node);
+
+        if (!node) return;
+
+        // verifica condição
+        if (node.condition && !node.condition(this.state)) {
+            if (node.next) {
+                this.goTo(node.next);
+            }
+            return;
+        }
+
+        this.currentKey = key;
+        this.currentNode = node;
+
+        // executa ação ao entrar
+        node.action?.(this.state);
+    }
+
+    next() {
+        if (this.currentNode.options) return;
+
+        if (this.currentNode.next) {
+            this.goTo(this.currentNode.next);
         }
     }
-}
 
-export default class DialogSystem {
+    choose(index: number) {
+        const option = this.currentNode.options?.[index];
+        if (!option) return;
 
-    private isActive: boolean = false;
+        if (option.condition && !option.condition(this.state)) return;
 
-    public currentDialog: string = "";
-    private currentStage: string = "";
+        option.action?.(this.state);
 
-    private static _instance: DialogSystem | null = null;
-
-    private constructor() {}
-
-    public static get instance(): DialogSystem {
-        if (!this._instance) {
-            this._instance = new DialogSystem();
-        }
-        return this._instance;
+        this.goTo(option.next);
     }
 
-    public startDialog(dialogName: string, dialogStage: string) {
-        this.currentDialog = dialogName;
-        this.currentStage = dialogStage;
-        this.isActive = true;
+    getNode() {
+        return this.currentNode;
     }
 
-    public getIsActive(): boolean {
-        return this.isActive;
+    getState() {
+        return this.state;
     }
 }

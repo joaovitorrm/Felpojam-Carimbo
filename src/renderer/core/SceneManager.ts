@@ -1,27 +1,18 @@
-import type { Scene } from "./Scene";
-import { scenes } from "../scenes/Scenes";
-import type InputManager from "./InputManager";
+import Scene from "../scenes/Scene";
+import type { SceneType } from "../types/SceneType";
+import type GameContext from "./GameContext";
 
 // CLASSE QUE LIDA COM AS TELAS DO JOGO, LIDANDO COM TROCA DE TELAS E GERENCIAMENTO
 
 export default class SceneManager {
 
-    private static _instance: SceneManager;
+    private currentScene: SceneType | null = null;
 
-    private currentScene: Scene | null = null;
+    private loadedScenes: Map<string, SceneType> = new Map();
 
-    private loadedScenes: Map<keyof typeof scenes, Scene> = new Map();
+    constructor(private context: GameContext) {}
 
-    private constructor() { }
-
-    public static get instance(): SceneManager {
-        if (!this._instance) {
-            this._instance = new SceneManager();
-        }
-        return this._instance;
-    }
-
-    public setCurrentScene(scene: keyof typeof scenes) {
+    public setCurrentScene(scene: string) {
         if (this.currentScene) {
             this.currentScene.onExit();
         }
@@ -29,7 +20,7 @@ export default class SceneManager {
         if (this.loadedScenes.has(scene)) {
             this.currentScene = this.loadedScenes.get(scene)!;
         } else {
-            this.currentScene = new scenes[scene]();
+            this.currentScene = new Scene(this.context, "bedroom");
             this.loadedScenes.set(scene, this.currentScene);
         }
 
@@ -38,13 +29,13 @@ export default class SceneManager {
         }
     }
 
-    public getCurrentScene(): Scene | null {
+    public getCurrentScene(): SceneType | null {
         return this.currentScene;
     }
 
-    public update(deltaTime: number, input: InputManager) {
+    public update(deltaTime: number) {
         if (this.currentScene) {
-            this.currentScene.update(deltaTime, input);
+            this.currentScene.update(deltaTime, this.context.inputManager);
         }
     }
 

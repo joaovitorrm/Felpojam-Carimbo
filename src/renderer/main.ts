@@ -1,5 +1,6 @@
 import { AssetManager } from "./core/AssetManager";
 import Game from "./core/Game";
+import GameContext from "./core/GameContext";
 import InputManager from "./core/InputManager";
 
 // PEGA O GAME CANVAS DO HTML
@@ -15,23 +16,21 @@ const ctx = gameCanvas.getContext('2d') as CanvasRenderingContext2D;
 // ADICIONA LISTENER PARA QUANDO O DOCUMENTO TERMINA DE CARREGAR
 document.addEventListener('DOMContentLoaded', async () => {
 
-    // CARREGA TODAS AS IMAGENS DE MANEIRA ASSINCRONA
-    await AssetManager.instance.loadAll();
+    const gameContext = new GameContext();
 
-    // PEGA UMA INSTANCIA DE INPUT
-    const inputManager = InputManager.instance;
+    await gameContext.assetManager.loadAll();
 
     // ADICIONA OS EVENTOS QUE LIDAM QUANDO O JOGADOR REALIZA ALGUMA AÇÃO COM MOUSE
-    document.addEventListener('mousedown', (_) => inputManager.onMouseDown());
-    document.addEventListener('mouseup', (_) => inputManager.onMouseUp());
+    document.addEventListener('mousedown', (_) => gameContext.inputManager.onMouseDown());
+    document.addEventListener('mouseup', (_) => gameContext.inputManager.onMouseUp());
     document.addEventListener('mousemove', (e) => {
         // GARANTE QUE A POSIÇÃO DO MOUSE FIQUE RELATIVA AO CANVAS E NÃO AO DOCUMENT
         const rect = gameCanvas.getBoundingClientRect();
-        inputManager.onMouseMove((e.clientX - rect.left), (e.clientY - rect.top))
+        gameContext.inputManager.onMouseMove((e.clientX - rect.left), (e.clientY - rect.top))
     });
 
     // INSTANCIA UMA CLASSE GAME
-    const game = new Game();
+    const game = new Game(gameContext);
 
     // PEGA O TEMPO ATUAL
     let lastTime = performance.now();

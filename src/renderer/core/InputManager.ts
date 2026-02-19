@@ -12,16 +12,9 @@ export default class InputManager {
         consumed: boolean, 
         isDown: boolean} = 
         { x: 0, y: 0, consumed: false, isDown: false };
+    
 
-    private static _instance: InputManager;
-    public static get instance(): InputManager {
-        if (!this._instance) {
-            this._instance = new InputManager();
-        }
-        return this._instance;
-    }
-
-    private constructor() { }
+    constructor() {}
 
     public onKeyDown(key: string) {
         this.keys.set(key, true);

@@ -6,15 +6,10 @@ import { Entity } from "./Entity";
 
 export abstract class InteractiveObject extends Entity {
 
-    public rect: Rect;
     constructor(
-        x: number,
-        y: number,
-        public width: number,
-        public height: number
+        rect: Rect
     ) {
-        super(x, y);
-        this.rect = new Rect(x, y, width, height);
+        super(rect);
     }
 
     abstract interact() : void;

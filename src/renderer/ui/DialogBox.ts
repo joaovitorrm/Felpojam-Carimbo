@@ -1,32 +1,38 @@
-import type InputManager from "../core/InputManager";
-import DialogSystem from "../systems/DialogueSystem";
-import { Rect } from "../util/utils";
+import type { Rect } from "../util/utils";
 import { UiElement } from "./UiElement";
-
-// ELEMENTO DO TIPO CAIXA DE DIALOGO
 
 export class DialogBox extends UiElement {
 
-    constructor(x: number, y: number, width: number, height: number, private fontSize: number = 24, private color: string = "white", private background: string = "black") {
-        super(new Rect(x, y, width, height));        
+    private visible = false;
+    private text = "";
+
+    constructor(rect: Rect) {
+        super(rect);
     }
 
-    render(ctx: CanvasRenderingContext2D): void {
-        ctx.fillStyle = this.background;
-        ctx.fillRect(this.rect.left, this.rect.top, this.rect.width, this.rect.height);
-
-        ctx.font = `${this.fontSize}px Arial`;
-        ctx.fillStyle = this.color;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(DialogSystem.instance.currentDialog, this.rect.centerX, this.rect.centerY);
+    show(text: string) {
+        this.text = text;
+        this.visible = true;
     }
 
-    update(input: InputManager): void {
-        if (input.getMouseRect().collide(this.rect)) {
-            if (input.isMouseDown() && !input.isMouseConsumed()) {
-                input.consumeMouse();
-            }
-        }
-    }    
+    hide() {
+        this.visible = false;
+    }
+
+    render(ctx: CanvasRenderingContext2D) {
+        if (!this.visible) return;
+        
+        ctx.fillStyle = "black";
+        ctx.fillRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
+
+        ctx.fillStyle = "black";
+        ctx.font = "24px Arial";
+        ctx.fillText(this.text, 80, 450);
+    }
+    hover(): void {
+        
+    }
+    interact(): void {
+        
+    }
 }

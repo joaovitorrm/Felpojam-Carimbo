@@ -1,9 +1,10 @@
 // DEFINE O QUE É UMA ENTIDADE
 
+import type { Rect } from "../../util/utils";
+
 export abstract class Entity {
     constructor(
-        public x: number,
-        public y: number
+        public rect: Rect
     ) {}
 
     abstract render(ctx: CanvasRenderingContext2D): void
