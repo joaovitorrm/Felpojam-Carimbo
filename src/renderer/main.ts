@@ -1,7 +1,5 @@
-import { AssetManager } from "./core/AssetManager";
 import Game from "./core/Game";
 import GameContext from "./core/GameContext";
-import InputManager from "./core/InputManager";
 
 // PEGA O GAME CANVAS DO HTML
 const gameCanvas = document.getElementById('game-canvas') as HTMLCanvasElement;

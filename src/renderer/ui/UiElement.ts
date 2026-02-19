@@ -8,6 +8,10 @@ export abstract class UiElement {
     abstract render(ctx: CanvasRenderingContext2D): void;
     update?(deltaTime: number): void;
 
+    getRect() : Rect {
+        return this.rect;
+    }
+
     interact?(): void;
     hover?(): void;
 }

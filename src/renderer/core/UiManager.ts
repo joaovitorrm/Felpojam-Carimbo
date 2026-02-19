@@ -9,7 +9,7 @@ export default class UiManager {
     private dialogBox: DialogBox;
 
     constructor(private context: GameContext) {
-        this.dialogBox = new DialogBox(new Rect(50, 800, 1000, 300));
+        this.dialogBox = new DialogBox(new Rect(40, 400, 1200, 300));
 
         this.init();
     }
@@ -19,8 +19,7 @@ export default class UiManager {
     }
 
     private handleDialog = (dialogData: DialogNode) => {
-        console.log("A");
-        this.dialogBox.show(dialogData.text);
+        this.dialogBox.show(dialogData.text, dialogData.speaker ?? "");
     }
 
     add(element: UiElement) {
@@ -36,12 +35,18 @@ export default class UiManager {
             if (!e.update) return;
             e.update(dt);
         }
+
+        const input = this.context.inputManager;
+
+        if (!input.getMouseRect().collide(this.dialogBox.getRect()) && input.isMouseDown() && !input.isMouseConsumed()) {
+            this.dialogBox.hide();
+        }
     }
 
-    render(ctx: CanvasRenderingContext2D) {
-        this.dialogBox.render(ctx);
+    render(ctx: CanvasRenderingContext2D) {        
         for (const e of this.elements) {
             e.render(ctx);
         }
+        this.dialogBox.render(ctx);
     }
 }
