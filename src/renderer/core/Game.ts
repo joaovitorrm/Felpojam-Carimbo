@@ -5,7 +5,7 @@ import type GameContext from "./GameContext";
 export default class Game {
 
     public constructor(private ctx: GameContext) {
-        this.ctx.sceneManager.setCurrentScene('bedroom');
+        this.ctx.sceneManager.setCurrentScene('MainMenu');
     }
 
     render(ctx: CanvasRenderingContext2D) {

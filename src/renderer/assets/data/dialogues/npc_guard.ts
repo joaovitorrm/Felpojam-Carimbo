@@ -2,8 +2,8 @@ import type { DialogTree } from "../../../types/DialogTypes";
 
 export const guardDialog: DialogTree = {
     start: {
-        speaker: "Guarda",
-        text: "Você não pode passar.",
+        speaker: "Daniel",
+        text: "Quer uma verdinha?",
         options: [
             {
                 text: "Insistir",
