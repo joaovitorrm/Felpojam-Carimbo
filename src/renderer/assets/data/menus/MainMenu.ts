@@ -11,7 +11,7 @@ export const MainMenu : MenuData = {
             y: 280,
             width: 120,
             height: 60,
-            action: "startGame"
+            action: "bedroom"
         },
         {
             id: "options",
@@ -20,7 +20,7 @@ export const MainMenu : MenuData = {
             y: 280,
             width: 120,
             height: 60,
-            action: "options"
+            action: "bedroom"
         },
         {
             id: "quit",
@@ -29,7 +29,7 @@ export const MainMenu : MenuData = {
             y: 280,
             width: 120,
             height: 60,
-            action: "exits"
+            action: "bedroom"
         }
     ]
 }

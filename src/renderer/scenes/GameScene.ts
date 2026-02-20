@@ -48,7 +48,7 @@ export default class GameScene extends SceneType {
                     prop.setInteraction(() => prop.toggleFocus());
                     break;
                 case "sceneChange":
-                    prop.setInteraction(() => this.context.sceneManager.setCurrentScene(obj.next!));
+                    prop.setInteraction(() => this.context.eventBus.emit("scene:change", obj.next!));
                     break;
             }
 

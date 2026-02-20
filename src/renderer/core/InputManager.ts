@@ -6,15 +6,16 @@ export default class InputManager {
 
     private keys: Map<string, boolean> = new Map();
 
-    private mouse: { 
-        x: number, 
-        y: number, 
-        consumed: boolean, 
-        isDown: boolean} = 
+    private mouse: {
+        x: number,
+        y: number,
+        consumed: boolean,
+        isDown: boolean
+    } =
         { x: 0, y: 0, consumed: false, isDown: false };
-    
 
-    constructor() {}
+
+    constructor() { }
 
     public onKeyDown(key: string) {
         this.keys.set(key, true);
@@ -33,9 +34,13 @@ export default class InputManager {
     }
 
     public onMouseMove(e: PointerEvent, canvas: HTMLCanvasElement) {
-        const canvasRect = canvas.getBoundingClientRect();
-        this.mouse.x = e.clientX - canvasRect.left;
-        this.mouse.y = e.clientY - canvasRect.top;
+        const rect = canvas.getBoundingClientRect();
+
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
+        this.mouse.x = (e.clientX - rect.left) * scaleX;
+        this.mouse.y = (e.clientY - rect.top) * scaleY;
     }
 
     public getMousePosition() {

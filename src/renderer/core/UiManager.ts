@@ -48,5 +48,7 @@ export default class UiManager {
             e.render(ctx);
         }
         this.dialogBox.render(ctx);
+        const input = this.context.inputManager.getMouseRect();
+        ctx.fillRect(input.x, input.y, 5, 5)
     }
 }

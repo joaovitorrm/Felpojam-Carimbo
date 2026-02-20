@@ -1,4 +1,5 @@
 import type { AssetKey } from "../assets/assets";
+import type { Scenes } from "../world/factories/SceneFactory";
 
 export type MenuData = {
     id: string;
@@ -10,7 +11,7 @@ export type MenuData = {
         y: number;
         width: number;
         height: number;
-        action: "startGame" | "options" | "exits";
+        action: Scenes;
     }[]
 };
 
