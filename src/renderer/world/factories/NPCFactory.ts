@@ -4,7 +4,6 @@ import NPC from "../../entities/base/NPC";
 import type { NPCData } from "../../types/LevelData";
 import { Rect } from "../../util/utils";
 
-
 // CLASSE QUE PEGA AS INFORMAÇÕES DO JSON DO LEVEL E CRIA OS NPC
 
 export default class NPCFactory {
@@ -14,9 +13,10 @@ export default class NPCFactory {
         return new NPC(
             data.id,
             new Rect(data.x, data.y, data.width, data.height),
-            this.gameContext.assetManager.get(data.sprite),
             dialogues[data.dialogId],
-            this.gameContext
-        );            
+            this.gameContext,
+            this.gameContext.assetManager.get(data.sprite),
+            data.sprite_clip
+        );
     }
 }

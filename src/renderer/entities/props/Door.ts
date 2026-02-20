@@ -1,21 +1,18 @@
-import InputManager from "../../core/InputManager";
 import { Rect } from "../../util/utils";
 import { InteractiveObject } from "../base/InteractiveObjects";
 
 export default class Door extends InteractiveObject {
-
-    private sprite: HTMLImageElement;
 
     constructor(
         x: number, 
         y: number, 
         width: number, 
         height: number, 
-        sprite: HTMLImageElement, 
+        sprite: HTMLImageElement,
+        sprite_clip: [number, number, number, number],
         private handleInteraction: () => void
     ) {
-        super(x, y, width, height);
-        this.sprite = sprite;        
+        super(new Rect(x, y, width, height), sprite, sprite_clip);        
     }
 
     interact() : void {
@@ -25,21 +22,8 @@ export default class Door extends InteractiveObject {
         
     }
     render(ctx: CanvasRenderingContext2D): void {
-        ctx.drawImage(this.sprite, this.x, this.y, this.width, this.height);
+        ctx.drawImage(this.sprite, this.rect.x, this.rect.y, this.rect.width, this.rect.height, ...this.sprite_clip);
     }
     update(deltaTime: number): void {
-
-        const input = InputManager.instance;
-
-        if (input.getMouseRect().collide(
-            new Rect(this.x, this.y, this.width, this.height)
-        )) {
-            this.hover();
-            if (input.isMouseDown() && !input.isMouseConsumed()) {
-                console.log("C");
-                input.consumeMouse();
-                this.interact();
-            }
-        }
     }
 }

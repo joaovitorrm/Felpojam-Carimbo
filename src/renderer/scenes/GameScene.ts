@@ -1,15 +1,18 @@
 import { levels, type LevelsKey } from "../assets/data/levels/levels";
 import type GameContext from "../core/GameContext";
 import type { Entity } from "../entities/base/Entity";
+import Prop from "../entities/base/Prop";
 import type { LevelData } from "../types/LevelData";
 import { SceneType } from "../types/SceneType";
+import { Rect } from "../util/utils";
 
 export default class GameScene extends SceneType {
 
-    private background : HTMLImageElement | null = null;
-    private entities : Entity[] = [];
+    private background: HTMLImageElement | null = null;
+    private entities: Entity[] = [];
+    private objects: Prop[] = [];
 
-    constructor(private context : GameContext, sceneId: LevelsKey) {
+    constructor(private context: GameContext, sceneId: LevelsKey) {
         super();
         const level = levels[sceneId];
 
@@ -19,7 +22,7 @@ export default class GameScene extends SceneType {
     }
 
     private createBackground(data: LevelData) {
-        this.background = 
+        this.background =
             this.context.assetManager.get(data.background);
     }
 
@@ -31,24 +34,45 @@ export default class GameScene extends SceneType {
     }
 
     private createObjects(data: LevelData) {
-        
+        for (const obj of data.objects) {
+
+            const prop = new Prop(
+                new Rect(obj.x, obj.y, obj.width, obj.height),
+                this.context.assetManager.get(obj.sprite),
+                obj.sprite_clip,
+                this.context
+            )
+
+            switch (obj.interactType) {
+                case "dialog":
+                    prop.setInteraction(() => prop.toggleFocus());
+                    break;
+                case "sceneChange":
+                    prop.setInteraction(() => this.context.sceneManager.setCurrentScene(obj.next!));
+                    break;
+            }
+
+            this.objects.push(prop);
+        }
     }
 
     render(ctx: CanvasRenderingContext2D): void {
         if (!this.background) return;
         ctx.drawImage(this.background, 0, 0, ctx.canvas.width, ctx.canvas.height);
         this.entities.forEach(e => e.render(ctx));
+        this.objects.forEach(e => e.render(ctx));
     }
 
     update(deltaTime: number): void {
         this.entities.forEach(e => e.update(deltaTime));
+        this.objects.forEach(e => e.update(deltaTime));
     }
 
     onEnter(): void {
-        
+
     }
 
     onExit(): void {
-        
+
     }
 }

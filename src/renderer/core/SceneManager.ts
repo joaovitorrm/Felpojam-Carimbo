@@ -1,9 +1,11 @@
+import type { LevelsKey } from "../assets/data/levels/levels";
 import GameScene from "../scenes/GameScene";
-import Scene from "../scenes/GameScene";
 import type { SceneType } from "../types/SceneType";
 import type GameContext from "./GameContext";
 
 // CLASSE QUE LIDA COM AS TELAS DO JOGO, LIDANDO COM TROCA DE TELAS E GERENCIAMENTO
+
+
 
 export default class SceneManager {
 
@@ -13,7 +15,7 @@ export default class SceneManager {
 
     constructor(private context: GameContext) {}
 
-    public setCurrentScene(scene: string) {
+    public setCurrentScene(scene: LevelsKey) {
         if (this.currentScene) {
             this.currentScene.onExit();
         }
@@ -21,7 +23,7 @@ export default class SceneManager {
         if (this.loadedScenes.has(scene)) {
             this.currentScene = this.loadedScenes.get(scene)!;
         } else {
-            this.currentScene = new GameScene(this.context, "bedroom");
+            this.currentScene = new GameScene(this.context, scene);
             this.loadedScenes.set(scene, this.currentScene);
         }
 

@@ -19,12 +19,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     await gameContext.assetManager.loadAll();
 
     // ADICIONA OS EVENTOS QUE LIDAM QUANDO O JOGADOR REALIZA ALGUMA AÇÃO COM MOUSE
-    document.addEventListener('mousedown', (_) => gameContext.inputManager.onMouseDown());
-    document.addEventListener('mouseup', (_) => gameContext.inputManager.onMouseUp());
-    document.addEventListener('mousemove', (e) => {
-        // GARANTE QUE A POSIÇÃO DO MOUSE FIQUE RELATIVA AO CANVAS E NÃO AO DOCUMENT
-        const rect = gameCanvas.getBoundingClientRect();
-        gameContext.inputManager.onMouseMove((e.clientX - rect.left), (e.clientY - rect.top))
+    document.addEventListener('pointerdown', (_) => gameContext.inputManager.onMouseDown());
+    document.addEventListener('pointerup', (_) => gameContext.inputManager.onMouseUp());
+    document.addEventListener('pointermove', (e) => {
+        // GARANTE QUE A POSIÇÃO DO MOUSE FIQUE RELATIVA AO CANVAS E NÃO AO DOCUMENT        
+        gameContext.inputManager.onMouseMove(e, gameCanvas)
     });
 
     // INSTANCIA UMA CLASSE GAME

@@ -12,6 +12,7 @@ export type LevelData = {
 export type NPCData = {
     id: string;
     sprite: AssetKey;
+    sprite_clip: [number, number, number, number];
     x: number;
     y: number;
     width: number;
@@ -21,7 +22,8 @@ export type NPCData = {
 
 export type ObjectData = {
     id: string;
-    sprite: string;
+    sprite: AssetKey;
+    sprite_clip: [number, number, number, number];
     x: number;
     y: number;
     width: number;

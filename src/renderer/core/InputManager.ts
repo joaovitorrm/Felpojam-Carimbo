@@ -32,9 +32,10 @@ export default class InputManager {
         return !this.keys.get(key) || false;
     }
 
-    public onMouseMove(x: number, y: number) {
-        this.mouse.x = x;
-        this.mouse.y = y;
+    public onMouseMove(e: PointerEvent, canvas: HTMLCanvasElement) {
+        const canvasRect = canvas.getBoundingClientRect();
+        this.mouse.x = e.clientX - canvasRect.left;
+        this.mouse.y = e.clientY - canvasRect.top;
     }
 
     public getMousePosition() {
