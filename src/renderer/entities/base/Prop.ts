@@ -7,8 +7,8 @@ export default class Prop extends InteractiveObject {
     private inFocus : boolean = false;
     constructor(
         rect: Rect, 
-        sprite: HTMLImageElement, 
-        sprite_clip: [number, number, number, number],
+        sprite: HTMLImageElement | null, 
+        sprite_clip: [number, number, number, number] | null,
         private context: GameContext,
         private handleInteraction: Function = () => {},
         private handleHover: Function = () => {}
@@ -31,12 +31,14 @@ export default class Prop extends InteractiveObject {
         this.handleInteraction();
     }
     render(ctx: CanvasRenderingContext2D): void {
+        if (this.sprite === null) return;
+
         if (this.inFocus) {
-            ctx.drawImage(this.sprite, ...this.sprite_clip, 140, 60, 1000, 600);
+            ctx.drawImage(this.sprite, ...this.sprite_clip!, 140, 60, 1000, 600);
             return;
         }
 
-        ctx.drawImage(this.sprite, ...this.sprite_clip, this.rect.x, this.rect.y, this.rect.width, this.rect.height);   
+        ctx.drawImage(this.sprite, ...this.sprite_clip!, this.rect.x, this.rect.y, this.rect.width, this.rect.height);   
     }
 
     renderHitBox(ctx: CanvasRenderingContext2D): void {

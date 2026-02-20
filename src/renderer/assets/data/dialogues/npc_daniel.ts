@@ -1,9 +1,9 @@
 import type { DialogTree } from "../../../types/DialogTypes";
 
-export const guardDialog: DialogTree = {
+export const danielDialog: DialogTree = {
     start: {
-        speaker: "Gustavo",
-        text: "Quer uma verdinha?",
+        speaker: "Daniel",
+        text: "Você sabe quanto é 2 + 2?",
         options: [
             {
                 text: "Insistir",

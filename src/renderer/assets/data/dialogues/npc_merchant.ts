@@ -2,8 +2,8 @@ import type { DialogTree } from "../../../types/DialogTypes";
 
 export const merchantDialog: DialogTree = {
     start: {
-        speaker: "Mercador",
-        text: "Quer comprar algo?",
+        speaker: "Felpie",
+        text: "Talvez?",
         options: [
             {
                 text: "Poção - 10G",

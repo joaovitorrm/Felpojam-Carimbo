@@ -25,7 +25,8 @@ export default class NPC extends InteractiveObject {
     }
 
     render(ctx: CanvasRenderingContext2D): void {
-        ctx.drawImage(this.sprite, ...this.sprite_clip, this.rect.x, this.rect.y, this.rect.width, this.rect.height);
+        if (this.sprite === null) return;
+        ctx.drawImage(this.sprite, ...this.sprite_clip!, this.rect.x, this.rect.y, this.rect.width, this.rect.height);
         //ctx.strokeRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
         //ctx.strokeRect(...this.sprite_clip);
     }

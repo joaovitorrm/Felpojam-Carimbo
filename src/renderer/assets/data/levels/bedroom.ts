@@ -31,14 +31,21 @@ export const bedroom: LevelData = {
     objects: [
         {
             id: "door",
-            sprite: "quarto_dos_pais",
-            sprite_clip: [1570, 200, 300, 480],
             x: 1100,
             y: 90,
             width: 200,
             height: 390,
             interactType: "sceneChange",
             next: "quadro_de_pistas"
+        },
+        {
+            id: "door",
+            x: 250,
+            y: 90,
+            width: 200,
+            height: 390,
+            interactType: "sceneChange",
+            next: "outside_house"
         },
         {
             id: "foto",

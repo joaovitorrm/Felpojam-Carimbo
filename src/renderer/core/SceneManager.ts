@@ -1,5 +1,4 @@
 import type { LevelsKey } from "../assets/data/levels/levels";
-import { MainMenu } from "../assets/data/menus/MainMenu";
 import type { MenusKey } from "../assets/data/menus/menus";
 import GameScene from "../scenes/GameScene";
 import MainMenuScene from "../scenes/MainMenuScene";
@@ -14,7 +13,8 @@ const SceneFactory: Record<
 > = {
     bedroom: (context: GameContext) => new GameScene(context, "bedroom"),
     MainMenu: (context: GameContext) => new MainMenuScene(context, "MainMenu"),
-    quadro_de_pistas: (context: GameContext) => new GameScene(context, "quadro_de_pistas")
+    quadro_de_pistas: (context: GameContext) => new GameScene(context, "quadro_de_pistas"),
+    outside_house: (context: GameContext) => new GameScene(context, "outside_house"),
 }
 
 export default class SceneManager {

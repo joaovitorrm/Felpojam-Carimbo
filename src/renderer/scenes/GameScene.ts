@@ -38,8 +38,8 @@ export default class GameScene extends SceneType {
 
             const prop = new Prop(
                 new Rect(obj.x, obj.y, obj.width, obj.height),
-                this.context.assetManager.get(obj.sprite),
-                obj.sprite_clip,
+                obj.sprite ? this.context.assetManager.get(obj.sprite) : null,
+                obj.sprite_clip ? obj.sprite_clip : null,
                 this.context
             )
 
