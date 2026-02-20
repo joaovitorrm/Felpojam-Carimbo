@@ -1,6 +1,6 @@
 import { levels, type LevelsKey } from "../assets/data/levels/levels";
 import type GameContext from "../core/GameContext";
-import type { Entity } from "../entities/base/Entity";
+import type NPC from "../entities/base/NPC";
 import Prop from "../entities/base/Prop";
 import type { LevelData } from "../types/LevelData";
 import { SceneType } from "../types/SceneType";
@@ -9,7 +9,7 @@ import { Rect } from "../util/utils";
 export default class GameScene extends SceneType {
 
     private background: HTMLImageElement | null = null;
-    private entities: Entity[] = [];
+    private npcs: NPC[] = [];
     private objects: Prop[] = [];
 
     constructor(private context: GameContext, sceneId: LevelsKey) {
@@ -29,7 +29,7 @@ export default class GameScene extends SceneType {
     private createNPCs(data: LevelData) {
         for (const npcData of data.npcs) {
             const npc = this.context.npcFactory.createNPC(npcData);
-            this.entities.push(npc);
+            this.npcs.push(npc);
         }
     }
 
@@ -40,7 +40,6 @@ export default class GameScene extends SceneType {
                 new Rect(obj.x, obj.y, obj.width, obj.height),
                 obj.sprite ? this.context.assetManager.get(obj.sprite) : null,
                 obj.sprite_clip ? obj.sprite_clip : null,
-                this.context
             )
 
             switch (obj.interactType) {
@@ -59,13 +58,24 @@ export default class GameScene extends SceneType {
     render(ctx: CanvasRenderingContext2D): void {
         if (!this.background) return;
         ctx.drawImage(this.background, 0, 0, ctx.canvas.width, ctx.canvas.height);
-        this.entities.forEach(e => e.render(ctx));
-        this.objects.forEach(e => e.render(ctx));
+        [this.npcs, this.objects].forEach(elements => elements.forEach((e) => e.render(ctx)));
     }
 
     update(deltaTime: number): void {
-        this.entities.forEach(e => e.update(deltaTime));
-        this.objects.forEach(e => e.update(deltaTime));
+        const input = this.context.inputManager;
+        const inputRect = input.getMouseRect();
+
+        [this.npcs, this.objects].forEach(entities => {
+            entities.forEach((e) => {
+                if (e.rect.collide(inputRect)) {
+                    e.hover();
+                    if (input.isMouseDown() && !input.isMouseConsumed()) {
+                        input.consumeMouse();
+                        e.interact();
+                    }
+                }
+            })
+        });
     }
 
     onEnter(): void {

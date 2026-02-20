@@ -8,5 +8,4 @@ export abstract class Entity {
     ) {}
 
     abstract render(ctx: CanvasRenderingContext2D): void
-    abstract update(deltaTime: number): void
 }

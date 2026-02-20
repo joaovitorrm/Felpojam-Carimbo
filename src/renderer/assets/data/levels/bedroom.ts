@@ -14,7 +14,8 @@ export const bedroom: LevelData = {
             y: 300,
             width: 200,
             height: 420,
-            dialogId: "guardDialog"
+            dialogId: "guardDialog",
+            dialogStart: "start"
         },
         {
             id: "Mercador",
@@ -24,7 +25,8 @@ export const bedroom: LevelData = {
             y: 102,
             width: 120,
             height: 180,
-            dialogId: "merchantDialog"
+            dialogId: "merchantDialog",
+            dialogStart: "start"
         }
     ],
 

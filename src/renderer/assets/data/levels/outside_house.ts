@@ -14,7 +14,8 @@ export const outside_house: LevelData = {
             y: 300,
             width: 200,
             height: 420,
-            dialogId: "danielDialog"
+            dialogId: "danielDialog",
+            dialogStart: "start"
         }
     ],
 

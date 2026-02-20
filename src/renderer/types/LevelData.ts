@@ -1,5 +1,5 @@
 import type { AssetKey } from "../assets/assets"
-import type { DialoguesKey } from "../assets/data/dialogues/dialogues";
+import type { dialogues, DialoguesKey } from "../assets/data/dialogues/dialogues";
 import type { LevelsKey } from "../assets/data/levels/levels";
 
 export type LevelData = {
@@ -18,6 +18,7 @@ export type NPCData = {
     width: number;
     height: number;
     dialogId: DialoguesKey;
+    dialogStart: keyof typeof dialogues[DialoguesKey];
 }
 
 export type ObjectData = {

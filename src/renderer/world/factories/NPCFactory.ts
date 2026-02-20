@@ -1,6 +1,7 @@
 import { dialogues } from "../../assets/data/dialogues/dialogues";
 import type GameContext from "../../core/GameContext";
 import NPC from "../../entities/base/NPC";
+import type { DialogTree } from "../../types/DialogTypes";
 import type { NPCData } from "../../types/LevelData";
 import { Rect } from "../../util/utils";
 
@@ -12,11 +13,12 @@ export default class NPCFactory {
     createNPC(data: NPCData) : NPC {
         return new NPC(
             data.id,
-            new Rect(data.x, data.y, data.width, data.height),
-            dialogues[data.dialogId],
-            this.gameContext,
+            new Rect(data.x, data.y, data.width, data.height),            
             this.gameContext.assetManager.get(data.sprite),
-            data.sprite_clip
+            data.sprite_clip,
+            dialogues[data.dialogId],
+            data.dialogStart,
+            (dialogTree: DialogTree, dialogStage: string) => this.gameContext.eventBus.emit("dialog:start", {dialogTree, dialogStage})
         );
     }
 }

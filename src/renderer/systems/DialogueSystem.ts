@@ -10,7 +10,11 @@ export class DialogSystem {
     private currentNode!: DialogNode;
     private currentKey!: string;
 
-    constructor(private context: GameContext) {}
+    constructor(private context: GameContext) {
+        this.context.eventBus.on("dialog:start", (e: {dialogTree: DialogTree, dialogStage: string}) => {
+            this.start(e.dialogTree, e.dialogStage)
+        });
+    }
 
     start(tree: DialogTree, startKey: string) {
         this.currentTree = tree;
@@ -20,7 +24,7 @@ export class DialogSystem {
     private goTo(key: string) {
         const node = this.currentTree[key];
 
-        this.context.eventBus.emit("dialog:start", node);
+        console.log(node);
 
         if (!node) return;
 
