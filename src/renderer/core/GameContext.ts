@@ -12,9 +12,9 @@ export default class GameContext {
     readonly eventBus : EventBus = new EventBus();
     readonly assetManager : AssetManager = new AssetManager();    
 
-    readonly worldState : WorldState = new WorldState();
     // readonly saveSystem : SaveSystem = new SaveSystem();
 
+    readonly worldState : WorldState = new WorldState(this);
     readonly dialogSystem: DialogSystem = new DialogSystem(this);
     readonly uiManager : UiManager = new UiManager(this);
     readonly sceneManager : SceneManager = new SceneManager(this);    

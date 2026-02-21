@@ -14,7 +14,7 @@ export default class Game {
     }
 
     update(deltaTime: number) {
-        this.ctx.sceneManager.update(deltaTime);
         this.ctx.uiManager.update(deltaTime);
+        this.ctx.sceneManager.update(deltaTime);        
     }
 }

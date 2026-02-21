@@ -7,7 +7,7 @@ export class DialogBox extends UiElement {
     private text : string = "";
     private speaker : string = ""
 
-    constructor(rect: Rect) {
+    constructor(rect: Rect, private interaction: Function) {
         super(rect);
     }
 
@@ -19,6 +19,10 @@ export class DialogBox extends UiElement {
 
     hide() {
         this.visible = false;
+    }
+
+    getIsVisible() {
+        return this.visible;
     }
 
     render(ctx: CanvasRenderingContext2D) {
@@ -46,6 +50,6 @@ export class DialogBox extends UiElement {
         
     }
     interact(): void {
-        
+        this.interaction();
     }
 }

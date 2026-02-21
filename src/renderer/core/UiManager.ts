@@ -10,11 +10,19 @@ export default class UiManager {
     private dialogBox: DialogBox;
 
     constructor(private context: GameContext) {
-        this.dialogBox = new DialogBox(new Rect(40, 400, 1200, 300));
+        this.dialogBox = new DialogBox(
+            new Rect(40, 400, 1200, 300),
+            () => context.eventBus.emit("world:dialog:next")
+        );
 
-        context.eventBus.on("dialog:start", ({npcId, stage} : {npcId: DialoguesKey, stage: number}) => {
+        context.eventBus.on("ui:dialog:show", ({npcId, stage} : {npcId: DialoguesKey, stage: number}) => {
             this.handleDialog(dialogues[npcId][stage]);
         });
+
+        context.eventBus.on("ui:dialog:close", () => {
+            this.dialogBox.hide();
+            this.context.eventBus.emit("dialog:npc:clear");
+        })
     }
 
     private handleDialog = (dialogData: DialogNode) => {
@@ -37,8 +45,14 @@ export default class UiManager {
 
         const input = this.context.inputManager;
 
-        if (!input.getMouseRect().collide(this.dialogBox.getRect()) && input.isMouseDown() && !input.isMouseConsumed()) {
-            this.dialogBox.hide();
+        if (input.isMouseDown() && !input.isMouseConsumed() && this.dialogBox.getIsVisible()) {
+            if (input.getMouseRect().collide(this.dialogBox.getRect())) {
+                input.consumeMouse();
+                this.dialogBox.interact();
+            } else {
+                this.dialogBox.hide();
+                this.context.eventBus.emit("npc:clear");
+            }
         }
     }
 

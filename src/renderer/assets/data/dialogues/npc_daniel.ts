@@ -18,13 +18,13 @@ export const danielDialog: DialogTree = {
     },
 
     1: {
-        speaker: "Guarda",
+        speaker: "Daniel",
         text: "Eu disse que não!",
         next: 0
     },
 
     2: {
-        speaker: "Guarda",
+        speaker: "Daniel",
         text: "Hm... tudo certo. Pode passar.",
         action: (state) => state.setFlag("gateOpen")
     }

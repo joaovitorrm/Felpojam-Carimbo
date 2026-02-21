@@ -1,4 +1,4 @@
-export class DialogState {
+export default class DialogState {
     flags = new Set<string>();
     variables = new Map<string, number>();
 

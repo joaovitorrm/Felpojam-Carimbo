@@ -1,4 +1,5 @@
-import type { DialogState } from "../core/DialogState";
+import type DialogState from "../core/DialogState";
+
 
 export type DialogOption = {
     text: string;

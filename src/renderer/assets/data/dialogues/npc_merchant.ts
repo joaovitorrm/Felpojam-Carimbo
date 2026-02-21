@@ -18,7 +18,7 @@ export const merchantDialog: DialogTree = {
     },
 
     1: {
-        speaker: "Mercador",
+        speaker: "Felpie",
         text: "Aqui está sua poção!"
     }
 };
