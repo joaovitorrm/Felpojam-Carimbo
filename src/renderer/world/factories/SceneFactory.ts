@@ -1,5 +1,5 @@
-import type { LevelsKey } from "../../assets/data/levels/levels";
-import type { MenusKey } from "../../assets/data/menus/menus";
+import type { LevelsKey } from "../../assets/data/levels";
+import type { MenusKey } from "../../assets/data/menus";
 import type GameContext from "../../core/GameContext";
 import GameScene from "../../scenes/GameScene";
 import MainMenuScene from "../../scenes/MainMenuScene";

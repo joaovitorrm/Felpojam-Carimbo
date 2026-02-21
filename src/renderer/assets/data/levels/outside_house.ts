@@ -15,16 +15,17 @@ export const outside_house: LevelData = {
             width: 200,
             height: 420,
             dialogId: "danielDialog",
-            dialogStart: "start"
         }
     ],
 
-    objects: [
+    objects: [],
+
+    interactiveAreas: [
         {
             id: "door",
             x: 300,
             y: 100,
-            width: 600,
+            width: 500,
             height: 700,
             interactType: "sceneChange",
             next: "bedroom"

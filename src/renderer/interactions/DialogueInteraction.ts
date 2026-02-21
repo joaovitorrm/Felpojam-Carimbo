@@ -1,4 +1,4 @@
-import DialogSystem from "../systems/DialogueSystem";
+/* import DialogSystem from "../systems/DialogueSystem";
 import type { Interaction } from "./Interaction";
 
 // TIPO DE INTERAÇÃO QUE INICIA UM DIALOGO
@@ -12,4 +12,4 @@ export default class DialogInteraction implements Interaction {
     hover(): void {
         throw new Error("Method not implemented.");
     }
-}
+} */

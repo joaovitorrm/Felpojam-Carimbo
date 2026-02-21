@@ -1,8 +1,9 @@
+import { dialogues, type DialoguesKey } from "../assets/data/dialogues";
 import type { DialogNode } from "../types/DialogTypes";
 import { DialogBox } from "../ui/DialogBox";
 import type { UiElement } from "../ui/UiElement";
 import { Rect } from "../util/utils";
-import type GameContext from "./GameContext";
+import GameContext from "./GameContext";
 
 export default class UiManager {
     private elements: UiElement[] = [];
@@ -11,11 +12,9 @@ export default class UiManager {
     constructor(private context: GameContext) {
         this.dialogBox = new DialogBox(new Rect(40, 400, 1200, 300));
 
-        this.init();
-    }
-
-    init() {
-        this.context.eventBus.on("dialog:start", this.handleDialog);
+        context.eventBus.on("dialog:start", ({npcId, stage} : {npcId: DialoguesKey, stage: number}) => {
+            this.handleDialog(dialogues[npcId][stage]);
+        });
     }
 
     private handleDialog = (dialogData: DialogNode) => {

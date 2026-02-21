@@ -2,7 +2,7 @@ import type { MenuData } from "../../../types/MenuData";
 
 export const MainMenu : MenuData = {
     id: "mainMenu",
-    background: "menuScene",
+    background: "computador",
     buttons: [
         {
             id: "play",

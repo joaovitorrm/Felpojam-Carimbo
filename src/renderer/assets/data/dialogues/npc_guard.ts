@@ -1,29 +1,29 @@
 import type { DialogTree } from "../../../types/DialogTypes";
 
 export const guardDialog: DialogTree = {
-    start: {
+    0: {
         speaker: "Gustavo",
         text: "Quer uma verdinha?",
         options: [
             {
                 text: "Insistir",
-                next: "insist"
+                next: 1
             },
             {
                 text: "Mostrar passe",
-                next: "checkPass",
+                next: 2,
                 condition: (state) => state.hasFlag("hasPass")
             }
         ]
     },
 
-    insist: {
+    1: {
         speaker: "Guarda",
         text: "Eu disse que não!",
-        next: "start"
+        next: 0
     },
 
-    checkPass: {
+    2: {
         speaker: "Guarda",
         text: "Hm... tudo certo. Pode passar.",
         action: (state) => state.setFlag("gateOpen")

@@ -8,8 +8,8 @@ export abstract class InteractiveObject extends Entity {
 
     constructor(
         rect: Rect,
-        protected sprite: HTMLImageElement | null,
-        protected sprite_clip: [number, number, number, number] | null
+        protected sprite: HTMLImageElement,
+        protected sprite_clip: [number, number, number, number]
     ) {
         super(rect);
     }

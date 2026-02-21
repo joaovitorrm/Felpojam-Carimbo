@@ -1,4 +1,3 @@
-import type { DialogTree } from "../../types/DialogTypes";
 import { Rect } from "../../util/utils";
 import { InteractiveObject } from "./InteractiveObjects";
 
@@ -11,8 +10,6 @@ export default class NPC extends InteractiveObject {
         rect: Rect,        
         sprite: HTMLImageElement,
         sprite_clip: [number, number, number, number],
-        private dialogTree: DialogTree,
-        private dialogStage: string,
         private interaction: Function
     ) {
         super(rect, sprite, sprite_clip);
@@ -21,7 +18,7 @@ export default class NPC extends InteractiveObject {
         
     }
     interact(): void {
-        this.interaction(this.dialogTree, this.dialogStage);
+        this.interaction();
     }
 
     render(ctx: CanvasRenderingContext2D): void {

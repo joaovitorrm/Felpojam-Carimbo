@@ -15,7 +15,6 @@ export const bedroom: LevelData = {
             width: 200,
             height: 420,
             dialogId: "guardDialog",
-            dialogStart: "start"
         },
         {
             id: "Mercador",
@@ -26,29 +25,10 @@ export const bedroom: LevelData = {
             width: 120,
             height: 180,
             dialogId: "merchantDialog",
-            dialogStart: "start"
         }
     ],
 
     objects: [
-        {
-            id: "door",
-            x: 1100,
-            y: 90,
-            width: 200,
-            height: 390,
-            interactType: "sceneChange",
-            next: "quadro_de_pistas"
-        },
-        {
-            id: "door",
-            x: 250,
-            y: 90,
-            width: 200,
-            height: 390,
-            interactType: "sceneChange",
-            next: "outside_house"
-        },
         {
             id: "foto",
             sprite: "fotografia",
@@ -58,6 +38,27 @@ export const bedroom: LevelData = {
             width: 100,
             height: 100,
             interactType: "dialog",
+        }
+    ],
+
+    interactiveAreas: [
+        {
+            id: "saida_para_quadro",
+            x: 1160,
+            y: 90,
+            width: 120,
+            height: 390,
+            interactType: "sceneChange",
+            next: "quadro_de_pistas"
+        },
+        {
+            id: "saida_para_fora_da_casa",
+            x: 300,
+            y: 70,
+            width: 120,
+            height: 410,
+            interactType: "sceneChange",
+            next: "outside_house"
         }
     ]
 };

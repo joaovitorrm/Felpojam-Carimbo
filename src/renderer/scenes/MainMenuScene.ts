@@ -1,4 +1,4 @@
-import { menus, type MenusKey } from "../assets/data/menus/menus";
+import { menus, type MenusKey } from "../assets/data/menus";
 import type GameContext from "../core/GameContext";
 import type { MenuData } from "../types/MenuData";
 import { SceneType } from "../types/SceneType";

@@ -1,13 +1,13 @@
 import type { DialogTree } from "../../../types/DialogTypes";
 
 export const merchantDialog: DialogTree = {
-    start: {
+    0: {
         speaker: "Felpie",
         text: "Talvez?",
         options: [
             {
                 text: "Poção - 10G",
-                next: "buyPotion",
+                next: 1,
                 action: (state) => {
                     const gold = state.getVar("gold");
                     state.setVar("gold", gold - 10);
@@ -17,7 +17,7 @@ export const merchantDialog: DialogTree = {
         ]
     },
 
-    buyPotion: {
+    1: {
         speaker: "Mercador",
         text: "Aqui está sua poção!"
     }

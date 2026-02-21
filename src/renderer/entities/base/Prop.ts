@@ -6,10 +6,10 @@ export default class Prop extends InteractiveObject {
     private inFocus : boolean = false;
     constructor(
         rect: Rect, 
-        sprite: HTMLImageElement | null, 
-        sprite_clip: [number, number, number, number] | null,
-        private handleInteraction: Function = () => {},
-        private handleHover: Function = () => {}
+        sprite: HTMLImageElement, 
+        sprite_clip: [number, number, number, number],
+        private handleInteraction: Function,
+        private handleHover: Function
     ) {
         super(rect, sprite, sprite_clip);
     }
@@ -29,8 +29,6 @@ export default class Prop extends InteractiveObject {
         this.handleInteraction();
     }
     render(ctx: CanvasRenderingContext2D): void {
-        if (this.sprite === null) return;
-
         if (this.inFocus) {
             ctx.drawImage(this.sprite, ...this.sprite_clip!, 140, 60, 1000, 600);
             return;

@@ -1,14 +1,14 @@
-import type { AssetKey } from "../assets/assets";
+import type { ScenarioAssetsKey } from "../assets/images/scenarios";
 import type { Entity } from "../entities/base/Entity";
 
 // CLASSE QUE CRIA O LEVEL, ADICIONANDO FUNDO E LIDANDO COM RENDER E UPDATE
 
 export default class Level {
 
-    public background: AssetKey;
+    public background: ScenarioAssetsKey;
     public entities: Entity[] = [];
     
-    constructor(backgroundKey: AssetKey) {
+    constructor(backgroundKey: ScenarioAssetsKey) {
         this.background = backgroundKey;
     }
 

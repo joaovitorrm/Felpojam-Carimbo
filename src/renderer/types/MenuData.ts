@@ -1,9 +1,9 @@
-import type { AssetKey } from "../assets/assets";
+import type { ScenarioAssetsKey } from "../assets/images/scenarios";
 import type { Scenes } from "../world/factories/SceneFactory";
 
 export type MenuData = {
     id: string;
-    background: AssetKey;
+    background: ScenarioAssetsKey;
     buttons: {
         id: string;
         label: string;
