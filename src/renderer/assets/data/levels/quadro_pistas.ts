@@ -17,7 +17,7 @@ export const quadro_de_pistas: LevelData = {
             y: 210,
             width: 500,
             height: 500,
-            interactType: "sceneChange",
+            interactType: "changeScene",
             next: "bedroom"
         }
     ],

@@ -6,45 +6,65 @@ import type GameContext from "./GameContext";
 
 export default class SceneManager {
 
-    private currentScene: SceneType | null = null;
+    private currentScene: SceneType[] = [];
 
     private loadedScenes: Map<string, SceneType> = new Map();
 
     constructor(private context: GameContext) {
         context.eventBus.on("scene:change", (scene: Scenes) => {
-            this.setCurrentScene(scene)
+            this.changeScene(scene)
+        })
+
+        context.eventBus.on("scene:push", (scene: Scenes) => {
+            this.pushScene(scene)
+        })
+
+        context.eventBus.on("scene:pop", () => {
+            this.popScene()
         })
     }
 
     public setCurrentScene(scene: Scenes) {
-        if (this.currentScene) {
-            this.currentScene.onExit();
+        if (this.currentScene.at(-1) !== undefined) {
+            this.currentScene.at(-1)!.onExit();
         }
-
         if (!this.loadedScenes.has(scene)) {
             this.loadedScenes.set(scene, SceneFactory[scene](this.context));            
         }
-        
-        this.currentScene = this.loadedScenes.get(scene)!;
+        this.loadedScenes.get(scene)!.onEnter();
+    }
 
-        if (this.currentScene) {
-            this.currentScene.onEnter();
+    public changeScene(scene: Scenes) {
+        if (!this.loadedScenes.has(scene)) {
+            this.setCurrentScene(scene); 
         }
+        this.currentScene = [this.loadedScenes.get(scene)!];
+    }
+
+    public pushScene(scene: Scenes) {
+        if (!this.loadedScenes.has(scene)) {
+            this.setCurrentScene(scene); 
+        }
+        this.currentScene.push(this.loadedScenes.get(scene)!);
+    }
+
+    public popScene(): void {
+        this.currentScene.pop();
     }
 
     public getCurrentScene(): SceneType | null {
-        return this.currentScene;
+        return this.currentScene.at(-1) ?? null;
     }
 
     public update(deltaTime: number) {
         if (this.currentScene) {
-            this.currentScene.update(deltaTime, this.context.inputManager);
+            this.currentScene.at(-1)?.update(deltaTime, this.context.inputManager);
         }
     }
 
     public render(ctx: CanvasRenderingContext2D) {
         if (this.currentScene) {
-            this.currentScene.render(ctx);
+            this.currentScene.at(-1)?.render(ctx);
         }
     }
 }

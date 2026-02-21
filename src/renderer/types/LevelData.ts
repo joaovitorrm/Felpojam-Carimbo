@@ -3,6 +3,7 @@ import type { LevelsKey } from "../assets/data/levels";
 import type { CharacterAssetsKey } from "../assets/images/characters";
 import type { ObjectAssetsKey } from "../assets/images/objects";
 import type { ScenarioAssetsKey } from "../assets/images/scenarios";
+import type { InteractionType } from "./InteractionData";
 
 export type LevelData = {
     id: string;
@@ -31,7 +32,7 @@ export type ObjectData = {
     y: number;
     width: number;
     height: number;
-    interactType: "dialog" | "sceneChange";
+    interactType: InteractionType;
     next?: LevelsKey
 }
 
@@ -41,6 +42,6 @@ export type InteractiveArea = {
     y: number;
     width: number;
     height: number;
-    interactType: "sceneChange";
+    interactType: InteractionType;
     next?: LevelsKey
 }

@@ -10,7 +10,7 @@ export default class Game {
 
     render(ctx: CanvasRenderingContext2D) {
         this.ctx.sceneManager.render(ctx);
-        this.ctx.uiManager.render(ctx);
+        this.ctx.uiManager.render(ctx, this.ctx.sceneManager.getCurrentScene());
     }
 
     update(deltaTime: number) {

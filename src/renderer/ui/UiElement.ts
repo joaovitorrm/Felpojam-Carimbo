@@ -12,6 +12,6 @@ export abstract class UiElement {
         return this.rect;
     }
 
-    interact?(): void;
-    hover?(): void;
+    abstract interact(): void;
+    abstract hover(): void;
 }

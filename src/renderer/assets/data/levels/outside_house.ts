@@ -27,7 +27,7 @@ export const outside_house: LevelData = {
             y: 100,
             width: 500,
             height: 700,
-            interactType: "sceneChange",
+            interactType: "changeScene",
             next: "bedroom"
         }
     ]

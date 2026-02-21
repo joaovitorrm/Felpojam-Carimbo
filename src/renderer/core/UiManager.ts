@@ -1,13 +1,16 @@
 import { dialogues, type DialoguesKey } from "../assets/data/dialogues";
 import type { DialogNode } from "../types/DialogTypes";
+import type { SceneType } from "../types/SceneType";
 import { DialogBox } from "../ui/DialogBox";
+import GameHud from "../ui/HUD/GameHud";
 import type { UiElement } from "../ui/UiElement";
 import { Rect } from "../util/utils";
-import GameContext from "./GameContext";
+import type GameContext from "./GameContext";
 
 export default class UiManager {
     private elements: UiElement[] = [];
     private dialogBox: DialogBox;
+    private gameHud: GameHud;
 
     constructor(private context: GameContext) {
         this.dialogBox = new DialogBox(
@@ -15,13 +18,15 @@ export default class UiManager {
             () => context.eventBus.emit("world:dialog:next")
         );
 
+        this.gameHud = new GameHud(context.settingsManager.data.resolution.width, context.settingsManager.data.resolution.height);
+
         context.eventBus.on("ui:dialog:show", ({npcId, stage} : {npcId: DialoguesKey, stage: number}) => {
             this.handleDialog(dialogues[npcId][stage]);
         });
 
         context.eventBus.on("ui:dialog:close", () => {
             this.dialogBox.hide();
-            this.context.eventBus.emit("dialog:npc:clear");
+            context.eventBus.emit("dialog:npc:clear");
         })
     }
 
@@ -56,7 +61,12 @@ export default class UiManager {
         }
     }
 
-    render(ctx: CanvasRenderingContext2D) {        
+    render(ctx: CanvasRenderingContext2D, scene: SceneType | null) {
+
+        if (scene && scene.showHud()) {
+
+        }
+
         for (const e of this.elements) {
             e.render(ctx);
         }

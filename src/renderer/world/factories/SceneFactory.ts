@@ -11,6 +11,7 @@ export const SceneFactory: Record<
 > = {
     bedroom: (context: GameContext) => new GameScene(context, "bedroom"),
     MainMenu: (context: GameContext) => new MainMenuScene(context, "MainMenu"),
+    OptionsMenu: (context: GameContext) => new MainMenuScene(context, "OptionsMenu"),
     quadro_de_pistas: (context: GameContext) => new GameScene(context, "quadro_de_pistas"),
     outside_house: (context: GameContext) => new GameScene(context, "outside_house"),
 }

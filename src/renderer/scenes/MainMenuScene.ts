@@ -1,8 +1,8 @@
+import { MenuElementsFactory } from "../world/factories/MenuElementsFactory";
+import { SceneType } from "../types/SceneType";
 import { menus, type MenusKey } from "../assets/data/menus";
 import type GameContext from "../core/GameContext";
 import type { MenuData } from "../types/MenuData";
-import { SceneType } from "../types/SceneType";
-import { Button } from "../ui/Button";
 import type { UiElement } from "../ui/UiElement";
 
 export default class MainMenuScene extends SceneType {
@@ -24,14 +24,8 @@ export default class MainMenuScene extends SceneType {
     }
 
     private createObjects(data: MenuData) : void {
-        data.buttons.forEach(b => {
-            const btn = new Button(
-                b.x, b.y, b.width, b.height,
-                b.label, 20, "hsla(0, 0%, 10%, 0.8)",
-                "white", () => this.context.eventBus.emit("scene:change", b.action),
-                this.context.inputManager
-            )
-            this.elements.push(btn);
+        data.elements.forEach(b => {
+            this.elements.push(MenuElementsFactory[b.type](this.context, b));
         })
     }
 
@@ -43,10 +37,19 @@ export default class MainMenuScene extends SceneType {
     }
     render(ctx: CanvasRenderingContext2D): void {
         if (!this.background) return;
-        ctx.drawImage(this.background, 0, 0, ctx.canvas.width, ctx.canvas.height);
+        ctx.drawImage(this.background, 0, 0, this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
         this.elements.forEach(e => e.render(ctx));
     }
     update(deltaTime: number): void {
-        this.elements.forEach(e => e.update!(deltaTime));
+        const input = this.context.inputManager;
+        this.elements.forEach(e => {
+            if (e.getRect().collide(input.getMouseRect())) {
+                e.hover();
+                if (input.isMouseDown() && !input.isMouseConsumed()) {
+                    input.consumeMouse();
+                    e.interact();
+                }
+            };
+        });
     }
 }

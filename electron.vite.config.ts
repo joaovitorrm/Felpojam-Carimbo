@@ -13,8 +13,6 @@ export default defineConfig({
     build: {
       lib: {
         entry: resolve(__dirname, 'src/preload/index.ts'),
-        formats: ['es'],
-        fileName: 'preload.mjs'
       }
     }
   },

@@ -9,6 +9,8 @@ import { Rect } from "../util/utils";
 
 export default class GameScene extends SceneType {
 
+    override showHud(): boolean { return true; }
+
     private background: HTMLImageElement | null = null;
     private npcs: NPC[] = [];
     private objects: Prop[] = [];
@@ -43,8 +45,10 @@ export default class GameScene extends SceneType {
                     case "dialog":
                         prop.toggleFocus();
                         break;
-                    case "sceneChange":
+                    case "changeScene":
                         this.context.eventBus.emit("scene:change", obj.next!);
+                        break;
+                    default:
                         break;
                 }
             };
@@ -65,9 +69,11 @@ export default class GameScene extends SceneType {
         for (const area of data.interactiveAreas) {
             const interaction = () => {
                 switch (area.interactType) {
-                    case "sceneChange":
+                    case "changeScene":
                         console.log(area.next);
                         this.context.eventBus.emit("scene:change", area.next!);
+                        break;
+                    default:
                         break;
                 }
             };
@@ -84,7 +90,7 @@ export default class GameScene extends SceneType {
 
     render(ctx: CanvasRenderingContext2D): void {
         if (!this.background) return;
-        ctx.drawImage(this.background, 0, 0, ctx.canvas.width, ctx.canvas.height);
+        ctx.drawImage(this.background, 0, 0, this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
         [this.npcs, this.objects].forEach(elements => elements.forEach((e) => e.render(ctx)));
     }
 

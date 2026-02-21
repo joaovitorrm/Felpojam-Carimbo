@@ -48,7 +48,7 @@ export const bedroom: LevelData = {
             y: 90,
             width: 120,
             height: 390,
-            interactType: "sceneChange",
+            interactType: "changeScene",
             next: "quadro_de_pistas"
         },
         {
@@ -57,7 +57,7 @@ export const bedroom: LevelData = {
             y: 70,
             width: 120,
             height: 410,
-            interactType: "sceneChange",
+            interactType: "changeScene",
             next: "outside_house"
         }
     ]

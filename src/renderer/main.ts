@@ -1,12 +1,19 @@
 import Game from "./core/Game";
 import GameContext from "./core/GameContext";
+import type { GameSettingsData } from "./core/SettingsManager";
+import SettingsManager from "./core/SettingsManager";
 
 // PEGA O GAME CANVAS DO HTML
 const gameCanvas = document.getElementById('game-canvas') as HTMLCanvasElement;
 
-// DEFINE O TAMANHO DO CANVAS
-gameCanvas.width = 1280;
-gameCanvas.height = 720;
+const defaultSettings: GameSettingsData = {
+    language: "pt-BR",
+    masterVolume: 1,
+    musicVolume: 0.8,
+    sfxVolume: 0.8,
+    resolution: { width: 1280, height: 720 },
+    fullscreen: false
+}
 
 // TRANSFORMA EM ELEMENTO QUE PODE DESENHAR
 const ctx = gameCanvas.getContext('2d') as CanvasRenderingContext2D;
@@ -14,9 +21,17 @@ const ctx = gameCanvas.getContext('2d') as CanvasRenderingContext2D;
 // ADICIONA LISTENER PARA QUANDO O DOCUMENTO TERMINA DE CARREGAR
 document.addEventListener('DOMContentLoaded', async () => {
 
-    const gameContext = new GameContext();
+    const settingsManager = new SettingsManager();
+
+    await settingsManager.load(defaultSettings);
+
+    const gameContext = new GameContext(settingsManager)
 
     await gameContext.assetManager.loadAll();
+
+    // DEFINE O TAMANHO DO CANVAS
+    gameCanvas.width = settingsManager.data.resolution.width;
+    gameCanvas.height = settingsManager.data.resolution.height;
 
     // ADICIONA OS EVENTOS QUE LIDAM QUANDO O JOGADOR REALIZA ALGUMA AÇÃO COM MOUSE
     document.addEventListener('pointerdown', (_) => gameContext.inputManager.onMouseDown());

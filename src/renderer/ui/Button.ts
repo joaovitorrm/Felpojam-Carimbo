@@ -1,32 +1,27 @@
-import type InputManager from "../core/InputManager";
 import { Rect } from "../util/utils";
 import { UiElement } from "./UiElement";
 
 export class Button extends UiElement {
 
     constructor(
-        x: number, 
-        y: number, 
-        width: number, 
-        height: number, 
+        rect: Rect, 
         private text: string, 
         private fontSize: number, 
-        private background: string,
         private color: string,
-        private interaction: () => void,
-        private inputManager: InputManager,
-        private textBaseline: CanvasTextBaseline = "middle",
-        private textAlign: CanvasTextAlign = "center",
+        private background: string,
+        private textBaseline: CanvasTextBaseline,
+        private textAlign: CanvasTextAlign,
+        private interaction: Function,
+        private handleHover: Function = () => {},        
     ) {
-        super(new Rect(x, y, width, height))
+        super(rect)
 
     }
-
     hover(): void {
-        
+        this.handleHover();
     }
     interact(): void {
-        this.interaction()
+        this.interaction();
     }
     render(ctx: CanvasRenderingContext2D): void {
         ctx.fillStyle = this.background;
@@ -37,16 +32,5 @@ export class Button extends UiElement {
         ctx.font = `${this.fontSize}px Arial`;
         ctx.fillStyle = this.color;
         ctx.fillText(this.text, this.rect.x + this.rect.width/2, this.rect.y + this.rect.height/2, this.rect.width);
-    }
-
-    update(deltaTime: number): void {
-        const input = this.inputManager;
-        if (input.getMouseRect().collide(this.rect)) {
-            this.hover();
-            if (input.isMouseDown() && !input.isMouseConsumed()) {
-                input.consumeMouse();
-                this.interact();
-            }
-        }
     }
 }
