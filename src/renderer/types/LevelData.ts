@@ -1,4 +1,4 @@
-import type { dialogues, DialoguesKey } from "../assets/data/dialogues";
+import type { DialoguesKey } from "../assets/data/dialogues";
 import type { LevelsKey } from "../assets/data/levels";
 import type { CharacterAssetsKey } from "../assets/images/characters";
 import type { ObjectAssetsKey } from "../assets/images/objects";

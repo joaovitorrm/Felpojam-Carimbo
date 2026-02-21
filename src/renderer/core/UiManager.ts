@@ -18,7 +18,7 @@ export default class UiManager {
             () => context.eventBus.emit("world:dialog:next")
         );
 
-        this.gameHud = new GameHud(context.settingsManager.data.resolution.width, context.settingsManager.data.resolution.height);
+        this.gameHud = new GameHud(context);
 
         context.eventBus.on("ui:dialog:show", ({npcId, stage} : {npcId: DialoguesKey, stage: number}) => {
             this.handleDialog(dialogues[npcId][stage]);
@@ -42,10 +42,14 @@ export default class UiManager {
         this.elements = this.elements.filter(e => e !== element);
     }
 
-    update(dt: number) {
+    update(dt: number, scene: SceneType | null) {
         for (const e of this.elements) {
             if (!e.update) return;
             e.update(dt);
+        }
+
+        if (scene && scene.showHud()) {
+            this.gameHud.update();
         }
 
         const input = this.context.inputManager;
@@ -64,7 +68,7 @@ export default class UiManager {
     render(ctx: CanvasRenderingContext2D, scene: SceneType | null) {
 
         if (scene && scene.showHud()) {
-
+            this.gameHud.render(ctx);
         }
 
         for (const e of this.elements) {
