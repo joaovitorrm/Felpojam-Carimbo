@@ -14,7 +14,7 @@ export default class NPCFactory {
             new Rect(data.x, data.y, data.width, data.height),            
             this.gameContext.assetManager.get(data.sprite),
             data.sprite_clip,
-            () => this.gameContext.eventBus.emit("dialog:npc:interact", data.dialogId)
+            () => this.gameContext.eventBus.emit("dialog:npc:interact", data.id)
         );
     }
 }

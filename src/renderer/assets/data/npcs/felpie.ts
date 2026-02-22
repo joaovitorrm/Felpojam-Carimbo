@@ -1,6 +1,6 @@
-import type { DialogTree } from "../../../types/DialogTypes";
+/* import type { DialogTree } from "../../../types/DialogTypes";
 
-export const merchantDialog: DialogTree = {
+export const Felpie: DialogTree = {
     0: {
         speaker: "Felpie",
         text: "Talvez?",
@@ -22,3 +22,4 @@ export const merchantDialog: DialogTree = {
         text: "Aqui está sua poção!"
     }
 };
+ */

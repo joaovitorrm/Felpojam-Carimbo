@@ -1,4 +1,4 @@
-import type { DialoguesKey } from "../assets/data/dialogues";
+import type { NPCId } from "../assets/data/npcs";
 import type { LevelsKey } from "../assets/data/levels";
 import type { CharacterAssetsKey } from "../assets/images/characters";
 import type { ObjectAssetsKey } from "../assets/images/objects";
@@ -11,17 +11,17 @@ export type LevelData = {
     npcs: NPCData[];
     objects: ObjectData[];
     interactiveAreas: InteractiveArea[];
+    onEnter?: LevelCommand;
 }
 
 export type NPCData = {
-    id: string;
+    id: NPCId;
     sprite: CharacterAssetsKey;
     sprite_clip: [number, number, number, number];
     x: number;
     y: number;
     width: number;
     height: number;
-    dialogId: DialoguesKey;
 }
 
 export type ObjectData = {
@@ -43,5 +43,11 @@ export type InteractiveArea = {
     width: number;
     height: number;
     interactType: InteractionType;
-    next?: LevelsKey
+    next?: LevelsKey;
 }
+
+export type LevelCommand = 
+{ type: "dialog"; target: string; npcId: NPCId } |
+{ type: "jump"; target: string } |
+{ type: "setFlag"; key: string; value: boolean } | 
+{ type: "if"; condition: string; then: string; else?: string }

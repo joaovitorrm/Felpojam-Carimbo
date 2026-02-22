@@ -11,12 +11,12 @@ export default class GameHud extends UiElement{
         super(new Rect(0, 0, context.settingsManager.data.resolution.width, context.settingsManager.data.resolution.height));
 
         const configButton = new Button(
-            new Rect(0, 0, 100, 100),
+            new Rect(0, 0, 50, 50),
             "⚙",
-            20,
+            40,
             "white",
-            "black",
-            "top",
+            "transparent",
+            "middle",
             "center",
             () => {
                 context.eventBus.emit("scene:push", "OptionsMenu");

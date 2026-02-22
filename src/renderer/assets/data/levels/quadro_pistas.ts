@@ -22,5 +22,5 @@ export const quadro_de_pistas: LevelData = {
         }
     ],
 
-    interactiveAreas: []
+    interactiveAreas: [],
 };

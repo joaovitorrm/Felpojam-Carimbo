@@ -24,6 +24,7 @@ export default class GameScene extends SceneType {
         this.createNPCs(level);
         this.createObjects(level);
         this.createInteractiveAreas(level);
+        this.createOnEnter(level);
     }
 
     private createBackground(data: LevelData): void {
@@ -70,7 +71,6 @@ export default class GameScene extends SceneType {
             const interaction = () => {
                 switch (area.interactType) {
                     case "changeScene":
-                        console.log(area.next);
                         this.context.eventBus.emit("scene:change", area.next!);
                         break;
                     default:
@@ -85,6 +85,17 @@ export default class GameScene extends SceneType {
             );
 
             this.interactiveAreas.push(ia);
+        }
+    }
+
+    private createOnEnter(data: LevelData): void {
+        if (data.onEnter) {
+            switch (data.onEnter.type) {
+                case "dialog": {
+                    this.context.eventBus.emit("dialog:start", {npcId: data.onEnter.npcId, target: data.onEnter.target});
+                    break;
+                }
+            }
         }
     }
 

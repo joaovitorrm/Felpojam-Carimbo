@@ -1,33 +1,52 @@
-import type GameContext from "../core/GameContext";
+import type DialogState from "../core/DialogState"
+import type EventBus from "../core/EventBus"
+import type WorldState from "../core/WorldState";
+import type { DialogScript } from "../types/DialogTypes"
+import { DialogInterpreter } from "./DialogInterpreter"
 
 export default class DialogSystem {
 
-    private activeNpcId: string | null = null;
+  private interpreter: DialogInterpreter;
 
-    constructor(private ctx: GameContext) {
-        this.ctx.eventBus.on("dialog:npc:interact", (npcId : string) => this.handleNpcInteract({ npcId }));
-        this.ctx.eventBus.on("dialog:npc:clear", () => this.clearActiveNpcId());
-    }
+  constructor(
+    private state: DialogState,
+    private world: WorldState,
+    private events: EventBus
+  ) {
+    this.interpreter = new DialogInterpreter(state, events);
+    this.registerEvents();
+  }
 
-    private handleNpcInteract = ({ npcId }: { npcId: string }) => {
+  start(node: string, script: DialogScript) {
+    this.events.emit("dialog:started");
+    //this.state.player.lock()
 
-        this.activeNpcId = npcId;
+    this.interpreter.load(node, script);
+    this.interpreter.run();
+  }
 
-        const state = this.ctx.worldState.getNpcState(npcId);
+  private registerEvents() {
 
-        const dialogId = this.resolveDialog(npcId, state.dialogStage);
+    this.events.on("dialog:npc:interact", (npcId: string) => {
+      const { node, script } = this.world.getNpcState(npcId);
+      this.start(node, script);
+    });
 
-        this.ctx.eventBus.emit("ui:dialog:show", {
-            ...dialogId
-        });
-    };
+    this.events.on("dialog:start", (data : { npcId: string, target: string}) => {
+      const { script } = this.world.getNpcState(data.npcId);
+      this.start(data.target, script);
+    })
 
-    private resolveDialog(npcId: string, stage: number) {
-        // lógica para escolher diálogo correto
-        return {npcId, stage};
-    }
+    this.events.on("dialog:continue", () => {
+      this.interpreter.next();
+    });
 
-    public getActiveNpcId() { return this.activeNpcId; }
+    this.events.on("dialog:jump", (target: string) => {
+      this.interpreter.goTo(target);
+    });
 
-    public clearActiveNpcId() { this.activeNpcId = null; }
+    this.events.on("dialog:ended", () => {
+      //this.state.player.unlock();
+    });
+  }
 }

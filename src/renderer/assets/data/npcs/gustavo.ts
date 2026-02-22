@@ -1,9 +1,9 @@
-import type { DialogTree } from "../../../types/DialogTypes";
+/* import type { DialogTree } from "../../../types/DialogTypes";
 
-export const danielDialog: DialogTree = {
+export const Gustavo: DialogTree = {
     0: {
-        speaker: "Daniel",
-        text: "Você sabe quanto é 2 + 2?",
+        speaker: "Gustavo",
+        text: "Quer uma verdinha?",
         options: [
             {
                 text: "Insistir",
@@ -18,14 +18,15 @@ export const danielDialog: DialogTree = {
     },
 
     1: {
-        speaker: "Daniel",
+        speaker: "Gustavo",
         text: "Eu disse que não!",
         next: 0
     },
 
     2: {
-        speaker: "Daniel",
+        speaker: "Gustavo",
         text: "Hm... tudo certo. Pode passar.",
         action: (state) => state.setFlag("gateOpen")
     }
 };
+ */

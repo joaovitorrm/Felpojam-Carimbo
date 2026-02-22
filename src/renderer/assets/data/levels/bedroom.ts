@@ -7,24 +7,22 @@ export const bedroom: LevelData = {
 
     npcs: [
         {
-            id: "Guarda",
+            id: "Marcos",
             sprite: "placeholder_character",
             sprite_clip: [220, 40, 340, 860],
             x: 400,
             y: 300,
             width: 200,
-            height: 420,
-            dialogId: "guardDialog",
+            height: 420
         },
         {
-            id: "Mercador",
+            id: "Marcos",
             sprite: "placeholder_character",
             sprite_clip: [220, 40, 340, 500],
             x: 800,
             y: 102,
             width: 120,
-            height: 180,
-            dialogId: "merchantDialog",
+            height: 180
         }
     ],
 

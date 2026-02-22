@@ -9,14 +9,14 @@ export const OptionsMenu : MenuData = {
             id: "backButton",
             x: 0,
             y: 0,
-            width: 100,
-            height: 100,
+            width: 50,
+            height: 50,
             interactType: "popScene",
             props: {
                 label: "❌",
-                fontSize: 20,
+                fontSize: 40,
                 color: "hsl(0, 0%, 90%)",
-                backgroundColor: "hsl(0, 0%, 6%)",
+                backgroundColor: "transparent",
                 textBaseline: "middle",
                 textAlign: "center"
             }

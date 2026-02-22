@@ -1,30 +1,19 @@
-import { dialogues } from "../assets/data/dialogues";
-import DialogState from "./DialogState";
-import type GameContext from "./GameContext";
+import { dialogues } from "../assets/data/npcs";
+import type { DialogScript } from "../types/DialogTypes";
 
 export default class WorldState {
 
-    private npcStates: Record<string, { dialogStage: number, state: DialogState}> = {};
+    private npcStates: Record<string, { node: string, script: DialogScript}> = {};
 
-    constructor(private context: GameContext) {
-        context.eventBus.on("world:dialog:next", () => this.advanceNpcDialog(context.dialogSystem.getActiveNpcId()!));
-    }
-
-    getNpcState(id: string) {
+    getNpcState(id: string) : { node: string, script: DialogScript } {
         if (!this.npcStates[id]) {
-            this.npcStates[id] = {dialogStage: 0, state: new DialogState()};
+            const dialog = dialogues[id as keyof typeof dialogues];
+            this.npcStates[id] = { node : dialog.entry, script: dialog };
         }
         return this.npcStates[id];
     }
 
-    advanceNpcDialog(id: string) {
-        this.getNpcState(id).dialogStage++;
-
-        if (dialogues[id as keyof typeof dialogues][this.getNpcState(id).dialogStage] === undefined) {
-            this.getNpcState(id).dialogStage--;
-            this.context.eventBus.emit("ui:dialog:close");
-        } else {
-            this.context.eventBus.emit("ui:dialog:show", {npcId: id, stage: this.getNpcState(id).dialogStage});
-        }        
+    advanceNpcDialog(id: string, target: string) : void {
+        this.npcStates[id].node = target;
     }
 }

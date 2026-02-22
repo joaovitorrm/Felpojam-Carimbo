@@ -1,37 +1,76 @@
-import { dialogues, type DialoguesKey } from "../assets/data/dialogues";
-import type { DialogNode } from "../types/DialogTypes";
+import type { DialogChoice, DialogCommand } from "../types/DialogTypes";
 import type { SceneType } from "../types/SceneType";
 import { DialogBox } from "../ui/DialogBox";
+import DialogOptionButton from "../ui/DialogOptionButton";
 import GameHud from "../ui/HUD/GameHud";
 import type { UiElement } from "../ui/UiElement";
 import { Rect } from "../util/utils";
 import type GameContext from "./GameContext";
 
 export default class UiManager {
+
     private elements: UiElement[] = [];
+    private choiceButtons: DialogOptionButton[] = [];
     private dialogBox: DialogBox;
     private gameHud: GameHud;
 
     constructor(private context: GameContext) {
+
         this.dialogBox = new DialogBox(
-            new Rect(40, 400, 1200, 300),
-            () => context.eventBus.emit("world:dialog:next")
+            new Rect(40, 500, 1200, 200),
+            () => context.eventBus.emit("dialog:continue")
         );
 
         this.gameHud = new GameHud(context);
 
-        context.eventBus.on("ui:dialog:show", ({npcId, stage} : {npcId: DialoguesKey, stage: number}) => {
-            this.handleDialog(dialogues[npcId][stage]);
-        });
-
-        context.eventBus.on("ui:dialog:close", () => {
-            this.dialogBox.hide();
-            context.eventBus.emit("dialog:npc:clear");
-        })
+        this.registerEvents();
     }
 
-    private handleDialog = (dialogData: DialogNode) => {
-        this.dialogBox.show(dialogData.text, dialogData.speaker ?? "");
+    private registerEvents() {
+        this.context.eventBus.on("dialog:started", () => {
+            this.dialogBox.show();
+        });
+        this.context.eventBus.on("dialog:ended", () => {
+            this.dialogBox.hide();
+        });
+        this.context.eventBus.on("dialog:say", (cmd: DialogCommand) => {
+            this.handleDialog(cmd);
+        });
+        this.context.eventBus.on("dialog:choice", (cmd: DialogCommand) => {
+            this.handleChoices(cmd);
+        });
+    }
+
+    private handleDialog(cmd: DialogCommand): void {
+        if (cmd.type !== "say") return;
+        this.dialogBox.write(cmd.text, cmd.speaker);
+    }
+
+    public handleChoices(cmd: DialogCommand): void {
+        if (cmd.type !== "choice") return;
+        this.dialogBox.pause();
+        this.createChoice(cmd);
+    }
+
+    private createChoice(cmd: DialogCommand): void {
+        if (cmd.type !== "choice") return;
+        cmd.options.forEach((opt, i) => {
+            const btn = new DialogOptionButton(
+                new Rect(50, 50 + (i * 60), 180, 50),
+                opt.text,
+                24,
+                "black",
+                "white",
+                "middle",
+                "center",
+                () => {
+                    this.context.eventBus.emit("dialog:jump", opt.jump);
+                    this.choiceButtons = [];
+                    this.dialogBox.unpause();
+                }
+            )
+            this.choiceButtons.push(btn);
+        })
     }
 
     add(element: UiElement) {
@@ -48,19 +87,30 @@ export default class UiManager {
             e.update(dt);
         }
 
+        this.dialogBox.update(dt);
+
         if (scene && scene.showHud()) {
             this.gameHud.update();
         }
 
         const input = this.context.inputManager;
 
-        if (input.isMouseDown() && !input.isMouseConsumed() && this.dialogBox.getIsVisible()) {
+        if (input.isMouseDown() && !input.isMouseConsumed()) {
             if (input.getMouseRect().collide(this.dialogBox.getRect())) {
-                input.consumeMouse();
-                this.dialogBox.interact();
+                if (this.dialogBox.getIsVisible()) {
+                    input.consumeMouse();
+                    this.dialogBox.interact();
+                }
+            }
+            else if (this.choiceButtons.length > 0) {
+                for (const b of this.choiceButtons) {
+                    if (input.getMouseRect().collide(b.getRect())) {
+                        input.consumeMouse();
+                        b.interact();
+                    }
+                }
             } else {
                 this.dialogBox.hide();
-                this.context.eventBus.emit("npc:clear");
             }
         }
     }
@@ -74,7 +124,10 @@ export default class UiManager {
         for (const e of this.elements) {
             e.render(ctx);
         }
+
         this.dialogBox.render(ctx);
+        this.choiceButtons.forEach(b => b.render(ctx));
+
         const input = this.context.inputManager.getMouseRect();
         ctx.fillRect(input.x, input.y, 5, 5)
     }
