@@ -1,4 +1,5 @@
 import { dialogues } from "../assets/data/npcs";
+import { props } from "../assets/data/props";
 import type { DialogScript } from "../types/DialogTypes";
 
 export default class WorldState {
@@ -11,6 +12,11 @@ export default class WorldState {
             this.npcStates[id] = { node : dialog.entry, script: dialog };
         }
         return this.npcStates[id];
+    }
+
+    getPropState(id: string) : { node: string, script: DialogScript } {
+        const prop = props[id as keyof typeof props];
+        return { node: prop.entry, script: prop };
     }
 
     advanceNpcDialog(id: string, target: string) : void {

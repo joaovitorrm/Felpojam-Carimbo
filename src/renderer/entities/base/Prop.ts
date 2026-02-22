@@ -17,11 +17,23 @@ export default class Prop extends InteractiveObject {
         this.handleHover();
     }
 
-    toggleFocus() {
+    toggleFocus() : void {
         this.inFocus = !this.inFocus;
     }
 
-    setInteraction(func : Function) {
+    getIsInFocus() : boolean {
+        return this.inFocus;
+    }
+
+    setInFocus(val: boolean) : void {
+        this.inFocus = val;
+    }
+
+    setHover(func : Function) : void {
+        this.handleHover = func;
+    }
+
+    setInteraction(func : Function) : void {
         this.handleInteraction = func;
     }
 
@@ -29,11 +41,6 @@ export default class Prop extends InteractiveObject {
         this.handleInteraction();
     }
     render(ctx: CanvasRenderingContext2D): void {
-        if (this.inFocus) {
-            ctx.drawImage(this.sprite, ...this.sprite_clip!, 140, 60, 1000, 600);
-            return;
-        }
-
         ctx.drawImage(this.sprite, ...this.sprite_clip!, this.rect.x, this.rect.y, this.rect.width, this.rect.height);   
     }
 

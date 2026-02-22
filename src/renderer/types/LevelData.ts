@@ -4,6 +4,7 @@ import type { CharacterAssetsKey } from "../assets/images/characters";
 import type { ObjectAssetsKey } from "../assets/images/objects";
 import type { ScenarioAssetsKey } from "../assets/images/scenarios";
 import type { InteractionType } from "./InteractionData";
+import type { PropsKey } from "../assets/data/props";
 
 export type LevelData = {
     id: string;
@@ -25,7 +26,7 @@ export type NPCData = {
 }
 
 export type ObjectData = {
-    id: string;
+    id: PropsKey;
     sprite: ObjectAssetsKey;
     sprite_clip: [number, number, number, number];
     x: number;
@@ -47,6 +48,7 @@ export type InteractiveArea = {
 }
 
 export type LevelCommand = 
+{ type: "say", target: PropsKey, speaker: string } |
 { type: "dialog"; target: string; npcId: NPCId } |
 { type: "jump"; target: string } |
 { type: "setFlag"; key: string; value: boolean } | 

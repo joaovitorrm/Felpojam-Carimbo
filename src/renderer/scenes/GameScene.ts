@@ -18,13 +18,14 @@ export default class GameScene extends SceneType {
 
     constructor(private context: GameContext, sceneId: LevelsKey) {
         super();
+
         const level = levels[sceneId];
 
-        this.createBackground(level);
-        this.createNPCs(level);
-        this.createObjects(level);
         this.createInteractiveAreas(level);
+        this.createBackground(level);
+        this.createObjects(level);
         this.createOnEnter(level);
+        this.createNPCs(level);
     }
 
     private createBackground(data: LevelData): void {
@@ -44,7 +45,9 @@ export default class GameScene extends SceneType {
             const interaction = () => {
                 switch (obj.interactType) {
                     case "dialog":
-                        prop.toggleFocus();
+                        this.context.eventBus.emit("ui:object:interact", obj);
+                        prop.setInFocus(true);
+                        this.context.eventBus.once("ui:object:interacted", () => {prop.setInFocus(false); console.log(prop.getIsInFocus())});
                         break;
                     case "changeScene":
                         this.context.eventBus.emit("scene:change", obj.next!);
@@ -102,7 +105,8 @@ export default class GameScene extends SceneType {
     render(ctx: CanvasRenderingContext2D): void {
         if (!this.background) return;
         ctx.drawImage(this.background, 0, 0, this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
-        [this.npcs, this.objects].forEach(elements => elements.forEach((e) => e.render(ctx)));
+        this.npcs.forEach((e) => e.render(ctx));
+        this.objects.forEach((e) => {if (!e.getIsInFocus()) e.render(ctx)});
     }
 
     update(deltaTime: number): void {

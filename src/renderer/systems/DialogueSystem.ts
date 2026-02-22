@@ -32,6 +32,11 @@ export default class DialogSystem {
       this.start(node, script);
     });
 
+    this.events.on("dialog:object:interact", (objId: string) => {
+      const { node, script } = this.world.getPropState(objId);
+      this.start(node, script);
+    })
+
     this.events.on("dialog:start", (data : { npcId: string, target: string}) => {
       const { script } = this.world.getNpcState(data.npcId);
       this.start(data.target, script);

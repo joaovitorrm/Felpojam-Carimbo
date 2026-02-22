@@ -11,6 +11,14 @@ export default class EventBus {
         this.events.get(eventName)!.push(callback);
     }
 
+    once(eventName: string, callback: Function) {
+        const wrapper = (payload?: any) => {
+            callback(payload);
+            this.off(eventName, wrapper);
+        };
+        this.on(eventName, wrapper);
+    }
+
     emit(eventName: string, payload?: any) {
         this.events.get(eventName)?.forEach(e => e(payload));        
     }

@@ -1,8 +1,10 @@
-import type { DialogChoice, DialogCommand } from "../types/DialogTypes";
+import type { DialogCommand } from "../types/DialogTypes";
+import type { ObjectData } from "../types/LevelData";
 import type { SceneType } from "../types/SceneType";
 import { DialogBox } from "../ui/DialogBox";
 import DialogOptionButton from "../ui/DialogOptionButton";
 import GameHud from "../ui/HUD/GameHud";
+import Panel from "../ui/Panel";
 import type { UiElement } from "../ui/UiElement";
 import { Rect } from "../util/utils";
 import type GameContext from "./GameContext";
@@ -12,6 +14,7 @@ export default class UiManager {
     private elements: UiElement[] = [];
     private choiceButtons: DialogOptionButton[] = [];
     private dialogBox: DialogBox;
+    private interactingObject: Panel;
     private gameHud: GameHud;
 
     constructor(private context: GameContext) {
@@ -22,6 +25,11 @@ export default class UiManager {
         );
 
         this.gameHud = new GameHud(context);
+
+        this.interactingObject = new Panel(
+            new Rect(50, 50, this.context.settingsManager.data.resolution.width - 100, 
+            this.context.settingsManager.data.resolution.height - 100)
+        );
 
         this.registerEvents();
     }
@@ -39,6 +47,17 @@ export default class UiManager {
         this.context.eventBus.on("dialog:choice", (cmd: DialogCommand) => {
             this.handleChoices(cmd);
         });
+
+        this.context.eventBus.on("ui:object:interact", (obj: ObjectData) => {
+            this.interactingObject.setSprite(this.context.assetManager.get(obj.sprite), obj.sprite_clip);
+            this.interactingObject.setVisible(true);
+            this.context.eventBus.emit("dialog:object:interact", obj.id);
+            this.interactingObject.setInteraction(() => {
+                this.context.eventBus.emit("ui:object:interacted");
+                this.interactingObject.setVisible(false);
+                this.dialogBox.hide();
+            });
+        })
     }
 
     private handleDialog(cmd: DialogCommand): void {
@@ -109,6 +128,12 @@ export default class UiManager {
                         b.interact();
                     }
                 }
+            }
+            else if (this.interactingObject.getIsVisible()) {
+                input.consumeMouse();                
+                if (input.getMouseRect().collide(this.interactingObject.getRect())) {
+                    this.interactingObject.interact();
+                }
             } else {
                 this.dialogBox.hide();
             }
@@ -121,11 +146,12 @@ export default class UiManager {
             this.gameHud.render(ctx);
         }
 
-        for (const e of this.elements) {
-            e.render(ctx);
-        }
+        this.elements.forEach(e => e.render(ctx));
+
+        if (this.interactingObject.getIsVisible()) this.interactingObject.render(ctx);
 
         this.dialogBox.render(ctx);
+        
         this.choiceButtons.forEach(b => b.render(ctx));
 
         const input = this.context.inputManager.getMouseRect();

@@ -28,7 +28,7 @@ export const bedroom: LevelData = {
 
     objects: [
         {
-            id: "foto",
+            id: "fotografia",
             sprite: "fotografia",
             sprite_clip: [40, 110, 740, 584],
             x: 100,
