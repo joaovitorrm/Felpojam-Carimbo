@@ -9,11 +9,13 @@ export const SceneFactory: Record<
     LevelsKey | MenusKey,
     (context: GameContext) => SceneType
 > = {
-    bedroom: (context: GameContext) => new GameScene(context, "bedroom"),
     MainMenu: (context: GameContext) => new MainMenuScene(context, "MainMenu"),
     OptionsMenu: (context: GameContext) => new MainMenuScene(context, "OptionsMenu"),
-    quadro_de_pistas: (context: GameContext) => new GameScene(context, "quadro_de_pistas"),
+    sala_de_estar: (context: GameContext) => new GameScene(context, "sala_de_estar"),    
     outside_house: (context: GameContext) => new GameScene(context, "outside_house"),
+    quadro_de_pistas: (context: GameContext) => new GameScene(context, "quadro_de_pistas"),
+    quarto_daniel: (context: GameContext) => new GameScene(context, "quarto_daniel"),
+    sala_daniel: (context: GameContext) => new GameScene(context, "sala_daniel"),    
 }
 
 export type Scenes = keyof typeof SceneFactory;

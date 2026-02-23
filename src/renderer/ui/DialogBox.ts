@@ -44,9 +44,9 @@ export class DialogBox extends UiElement {
 
     write(text: string, speaker: string = "") {
         this.fullText = this.fitText(text);
-        console.log(this.fullText)
         this.speaker = speaker;
         this.text = [""];
+        this.textLine = 0;
         this.timer = 0;
         this.writing = true;
     }
@@ -110,7 +110,7 @@ export class DialogBox extends UiElement {
         ctx.fillStyle = "white";
         ctx.font = "30px Arial";
 
-        this.text.forEach((line, index) => {            
+        this.text.forEach((line, index) => {
             ctx.fillText(line, this.rect.x + 30, this.rect.y + 30 + index * 40);
         });
     }
@@ -122,14 +122,14 @@ export class DialogBox extends UiElement {
         if (!this.visible || this.paused) return;
 
         if (this.writing) {
+            this.timer = 0;
+            this.writing = false;
             if (this.text.length < this.fullText.length) {
                 const lines = this.fullText.split("&");
                 lines.forEach((l, i) => {
                     this.text[i + this.textLine] ? this.text[i + this.textLine] += l : this.text[i + this.textLine] = l;
                 })
                 this.fullText = "";
-                this.timer = 0;
-                this.writing = false;
                 return;
             }
         };

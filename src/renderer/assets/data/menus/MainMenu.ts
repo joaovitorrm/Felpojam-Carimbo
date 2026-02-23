@@ -20,7 +20,7 @@ export const MainMenu : MenuData = {
                 textAlign: "center"
             },
             interactType: "changeScene",
-            next: "bedroom"
+            next: "sala_de_estar"
         },
         {
             type: "labelButton",
@@ -56,7 +56,7 @@ export const MainMenu : MenuData = {
                 textAlign: "center"
             },
             interactType: "action",
-            next: "bedroom"
+            next: "sala_de_estar"
         }
     ]
 }

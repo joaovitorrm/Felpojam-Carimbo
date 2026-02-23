@@ -1,8 +1,8 @@
 import type { LevelData } from "../../../types/LevelData";
 
 
-export const bedroom: LevelData = {
-    id: "bedroom",
+export const sala_de_estar: LevelData = {
+    id: "sala_de_estar",
     background: "sala_casa_daniel",
 
     npcs: [

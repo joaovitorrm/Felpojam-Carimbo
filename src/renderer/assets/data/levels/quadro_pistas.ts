@@ -10,7 +10,7 @@ export const quadro_de_pistas: LevelData = {
 
     objects: [
         {
-            id: "door",
+            id: "fotografia",
             sprite: "fotografia",
             sprite_clip: [0, 0, 1000, 1000],
             x: 0,
@@ -18,7 +18,7 @@ export const quadro_de_pistas: LevelData = {
             width: 500,
             height: 500,
             interactType: "changeScene",
-            next: "bedroom"
+            next: "sala_de_estar"
         }
     ],
 
