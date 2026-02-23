@@ -130,16 +130,20 @@ export default class UiManager {
                     }
                 }
             }
+            else if (this.interactingObject.getIsVisible()) {
+                input.consumeMouse();
+                if (input.getMouseRect().collide(this.interactingObject.getRect())) {                    
+                    this.dialogBox.interact();
+                    if (!this.dialogBox.getIsVisible()) {
+                        this.interactingObject.interact();
+                    }
+                }
+            }
             else {
                 this.dialogBox.hide();
             }
 
-            if (this.interactingObject.getIsVisible()) {
-                input.consumeMouse();
-                if (input.getMouseRect().collide(this.interactingObject.getRect())) {
-                    this.interactingObject.interact();
-                }
-            }
+            
         }
     }
 

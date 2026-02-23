@@ -75,6 +75,14 @@ export class DialogBox extends UiElement {
         this.visible = false;
     }
 
+    getIsWriting() : boolean {
+        return this.writing;
+    }
+
+    getIsTextFinished() : boolean {
+        return this.fullText.length === 0;
+    }
+ 
     pause() {
         this.paused = true;
     }
