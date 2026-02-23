@@ -116,6 +116,7 @@ export default class UiManager {
 
         if (input.isMouseDown() && !input.isMouseConsumed()) {
             if (input.getMouseRect().collide(this.dialogBox.getRect())) {
+                console.log("a");
                 if (this.dialogBox.getIsVisible()) {
                     input.consumeMouse();
                     this.dialogBox.interact();
@@ -129,13 +130,15 @@ export default class UiManager {
                     }
                 }
             }
-            else if (this.interactingObject.getIsVisible()) {
-                input.consumeMouse();                
+            else {
+                this.dialogBox.hide();
+            }
+
+            if (this.interactingObject.getIsVisible()) {
+                input.consumeMouse();
                 if (input.getMouseRect().collide(this.interactingObject.getRect())) {
                     this.interactingObject.interact();
                 }
-            } else {
-                this.dialogBox.hide();
             }
         }
     }

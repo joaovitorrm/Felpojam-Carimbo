@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import path, { join } from 'path'
 import fs from "fs"
 
-function createWindow () {
+function createWindow() {
   const win = new BrowserWindow({
     width: 1280,
     height: 720,
@@ -13,7 +13,13 @@ function createWindow () {
     }
   })
 
-  win.loadURL("http://localhost:5173")
+  const isDev = !app.isPackaged
+
+  if (isDev) {
+    win.loadURL("http://localhost:5173")
+  } else {
+    win.loadFile(join(__dirname, "../dist/index.html"))
+  }
 }
 
 app.whenReady().then(() => {

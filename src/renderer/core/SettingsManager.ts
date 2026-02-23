@@ -15,7 +15,11 @@ export default class SettingsManager {
   private settings!: GameSettingsData
 
   async load(defaults: GameSettingsData) {
-    this.settings = await window.api.loadSettings(defaults)
+    if (window.api) {
+      this.settings = await window.api.loadSettings(defaults);
+    } else {
+      this.settings = defaults
+    }    
   }
 
   async save() {

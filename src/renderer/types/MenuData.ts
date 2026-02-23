@@ -8,19 +8,16 @@ export type MenuData = {
     elements: MenuDataElement[];
 };
 
-export type MenusKeys = ""
-
-export type MenuDataElement = {
-    type: MenuDataElementTypes;
-    id: string;    
+export type MenuDataElement = {    
+    id: string;
     x: number;
     y: number;
     width: number;
     height: number;
     interactType: InteractionType;
+    button: MenuButtonType;
     next?: Scenes;
     action?: Function;
-    props?: BaseButtonData;
 }
 
 type BaseButtonData = {
@@ -32,4 +29,18 @@ type BaseButtonData = {
     textAlign: CanvasTextAlign;
 }
 
-export type MenuDataElementTypes = "labelButton" | "optionButton";
+type SliderButtonData = {
+    backgroundColor: string,    
+    sliderBackgroundColor: string,
+    borderRadius: number,
+    sliderBorderRadius: number,
+    sliderSize: number,
+    value: number,
+    min: number,
+    max: number
+}
+
+export type MenuButtonType = 
+    | { type: "labelButton", props: BaseButtonData }
+    | { type: "optionButton", props: BaseButtonData }
+    | { type: "sliderButton", props: SliderButtonData }

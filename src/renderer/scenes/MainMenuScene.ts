@@ -25,7 +25,7 @@ export default class MainMenuScene extends SceneType {
 
     private createObjects(data: MenuData) : void {
         data.elements.forEach(b => {
-            this.elements.push(MenuElementsFactory[b.type](this.context, b));
+            this.elements.push(MenuElementsFactory(this.context, b));
         })
     }
 
