@@ -6,7 +6,7 @@ export abstract class UiElement {
     constructor(protected rect: Rect) {}
 
     abstract render(ctx: CanvasRenderingContext2D): void;
-    update?(deltaTime: number): void;
+    update?(args: any): void;
 
     getRect() : Rect {
         return this.rect;
