@@ -69,6 +69,10 @@ export class DialogInterpreter {
                     this.run();
                 }
                 break;
+            
+            case "sceneChange":
+                this.events.emit("dialog:ended");
+                this.events.emit("scene:change", cmd.next);
         }
     }
     next() {

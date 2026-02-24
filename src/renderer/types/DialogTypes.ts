@@ -16,12 +16,15 @@ export type DialogNode = {
 
 export type DialogTree = Record<number, DialogNode>; */
 
+import type { LevelsKey } from "../assets/data/levels";
+
 export type DialogCommand =
   | { type: "say"; speaker: string; text: string }
   | { type: "choice"; options: DialogChoice[] }
   | { type: "jump"; target: string }
   | { type: "setFlag"; key: string }
   | { type: "if"; condition: string; then: string; else?: string }
+  | { type: "sceneChange"; next: LevelsKey }
 
 export type DialogChoice = {
   text: string;

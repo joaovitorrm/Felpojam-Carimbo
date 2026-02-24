@@ -51,5 +51,6 @@ export type LevelCommand =
 { type: "say", target: PropsKey, speaker: string } |
 { type: "dialog"; target: string; npcId: NPCId } |
 { type: "jump"; target: string } |
+{ type: "sceneChange"; next: LevelsKey } |
 { type: "setFlag"; key: string; value: boolean } | 
 { type: "if"; condition: string; then: string; else?: string }

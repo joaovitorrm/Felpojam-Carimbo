@@ -5,11 +5,15 @@ const protagonistaName = "Marcos Carvalho";
 export const Protagonista: DialogScript = {
     entry: "start",
     nodes: {
-        start: [
+        start: [            
             {
                 type: "say",
                 speaker: "Tu",
-                text: "(Quando acordei, o gosto amargo que tomou minha boca não foi o do café, mas das imagens mostrada no noticiário. Outra vítima, outra vez que fui lento demais em encontrar os culpados.?)"
+                text: "Quando acordei, o gosto amargo que tomou minha boca não foi o do café, mas das imagens mostrada no noticiário. Outra vítima, outra vez que fui lento demais em encontrar os culpados?"
+            },
+            {
+                type: "sceneChange",
+                next: "quadro_pistas"
             },
             {
                 type: "say",
@@ -25,7 +29,8 @@ export const Protagonista: DialogScript = {
                 type: "say",
                 speaker: "",
                 text: "Hoje, vendo a quarta vítima sendo anunciada, sei que não posso mais perder tempo. Não quando encontrei alguém com alto potencial de ser o próximo alvo."
-            }
+            },
+            
         ]
     }
 }

@@ -15,7 +15,8 @@ export const SceneFactory: Record<
     outside_house: (context: GameContext) => new GameScene(context, "outside_house"),
     quadro_pistas: (context: GameContext) => new GameScene(context, "quadro_pistas"),
     quarto_daniel: (context: GameContext) => new GameScene(context, "quarto_daniel"),
-    sala_daniel: (context: GameContext) => new GameScene(context, "sala_daniel"),    
+    sala_daniel: (context: GameContext) => new GameScene(context, "sala_daniel"),
+    reportagem: (context: GameContext) => new GameScene(context, "reportagem")
 }
 
 export type Scenes = keyof typeof SceneFactory;

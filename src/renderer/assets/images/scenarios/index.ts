@@ -5,6 +5,7 @@ import sala_casa_daniel from "./sala_casa_daniel.png";
 import computador from "./computador.png";
 import quarto_daniel from "./quarto_daniel.png";
 import sala_daniel from "./sala_daniel.png";
+import reportagem from "./reportagem.png";
 
 export const scenarios = {
     frente_casa_daniel,
@@ -13,7 +14,8 @@ export const scenarios = {
     sala_casa_daniel,
     quarto_daniel,
     sala_daniel,
-    computador
+    computador,
+    reportagem
 } as const;
 
 export type ScenarioAssetsKey = keyof typeof scenarios; 

@@ -93,9 +93,15 @@ export default class GameScene extends SceneType {
 
     private createOnEnter(data: LevelData): void {
         if (data.onEnter) {
+            console.log(data.onEnter)
             switch (data.onEnter.type) {
                 case "dialog": {
+                    console.log("a");
                     this.context.eventBus.emit("dialog:start", {npcId: data.onEnter.npcId, target: data.onEnter.target});
+                    break;
+                }
+                case "sceneChange": {
+                    this.context.eventBus.emit("scene:change", data.onEnter.next);
                     break;
                 }
             }
@@ -106,7 +112,7 @@ export default class GameScene extends SceneType {
         if (!this.background) return;
         ctx.drawImage(this.background, 0, 0, this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
         this.npcs.forEach((e) => {e.render(ctx); /* e.renderHitBox(ctx) */});
-        this.objects.forEach((e) => {if (!e.getIsInFocus()) e.render(ctx)});
+        this.objects.forEach((e) => {if (!e.getIsInFocus()) e.render(ctx); e.renderHitBox(ctx)});
         //this.interactiveAreas.forEach((e) => e.render(ctx));
     }
 

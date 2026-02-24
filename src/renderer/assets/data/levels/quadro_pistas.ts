@@ -10,15 +10,14 @@ export const quadro_pistas: LevelData = {
 
     objects: [
         {
-            id: "fotografia",
-            sprite: "fotografia",
-            sprite_clip: [0, 0, 1000, 1000],
-            x: 0,
-            y: 210,
-            width: 500,
-            height: 500,
-            interactType: "changeScene",
-            next: "sala_de_estar"
+            id: "olivia",
+            sprite: "olivia",
+            sprite_clip: [0, 0, 810, 1210],
+            x: 120,
+            y: 100,
+            width: 90,
+            height: 150,
+            interactType: "dialog",
         }
     ],
 

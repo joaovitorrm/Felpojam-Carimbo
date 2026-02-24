@@ -115,23 +115,25 @@ export default class UiManager {
         const input = this.context.inputManager;
 
         if (input.isMouseDown() && !input.isMouseConsumed()) {
+            if (this.dialogBox.getIsVisible() || this.interactingObject.getIsVisible()) {
+                input.consumeMouse();
+            }
+
             if (input.getMouseRect().collide(this.dialogBox.getRect())) {
-                console.log("a");
                 if (this.dialogBox.getIsVisible()) {
-                    input.consumeMouse();
                     this.dialogBox.interact();
+                } else if (this.interactingObject.getIsVisible()) {
+                    this.interactingObject.interact();
                 }
             }
             else if (this.choiceButtons.length > 0) {
                 for (const b of this.choiceButtons) {
                     if (input.getMouseRect().collide(b.getRect())) {
-                        input.consumeMouse();
                         b.interact();
                     }
                 }
             }
             else if (this.interactingObject.getIsVisible()) {
-                input.consumeMouse();
                 if (input.getMouseRect().collide(this.interactingObject.getRect())) {                    
                     this.dialogBox.interact();
                     if (!this.dialogBox.getIsVisible()) {
@@ -139,11 +141,6 @@ export default class UiManager {
                     }
                 }
             }
-            else {
-                this.dialogBox.hide();
-            }
-
-            
         }
     }
 

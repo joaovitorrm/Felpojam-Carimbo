@@ -22,7 +22,7 @@ export const MainMenu: MenuData = {
                 }
             },
             interactType: "changeScene",
-            next: "sala_de_estar"
+            next: "reportagem"
         },
         {
             id: "options",
