@@ -13,7 +13,7 @@ export const SceneFactory: Record<
     OptionsMenu: (context: GameContext) => new MainMenuScene(context, "OptionsMenu"),
     sala_de_estar: (context: GameContext) => new GameScene(context, "sala_de_estar"),    
     outside_house: (context: GameContext) => new GameScene(context, "outside_house"),
-    quadro_de_pistas: (context: GameContext) => new GameScene(context, "quadro_de_pistas"),
+    quadro_pistas: (context: GameContext) => new GameScene(context, "quadro_pistas"),
     quarto_daniel: (context: GameContext) => new GameScene(context, "quarto_daniel"),
     sala_daniel: (context: GameContext) => new GameScene(context, "sala_daniel"),    
 }

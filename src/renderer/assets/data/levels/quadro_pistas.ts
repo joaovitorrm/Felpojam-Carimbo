@@ -1,9 +1,9 @@
 import type { LevelData } from "../../../types/LevelData";
 
 
-export const quadro_de_pistas: LevelData = {
+export const quadro_pistas: LevelData = {
     id: "quadro_de_pistas",
-    background: "quadro_de_pistas",
+    background: "quadro_pistas",
 
     npcs: [
     ],
