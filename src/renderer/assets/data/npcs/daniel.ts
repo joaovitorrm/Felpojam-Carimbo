@@ -1,32 +1,44 @@
-/* import type { DialogTree } from "../../../types/DialogTypes";
+import type { DialogScript } from "../../../types/DialogTypes"
 
-export const Daniel: DialogTree = {
-    0: {
-        speaker: "Daniel",
-        text: "Você sabe quanto é 2 + 2?",
+export const Daniel: DialogScript = {
+  entry: "start",
+
+  nodes: {
+    start: [
+      {
+        type: "if",
+        condition: "gateOpen",
+        then: "alreadyOpen",
+        else: "blocked"
+      }
+    ],
+
+    blocked: [
+      { type: "say", speaker: "Daniel", text: "Bom dia, quem és tu?" },
+
+      {
+        type: "choice",
         options: [
-            {
-                text: "Insistir",
-                next: 1
-            },
-            {
-                text: "Mostrar passe",
-                next: 2,
-                condition: (state) => state.hasFlag("hasPass")
-            }
+          { text: "Insistir", jump: "insistir" },
+          {
+            text: "Mostrar passe",
+            jump: "showPass"
+          }
         ]
-    },
+      }
+    ],
 
-    1: {
-        speaker: "Daniel",
-        text: "Eu disse que não!",
-        next: 0
-    },
+    insistir: [
+      { type: "say", speaker: "Daniel", text: "Eu disse que não!" },
+    ],
 
-    2: {
-        speaker: "Daniel",
-        text: "Hm... tudo certo. Pode passar.",
-        action: (state) => state.setFlag("gateOpen")
-    }
-};
- */
+    showPass: [
+      { type: "say", speaker: "Daniel", text: "Hm... tudo certo. Pode passar." },
+      { type: "setFlag", key: "gateOpen" }
+    ],
+
+    alreadyOpen: [
+      { type: "say", speaker: "Daniel", text: "Já está aberto. Pode ir." }
+    ]
+  }
+}

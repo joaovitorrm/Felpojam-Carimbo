@@ -15,7 +15,12 @@ function createWindow() {
       sandbox: false
     }
   });
-  win.loadURL("http://localhost:5173");
+  const isDev = !app.isPackaged;
+  if (isDev) {
+    win.loadURL("http://localhost:5173");
+  } else {
+    win.loadFile(join(__dirname, "../dist/index.html"));
+  }
 }
 app.whenReady().then(() => {
   createWindow();

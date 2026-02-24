@@ -20,7 +20,7 @@ export default class UiManager {
     constructor(private context: GameContext) {
 
         this.dialogBox = new DialogBox(
-            new Rect(40, 500, 1200, 200),
+            new Rect(20, 500, this.context.settingsManager.data.resolution.width - 40, this.context.settingsManager.data.resolution.height - 520),
             () => context.eventBus.emit("dialog:continue")
         );
 

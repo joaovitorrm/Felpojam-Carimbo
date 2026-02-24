@@ -47,7 +47,7 @@ export const sala_de_estar: LevelData = {
             width: 120,
             height: 390,
             interactType: "changeScene",
-            next: "quadro_de_pistas"
+            next: "quarto_daniel"
         },
         {
             id: "saida_para_fora_da_casa",
