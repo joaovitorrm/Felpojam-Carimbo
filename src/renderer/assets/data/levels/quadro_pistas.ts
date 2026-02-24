@@ -18,6 +18,16 @@ export const quadro_pistas: LevelData = {
             width: 90,
             height: 150,
             interactType: "dialog",
+        },
+        {
+            id: "envelope",
+            sprite: "envelope",
+            sprite_clip: [110, 375, 677, 148],
+            x: 800,
+            y: 600,
+            width: 400,
+            height: 100,
+            interactType: "dialog"
         }
     ],
 

@@ -59,7 +59,6 @@ export class DialogBox extends UiElement {
         let wordSize = 0;
         const textWords = text.split(" ").map((word) => {
             wordSize += ctx.measureText(word).width + ctx.measureText(" ").width + 3;
-            console.log(wordSize);
             if (wordSize > this.rect.width) {
                 wordSize = ctx.measureText(word).width;
                 return "&" + word + " ";

@@ -4,7 +4,7 @@ import type { SceneType } from "../types/SceneType";
 import { DialogBox } from "../ui/DialogBox";
 import DialogOptionButton from "../ui/DialogOptionButton";
 import GameHud from "../ui/HUD/GameHud";
-import Panel from "../ui/Panel";
+import InteractionPanel from "../ui/InteractionPanel";
 import type { UiElement } from "../ui/UiElement";
 import { Rect } from "../util/utils";
 import type GameContext from "./GameContext";
@@ -14,7 +14,7 @@ export default class UiManager {
     private elements: UiElement[] = [];
     private choiceButtons: DialogOptionButton[] = [];
     private dialogBox: DialogBox;
-    private interactingObject: Panel;
+    private interactingObject: InteractionPanel;
     private gameHud: GameHud;
 
     constructor(private context: GameContext) {
@@ -26,9 +26,9 @@ export default class UiManager {
 
         this.gameHud = new GameHud(context);
 
-        this.interactingObject = new Panel(
-            new Rect(50, 50, this.context.settingsManager.data.resolution.width - 100, 
-            this.context.settingsManager.data.resolution.height - 100)
+        this.interactingObject = new InteractionPanel(
+            new Rect(0, 0, this.context.settingsManager.data.resolution.width, 
+            this.context.settingsManager.data.resolution.height), 40
         );
 
         this.registerEvents();
@@ -49,8 +49,7 @@ export default class UiManager {
         });
 
         this.context.eventBus.on("ui:object:interact", (obj: ObjectData) => {
-            this.interactingObject.setSprite(this.context.assetManager.get(obj.sprite), obj.sprite_clip);
-            this.interactingObject.setVisible(true);
+            this.interactingObject.setObject(obj, this.context.assetManager.get(obj.sprite))
             this.context.eventBus.emit("dialog:object:interact", obj.id);
             this.interactingObject.setInteraction(() => {
                 this.context.eventBus.emit("ui:object:interacted");
@@ -122,6 +121,9 @@ export default class UiManager {
             if (input.getMouseRect().collide(this.dialogBox.getRect())) {
                 if (this.dialogBox.getIsVisible()) {
                     this.dialogBox.interact();
+                    if (!this.dialogBox.getIsVisible()) {
+                        this.interactingObject.interact();
+                    }
                 } else if (this.interactingObject.getIsVisible()) {
                     this.interactingObject.interact();
                 }
