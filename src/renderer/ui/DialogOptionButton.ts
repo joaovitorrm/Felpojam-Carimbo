@@ -17,14 +17,18 @@ export default class DialogOptionButton extends UiElement {
     }
 
     render(ctx: CanvasRenderingContext2D) {
+        ctx.beginPath();
         ctx.fillStyle = this.backgroundColor;
-        ctx.fillRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
+        ctx.roundRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height, 5);
+        ctx.fill();
 
         ctx.font = `${this.fontSize}px Arial`;
         ctx.fillStyle = this.color;
         ctx.textBaseline = this.textBaseline;
         ctx.textAlign = this.textAlign;
+
         ctx.fillText(this.label, this.rect.x + this.rect.width / 2, this.rect.y + this.rect.height / 2, this.rect.width);
+        ctx.closePath();
     }
 
     interact(): void {

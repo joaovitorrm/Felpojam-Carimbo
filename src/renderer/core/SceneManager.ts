@@ -7,8 +7,8 @@ import type GameContext from "./GameContext";
 export default class SceneManager {
 
     private currentScene: SceneType[] = [];
-
     private loadedScenes: Map<string, SceneType> = new Map();
+    private isPaused : boolean = false;
 
     constructor(private context: GameContext) {
         context.eventBus.on("scene:change", (scene: Scenes) => {
@@ -21,6 +21,10 @@ export default class SceneManager {
 
         context.eventBus.on("scene:pop", () => {
             this.popScene()
+        })
+
+        context.eventBus.on("scene:setPause", (val: boolean) => {
+            this.isPaused = val;
         })
     }
 
@@ -57,7 +61,7 @@ export default class SceneManager {
     }
 
     public update(deltaTime: number) {
-        if (this.currentScene) {
+        if (this.currentScene && !this.isPaused) {
             this.currentScene.at(-1)?.update(deltaTime, this.context.inputManager);
         }
     }

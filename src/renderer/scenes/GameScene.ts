@@ -15,7 +15,7 @@ export default class GameScene extends SceneType {
     private npcs: NPC[] = [];
     private objects: Prop[] = [];
     private interactiveAreas: InteractiveArea[] = [];
-
+    
     constructor(private context: GameContext, sceneId: LevelsKey) {
         super();
 
@@ -96,7 +96,6 @@ export default class GameScene extends SceneType {
             console.log(data.onEnter)
             switch (data.onEnter.type) {
                 case "dialog": {
-                    console.log("a");
                     this.context.eventBus.emit("dialog:start", {npcId: data.onEnter.npcId, target: data.onEnter.target});
                     break;
                 }

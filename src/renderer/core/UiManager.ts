@@ -27,8 +27,8 @@ export default class UiManager {
         this.gameHud = new GameHud(context);
 
         this.interactingObject = new InteractionPanel(
-            new Rect(0, 0, this.context.settingsManager.data.resolution.width, 
-            this.context.settingsManager.data.resolution.height), 40
+            new Rect(0, 0, this.context.settingsManager.data.resolution.width,
+                this.context.settingsManager.data.resolution.height), 40
         );
 
         this.registerEvents();
@@ -36,10 +36,14 @@ export default class UiManager {
 
     private registerEvents() {
         this.context.eventBus.on("dialog:started", () => {
+            this.context.eventBus.emit("scene:setPause", true);
             this.dialogBox.show();
+            console.log("A");
         });
         this.context.eventBus.on("dialog:ended", () => {
+            this.context.eventBus.emit("scene:setPause", false);
             this.dialogBox.hide();
+            this.interactingObject.interact();
         });
         this.context.eventBus.on("dialog:say", (cmd: DialogCommand) => {
             this.handleDialog(cmd);
@@ -72,11 +76,16 @@ export default class UiManager {
 
     private createChoice(cmd: DialogCommand): void {
         if (cmd.type !== "choice") return;
+
+        const fontSize = 24;
+        const ctx = document.createElement("canvas").getContext("2d")!;
+        ctx.font = `${fontSize}px Arial`;
+
         cmd.options.forEach((opt, i) => {
             const btn = new DialogOptionButton(
-                new Rect(50, 50 + (i * 60), 180, 50),
+                new Rect(50, 50 + (i * 60), ctx.measureText(opt.text).width + 25, 50),
                 opt.text,
-                24,
+                fontSize,
                 "black",
                 "white",
                 "middle",
@@ -115,28 +124,15 @@ export default class UiManager {
 
         if (input.isMouseDown() && !input.isMouseConsumed()) {
             if (this.dialogBox.getIsVisible() || this.interactingObject.getIsVisible()) {
-                input.consumeMouse();
-            }
-
-            if (input.getMouseRect().collide(this.dialogBox.getRect())) {
-                if (this.dialogBox.getIsVisible()) {
-                    this.dialogBox.interact();
-                    if (!this.dialogBox.getIsVisible()) {
-                        this.interactingObject.interact();
+                if (this.choiceButtons.length > 0) {
+                    for (const b of this.choiceButtons) {
+                        if (input.getMouseRect().collide(b.getRect())) {
+                            input.consumeMouse();
+                            b.interact();
+                        }
                     }
-                } else if (this.interactingObject.getIsVisible()) {
-                    this.interactingObject.interact();
-                }
-            }
-            else if (this.choiceButtons.length > 0) {
-                for (const b of this.choiceButtons) {
-                    if (input.getMouseRect().collide(b.getRect())) {
-                        b.interact();
-                    }
-                }
-            }
-            else if (this.interactingObject.getIsVisible()) {
-                if (input.getMouseRect().collide(this.interactingObject.getRect())) {                    
+                } else if (this.dialogBox.getIsVisible()) {
+                    input.consumeMouse();
                     this.dialogBox.interact();
                     if (!this.dialogBox.getIsVisible()) {
                         this.interactingObject.interact();
@@ -157,7 +153,7 @@ export default class UiManager {
         if (this.interactingObject.getIsVisible()) this.interactingObject.render(ctx);
 
         this.dialogBox.render(ctx);
-        
+
         this.choiceButtons.forEach(b => b.render(ctx));
 
         const input = this.context.inputManager.getMouseRect();

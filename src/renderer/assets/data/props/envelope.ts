@@ -5,6 +5,11 @@ export const envelope : DialogScript = {
     nodes: {
         start: [
             {
+                type: "say",
+                speaker: "",
+                text: "Talvez seja bom eu levar o envelope de provas comigo."
+            },
+            {
                 type: "choice",
                 options: [
                     {
@@ -14,7 +19,15 @@ export const envelope : DialogScript = {
                     {
                         text: "Deixar",
                         jump: "deixar"
-                    }
+                    },
+                    {
+                        text: "Tirar uma foto do envelope",
+                        jump: "deixar"
+                    },
+                    {
+                        text: "Deixar",
+                        jump: "deixar"
+                    },
                 ]
             }
         ],
