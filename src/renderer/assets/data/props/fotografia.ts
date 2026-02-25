@@ -7,22 +7,22 @@ export const fotografia: DialogScript = {
             {
                 type: "say",
                 speaker: "",
-                text: "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos."
+                text: "Bernardo Garcia, a segunda vítima."
             },
             {
                 type: "say",
                 speaker: "",
-                text: "Teste ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos."
+                text: "Era um garoto de só 23 anos, espirituoso, roubado de sua vida como se não fosse nada. Alguém com quem cruzava caminho todos os dias quando saia de casa, contava seus grandes planos para o futuro e nunca largava aquele sorriso idiota do rosto. Era como um sobrinho que nunca tive."
             },
             {
                 type: "say",
                 speaker: "",
-                text: "A ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos."
+                text: "Foi… um verdadeiro soco no estômago."
             },
             {
                 type: "say",
                 speaker: "",
-                text: "B ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos."
+                text: "Ver seu rosto estampado no jornal e a demora de qualquer pronunciamento da polícia foi o que me motivou a investigar os assassinatos por conta própria."
             },
 
         ]

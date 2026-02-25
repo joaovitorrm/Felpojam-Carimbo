@@ -26,7 +26,7 @@ export type NPCData = {
 }
 
 export type ObjectData = {
-    id: PropsKey;
+    propId: PropsKey;
     sprite: ObjectAssetsKey;
     sprite_clip: [number, number, number, number];
     x: number;

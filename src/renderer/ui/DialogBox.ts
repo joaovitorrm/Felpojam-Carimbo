@@ -135,10 +135,10 @@ export class DialogBox extends UiElement {
                 const lines = this.fullText.split("&");
                 lines.forEach((l, i) => {
                     this.text[i + this.textLine] ? this.text[i + this.textLine] += l : this.text[i + this.textLine] = l;
-                })
+                });
                 this.fullText = "";
                 return;
-            }
+            };
         };
 
         this.interaction();

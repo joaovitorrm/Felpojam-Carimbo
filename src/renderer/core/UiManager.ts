@@ -50,7 +50,7 @@ export default class UiManager {
 
         this.context.eventBus.on("ui:object:interact", (obj: ObjectData) => {
             this.interactingObject.setObject(obj, this.context.assetManager.get(obj.sprite))
-            this.context.eventBus.emit("dialog:object:interact", obj.id);
+            this.context.eventBus.emit("dialog:object:interact", obj.propId);
             this.interactingObject.setInteraction(() => {
                 this.context.eventBus.emit("ui:object:interacted");
                 this.interactingObject.setVisible(false);

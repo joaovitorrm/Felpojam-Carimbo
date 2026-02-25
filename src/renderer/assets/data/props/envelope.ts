@@ -5,10 +5,25 @@ export const envelope : DialogScript = {
     nodes: {
         start: [
             {
-                type: "say",
-                speaker: "",
-                text: "Um envelope :)"
+                type: "choice",
+                options: [
+                    {
+                        text: "Levar",
+                        jump: "levar",
+                    },
+                    {
+                        text: "Deixar",
+                        jump: "deixar"
+                    }
+                ]
             }
-        ]
+        ],
+        levar: [
+            {
+                type: "setFlag",
+                key: "envelope",
+            }
+        ],
+        deixar: []
     }
 }

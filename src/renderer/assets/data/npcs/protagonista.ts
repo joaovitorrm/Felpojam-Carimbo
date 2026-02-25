@@ -8,6 +8,11 @@ export const Protagonista: DialogScript = {
         start: [
             {
                 type: "say",
+                speaker: "Tu",
+                text: "Quando acordei, o gosto amargo que tomou minha boca não foi o do café, mas das imagens mostrada no noticiário. Outra vítima, outra vez que fui lento demais em encontrar os culpados?"
+            },
+            {
+                type: "say",
                 speaker: "Você",
                 text: "Não que eu seja algum oficial ou alguém com grande senso de justiça. O que estou fazendo sequer tem reconhecimento legal. Mas a segunda vítima daquela onda de assassinatos… era alguém que eu conhecia."
             },
@@ -20,16 +25,23 @@ export const Protagonista: DialogScript = {
                 type: "say",
                 speaker: "",
                 text: "Hoje, vendo a quarta vítima sendo anunciada, sei que não posso mais perder tempo. Não quando encontrei alguém com alto potencial de ser o próximo alvo."
-            },
-            {
-                type: "say",
-                speaker: "Tu",
-                text: "Quando acordei, o gosto amargo que tomou minha boca não foi o do café, mas das imagens mostrada no noticiário. Outra vítima, outra vez que fui lento demais em encontrar os culpados?"
-            },
+            },            
             {
                 type: "sceneChange",
                 next: "quadro_pistas"
-            },            
+            },
+        ],
+        quadro: [
+            {
+                type: "say",
+                speaker: "",
+                text: "Em um primeiro momento, as vítimas não parecem ter relação entre si. Isso é, até você considerar as marcas estranhas encontradas nos seus corpos. Elas não são iguais, mas possuem certa semelhança."
+            },
+            {
+                type: "say",
+                speaker: "",
+                text: "Sem imagens mais nítidas, não sei dizer se foram tatuadas ou queimadas na pele daqueles jovens, mas reconhecer sua existência é um passo crucial para seguir com o caso. Caso esse que parece estar propositalmente sendo empurrado pela polícia e mídia."
+            }
         ]
     }
 }

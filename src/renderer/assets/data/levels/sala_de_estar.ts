@@ -28,7 +28,7 @@ export const sala_de_estar: LevelData = {
 
     objects: [
         {
-            id: "fotografia",
+            propId: "fotografia",
             sprite: "fotografia",
             sprite_clip: [40, 110, 740, 584],
             x: 100,
