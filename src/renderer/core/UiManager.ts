@@ -38,7 +38,6 @@ export default class UiManager {
         this.context.eventBus.on("dialog:started", () => {
             this.context.eventBus.emit("scene:setPause", true);
             this.dialogBox.show();
-            console.log("A");
         });
         this.context.eventBus.on("dialog:ended", () => {
             this.context.eventBus.emit("scene:setPause", false);
@@ -82,8 +81,15 @@ export default class UiManager {
         ctx.font = `${fontSize}px Arial`;
 
         cmd.options.forEach((opt, i) => {
+
+            const textWidth = ctx.measureText(opt.text).width + 25;
+
             const btn = new DialogOptionButton(
-                new Rect(50, 50 + (i * 60), ctx.measureText(opt.text).width + 25, 50),
+                new Rect(
+                    this.context.settingsManager.data.resolution.width/2 - textWidth/2, 
+                    this.dialogBox.getRect().y - 60 - (i * 60), 
+                    textWidth, 
+                    50),
                 opt.text,
                 fontSize,
                 "black",
@@ -109,9 +115,10 @@ export default class UiManager {
     }
 
     update(dt: number, scene: SceneType | null) {
+
         for (const e of this.elements) {
             if (!e.update) return;
-            e.update(dt);
+            e.update(dt);            
         }
 
         this.dialogBox.update(dt);
@@ -121,22 +128,24 @@ export default class UiManager {
         }
 
         const input = this.context.inputManager;
-
-        if (input.isMouseDown() && !input.isMouseConsumed()) {
-            if (this.dialogBox.getIsVisible() || this.interactingObject.getIsVisible()) {
-                if (this.choiceButtons.length > 0) {
-                    for (const b of this.choiceButtons) {
-                        if (input.getMouseRect().collide(b.getRect())) {
+        
+        if (this.dialogBox.getIsVisible() || this.interactingObject.getIsVisible()) {
+            if (this.choiceButtons.length > 0) {
+                for (const b of this.choiceButtons) {
+                    b.setIsHovering(false);
+                    if (input.getMouseRect().collide(b.getRect())) {
+                        b.setIsHovering(true);
+                        if (input.isMouseDown() && !input.isMouseConsumed()) {
                             input.consumeMouse();
                             b.interact();
                         }
                     }
-                } else if (this.dialogBox.getIsVisible()) {
-                    input.consumeMouse();
-                    this.dialogBox.interact();
-                    if (!this.dialogBox.getIsVisible()) {
-                        this.interactingObject.interact();
-                    }
+                }
+            } else if (this.dialogBox.getIsVisible() && input.isMouseDown() && !input.isMouseConsumed()) {
+                input.consumeMouse();
+                this.dialogBox.interact();
+                if (!this.dialogBox.getIsVisible()) {
+                    this.interactingObject.interact();
                 }
             }
         }

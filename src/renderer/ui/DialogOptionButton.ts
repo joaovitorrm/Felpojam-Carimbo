@@ -22,13 +22,23 @@ export default class DialogOptionButton extends UiElement {
         ctx.roundRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height, 5);
         ctx.fill();
 
+        if (this.isHovering) {
+            this.renderOutline(ctx);
+        }
+
         ctx.font = `${this.fontSize}px Arial`;
         ctx.fillStyle = this.color;
         ctx.textBaseline = this.textBaseline;
         ctx.textAlign = this.textAlign;
 
-        ctx.fillText(this.label, this.rect.x + this.rect.width / 2, this.rect.y + this.rect.height / 2, this.rect.width);
+        ctx.fillText(this.label, this.rect.x + (this.rect.width/2), this.rect.y + this.rect.height / 2, this.rect.width);
         ctx.closePath();
+    }
+
+    renderOutline(ctx: CanvasRenderingContext2D) {
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 3;
+        ctx.stroke();
     }
 
     interact(): void {
