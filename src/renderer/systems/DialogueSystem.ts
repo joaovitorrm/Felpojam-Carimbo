@@ -9,7 +9,7 @@ export default class DialogSystem {
   private interpreter: DialogInterpreter;
 
   constructor(
-    private state: DialogState,
+    state: DialogState,
     private world: WorldState,
     private events: EventBus
   ) {
@@ -19,7 +19,6 @@ export default class DialogSystem {
 
   start(node: string, script: DialogScript) {
     this.events.emit("dialog:started");
-    //this.state.player.lock()
 
     this.interpreter.load(node, script);
     this.interpreter.run();
@@ -48,10 +47,6 @@ export default class DialogSystem {
 
     this.events.on("dialog:jump", (target: string) => {
       this.interpreter.goTo(target);
-    });
-
-    this.events.on("dialog:ended", () => {
-      //this.state.player.unlock();
     });
   }
 }

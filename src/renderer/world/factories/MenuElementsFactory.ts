@@ -1,5 +1,5 @@
 import type GameContext from "../../core/GameContext";
-import type { MenuDataElement, MenuButtonType } from "../../types/MenuData"
+import type { MenuDataElement } from "../../types/MenuData"
 import { Button } from "../../ui/Button";
 import DialogOptionButton from "../../ui/DialogOptionButton";
 import Slider from "../../ui/Slider";
@@ -45,6 +45,7 @@ export function MenuElementsFactory(context: GameContext, data: MenuDataElement)
                 props.backgroundColor,
                 props.textBaseline,
                 props.textAlign,
+                props.borderRadius ?? 0,
                 interactionFactory(context, data)!
             )            
         }

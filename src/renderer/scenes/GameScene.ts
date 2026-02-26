@@ -142,7 +142,7 @@ export default class GameScene extends SceneType {
         //this.interactiveAreas.forEach((e) => e.render(ctx));
     }
 
-    update(deltaTime: number): void {
+    update(): void {
         const input = this.context.inputManager;
         const inputRect = input.getMouseRect();
 
@@ -164,7 +164,6 @@ export default class GameScene extends SceneType {
     }
 
     onExit(): void {
-        console.log("A");
         this.onExitFunctions.forEach(f => f());
     }
 }

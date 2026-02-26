@@ -18,6 +18,7 @@ export default class GameHud extends UiElement{
             "transparent",
             "middle",
             "center",
+            0,
             () => {
                 context.eventBus.emit("scene:push", "OptionsMenu");
             }
@@ -31,16 +32,7 @@ export default class GameHud extends UiElement{
     }
     update(): void {
         const input = this.context.inputManager;
-
-        for (const e of this.elements) {
-            if (e.getRect().collide(input.getMouseRect())) {
-                e.hover();
-                if (input.isMouseDown() && !input.isMouseConsumed()) {
-                    input.consumeMouse();
-                    e.interact();
-                }
-            }
-        }
+        this.elements.forEach(e => e.update(input));
     }
     interact(): void {
         

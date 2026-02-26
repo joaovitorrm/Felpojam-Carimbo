@@ -1,3 +1,4 @@
+import type InputManager from "../core/InputManager";
 import type { Rect } from "../util/utils";
 import { UiElement } from "./UiElement";
 
@@ -10,8 +11,8 @@ export default class DialogOptionButton extends UiElement {
         private backgroundColor: string,
         private textBaseline: CanvasTextBaseline,
         private textAlign: CanvasTextAlign,
-        private interaction: Function,
-        private handleHover: Function = () => {}
+        private interact: Function,
+        private hover: Function = () => {}
     ) {
         super(rect);
     }
@@ -22,7 +23,7 @@ export default class DialogOptionButton extends UiElement {
         ctx.roundRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height, 5);
         ctx.fill();
 
-        if (this.isHovering) {
+        if (this.hovered) {
             this.renderOutline(ctx);
         }
 
@@ -41,13 +42,15 @@ export default class DialogOptionButton extends UiElement {
         ctx.stroke();
     }
 
-    interact(): void {
-        this.interaction();
+    update(input: InputManager) : void {
+        super.update(input);
+
+        if (this.hovered) {
+            this.hover();
+            if (input.isMouseDown() && !input.isMouseConsumed()) {
+                input.consumeMouse();
+                this.interact();
+            }
+        }
     }
-
-    hover(): void {
-        this.handleHover();
-    }
-
-
 }

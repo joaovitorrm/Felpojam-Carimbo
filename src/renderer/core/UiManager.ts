@@ -42,7 +42,10 @@ export default class UiManager {
         this.context.eventBus.on("dialog:ended", () => {
             this.context.eventBus.emit("scene:setPause", false);
             this.dialogBox.hide();
-            this.interactingObject.interact();
+            if (this.interactingObject.getIsVisible()) {
+                this.context.eventBus.emit("ui:object:interacted");
+                this.interactingObject.setVisible(false);
+            }            
         });
         this.context.eventBus.on("dialog:say", (cmd: DialogCommand) => {
             this.handleDialog(cmd);
@@ -54,11 +57,6 @@ export default class UiManager {
         this.context.eventBus.on("ui:object:interact", (obj: ObjectData) => {
             this.interactingObject.setObject(obj, this.context.assetManager.get(obj.sprite))
             this.context.eventBus.emit("dialog:object:interact", obj.propId);
-            this.interactingObject.setInteraction(() => {
-                this.context.eventBus.emit("ui:object:interacted");
-                this.interactingObject.setVisible(false);
-                this.dialogBox.hide();
-            });
         })
     }
 
@@ -86,9 +84,9 @@ export default class UiManager {
 
             const btn = new DialogOptionButton(
                 new Rect(
-                    this.context.settingsManager.data.resolution.width/2 - textWidth/2, 
-                    this.dialogBox.getRect().y - 60 - (i * 60), 
-                    textWidth, 
+                    this.context.settingsManager.data.resolution.width / 2 - textWidth / 2,
+                    this.dialogBox.getRect().y - 60 - (i * 60),
+                    textWidth,
                     50),
                 opt.text,
                 fontSize,
@@ -116,39 +114,19 @@ export default class UiManager {
 
     update(dt: number, scene: SceneType | null) {
 
-        for (const e of this.elements) {
-            if (!e.update) return;
-            e.update(dt);            
-        }
+        const input = this.context.inputManager;
 
-        this.dialogBox.update(dt);
+        this.elements.forEach(e => e.update(input));
 
         if (scene && scene.showHud()) {
             this.gameHud.update();
         }
 
-        const input = this.context.inputManager;
+        this.choiceButtons.forEach(b => b.update(input));
+
+        this.dialogBox.update(input, dt);
         
-        if (this.dialogBox.getIsVisible() || this.interactingObject.getIsVisible()) {
-            if (this.choiceButtons.length > 0) {
-                for (const b of this.choiceButtons) {
-                    b.setIsHovering(false);
-                    if (input.getMouseRect().collide(b.getRect())) {
-                        b.setIsHovering(true);
-                        if (input.isMouseDown() && !input.isMouseConsumed()) {
-                            input.consumeMouse();
-                            b.interact();
-                        }
-                    }
-                }
-            } else if (this.dialogBox.getIsVisible() && input.isMouseDown() && !input.isMouseConsumed()) {
-                input.consumeMouse();
-                this.dialogBox.interact();
-                if (!this.dialogBox.getIsVisible()) {
-                    this.interactingObject.interact();
-                }
-            }
-        }
+        this.interactingObject.update(input);
     }
 
     render(ctx: CanvasRenderingContext2D, scene: SceneType | null) {
@@ -159,7 +137,7 @@ export default class UiManager {
 
         this.elements.forEach(e => e.render(ctx));
 
-        if (this.interactingObject.getIsVisible()) this.interactingObject.render(ctx);
+        this.interactingObject.render(ctx);
 
         this.dialogBox.render(ctx);
 

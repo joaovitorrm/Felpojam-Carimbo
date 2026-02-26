@@ -40,16 +40,8 @@ export default class MainMenuScene extends SceneType {
         ctx.drawImage(this.background, 0, 0, this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
         this.elements.forEach(e => e.render(ctx));
     }
-    update(deltaTime: number): void {
+    update(): void {
         const input = this.context.inputManager;
-        this.elements.forEach(e => {
-            if (e.getRect().collide(input.getMouseRect())) {
-                e.hover();
-                if (input.isMouseDown() && !input.isMouseConsumed()) {
-                    input.consumeMouse();
-                    e.interact();
-                }
-            };
-        });
+        this.elements.forEach(e => e.update(input));
     }
 }

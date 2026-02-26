@@ -27,6 +27,7 @@ type BaseButtonData = {
     backgroundColor: string;
     textBaseline: CanvasTextBaseline;
     textAlign: CanvasTextAlign;
+    borderRadius?: number;
 }
 
 type SliderButtonData = {
