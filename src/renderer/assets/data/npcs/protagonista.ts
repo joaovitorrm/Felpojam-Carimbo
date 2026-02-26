@@ -1,6 +1,6 @@
 import type { DialogScript } from "../../../types/DialogTypes";
 
-const protagonistaName = "Marcos Carvalho";
+//const protagonistaName = "Marcos Carvalho";
 
 export const Protagonista: DialogScript = {
     entry: "start",

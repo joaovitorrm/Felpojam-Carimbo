@@ -9,7 +9,7 @@ export default class DialogSystem {
   private interpreter: DialogInterpreter;
 
   constructor(
-    private state: DialogState,
+    state: DialogState,
     private world: WorldState,
     private events: EventBus
   ) {

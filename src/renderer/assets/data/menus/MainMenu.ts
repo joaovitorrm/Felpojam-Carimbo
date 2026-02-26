@@ -62,7 +62,7 @@ export const MainMenu: MenuData = {
                 }
             },            
             interactType: "action",
-            next: "sala_de_estar"
+            next: "reportagem"
         }
     ]
 }

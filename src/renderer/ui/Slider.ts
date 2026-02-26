@@ -14,11 +14,12 @@ export default class Slider extends UiElement {
         private sliderSize: number,
 
         private value: number,
-        private min: number,
-        private max: number,
+        min: number,
+        max: number,
         private interaction: Function,
         private handleHover: Function
     ) {
+        console.log(min, max)
         super(rect);
     }
 
