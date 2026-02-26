@@ -12,21 +12,31 @@ export const quadro_pistas: LevelData = {
         {
             propId: "olivia",
             sprite: "olivia",
-            sprite_clip: [0, 0, 810, 1210],
-            x: 140,
+            sprite_clip: [0, 0, 816, 1209],
+            x: 160,
             y: 120,
-            width: 90,
-            height: 150,
+            width: 110,
+            height: 164,
             interactType: "dialog",
         },
         {
-            propId: "fotografia",
-            sprite: "fotografia",
-            sprite_clip: [40, 110, 740, 584],
+            propId: "clarissa",
+            sprite: "clarissa",
+            sprite_clip: [0, 0, 758, 1000],
             x: 900,
             y: 150,
-            width: 150,
-            height: 150,
+            width: 100,
+            height: 140,
+            interactType: "dialog",
+        },
+        {
+            propId: "bernardo",
+            sprite: "bernardo",
+            sprite_clip: [0, 0, 968, 885],
+            x: 500,
+            y: 350,
+            width: 153,
+            height: 140,
             interactType: "dialog",
         },
         {
@@ -43,9 +53,11 @@ export const quadro_pistas: LevelData = {
 
     interactiveAreas: [],
 
-    onEnter: {
-        type: "dialog",
-        npcId: "Protagonista",
-        target: "quadro"
-    }
+    onEnter: [
+        {
+            type: "dialog",
+            npcId: "Protagonista",
+            target: "quadro"
+        }
+    ]
 };

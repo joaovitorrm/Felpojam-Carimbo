@@ -1,11 +1,13 @@
 import { envelope } from "./envelope";
-import { fotografia } from "./fotografia";
+import { bernardo } from "./bernardo";
 import { olivia } from "./olivia";
+import { clarissa } from "./clarissa";
 
 export const props = {
-    fotografia,
+    bernardo,
     envelope,
-    olivia
+    olivia,
+    clarissa
 } as const;
 
 export type PropsKey = keyof typeof props;

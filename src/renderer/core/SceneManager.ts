@@ -12,15 +12,15 @@ export default class SceneManager {
 
     constructor(private context: GameContext) {
         context.eventBus.on("scene:change", (scene: Scenes) => {
-            this.changeScene(scene)
+            this.changeScene(scene);
         })
 
         context.eventBus.on("scene:push", (scene: Scenes) => {
-            this.pushScene(scene)
+            this.pushScene(scene);
         })
 
         context.eventBus.on("scene:pop", () => {
-            this.popScene()
+            this.popScene();
         })
 
         context.eventBus.on("scene:setPause", (val: boolean) => {
@@ -40,7 +40,7 @@ export default class SceneManager {
 
     public changeScene(scene: Scenes) {
         if (!this.loadedScenes.has(scene)) {
-            this.setCurrentScene(scene); 
+            this.setCurrentScene(scene);
         }
         this.currentScene = [this.loadedScenes.get(scene)!];
     }

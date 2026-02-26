@@ -6,9 +6,26 @@ export const reportagem: LevelData = {
     interactiveAreas: [],
     npcs: [],
     objects: [],
-    onEnter: {
-        type: "dialog",
-        npcId: "Protagonista",
-        target: "start"
-    }
+    onEnter: [
+        {
+            type: "sound",
+            category: "bgm",
+            sound: "musica_triste",
+            options: {
+                loop: true,
+                volume: 0.5
+            }
+        },
+        {
+            type: "dialog",
+            npcId: "Protagonista",
+            target: "start"
+        }
+    ],
+    onExit: [
+        {
+            type: "stopSound",
+            sound: "musica_triste"
+        }
+    ]
 }

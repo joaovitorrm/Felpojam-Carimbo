@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const gameContext = new GameContext(settingsManager)
 
     await gameContext.assetManager.loadAll();
+    gameContext.audioManager.loadAll();
 
     // DEFINE O TAMANHO DO CANVAS
     gameCanvas.width = settingsManager.data.resolution.width;

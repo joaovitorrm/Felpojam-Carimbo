@@ -5,6 +5,8 @@ import type { ObjectAssetsKey } from "../assets/images/objects";
 import type { ScenarioAssetsKey } from "../assets/images/scenarios";
 import type { InteractionType } from "./InteractionData";
 import type { PropsKey } from "../assets/data/props";
+import type { SoundsKey } from "../assets/sounds";
+import type { AudioCategory, PlayOptions } from "../core/AudioManager";
 
 export type LevelData = {
     id: string;
@@ -12,7 +14,8 @@ export type LevelData = {
     npcs: NPCData[];
     objects: ObjectData[];
     interactiveAreas: InteractiveArea[];
-    onEnter?: LevelCommand;
+    onEnter?: LevelCommand[];
+    onExit?: LevelCommand[]
 }
 
 export type NPCData = {
@@ -53,4 +56,6 @@ export type LevelCommand =
 { type: "jump"; target: string } |
 { type: "sceneChange"; next: LevelsKey } |
 { type: "setFlag"; key: string; value: boolean } | 
-{ type: "if"; condition: string; then: string; else?: string }
+{ type: "if"; condition: string; then: string; else?: string } |
+{ type: "sound"; sound: SoundsKey; category: AudioCategory; options?: PlayOptions } | 
+{ type: "stopSound"; sound: SoundsKey }

@@ -15,7 +15,9 @@ export default class GameScene extends SceneType {
     private npcs: NPC[] = [];
     private objects: Prop[] = [];
     private interactiveAreas: InteractiveArea[] = [];
-    
+    private onEnterFunctions: Function[] = [];
+    private onExitFunctions: Function[] = [];
+
     constructor(private context: GameContext, sceneId: LevelsKey) {
         super();
 
@@ -24,7 +26,8 @@ export default class GameScene extends SceneType {
         this.createInteractiveAreas(level);
         this.createBackground(level);
         this.createObjects(level);
-        this.createOnEnter(level);
+        this.handleOnEnter(level);
+        this.handleOnExit(level);
         this.createNPCs(level);
     }
 
@@ -47,7 +50,7 @@ export default class GameScene extends SceneType {
                     case "dialog":
                         this.context.eventBus.emit("ui:object:interact", obj);
                         prop.setInFocus(true);
-                        this.context.eventBus.once("ui:object:interacted", () => {prop.setInFocus(false); console.log(prop.getIsInFocus())});
+                        this.context.eventBus.once("ui:object:interacted", () => { prop.setInFocus(false) });
                         break;
                     case "changeScene":
                         this.context.eventBus.emit("scene:change", obj.next!);
@@ -91,27 +94,51 @@ export default class GameScene extends SceneType {
         }
     }
 
-    private createOnEnter(data: LevelData): void {
+    private handleOnEnter(data: LevelData): void {
         if (data.onEnter) {
-            console.log(data.onEnter)
-            switch (data.onEnter.type) {
-                case "dialog": {
-                    this.context.eventBus.emit("dialog:start", {npcId: data.onEnter.npcId, target: data.onEnter.target});
-                    break;
+            data.onEnter.forEach((command) => {
+                let func;
+                switch (command.type) {
+                    case "dialog": {
+                        func = () => this.context.eventBus.emit("dialog:start", { npcId: command.npcId, target: command.target });
+                        break;
+                    }
+                    case "sceneChange": {
+                        func = () => this.context.eventBus.emit("scene:change", command.next);
+                        break;
+                    }
+                    case "sound": {
+                        func = () => this.context.eventBus.emit("audio:play", { id: command.sound, category: command.category, options: command.options });
+                    }
                 }
-                case "sceneChange": {
-                    this.context.eventBus.emit("scene:change", data.onEnter.next);
-                    break;
+
+                if (func) this.onEnterFunctions.push(func);
+            })
+
+        }
+    }
+
+    private handleOnExit(data: LevelData) {
+        if (data.onExit) {
+            data.onExit.forEach((command) => {
+                let func;
+                switch (command.type) {
+                    case "stopSound": {
+                        func = () => this.context.eventBus.emit("audio:stop", { id: command.sound });
+                        break;
+                    }
                 }
-            }
+
+                if (func) this.onExitFunctions.push(func);
+            })
         }
     }
 
     render(ctx: CanvasRenderingContext2D): void {
         if (!this.background) return;
         ctx.drawImage(this.background, 0, 0, this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
-        this.npcs.forEach((e) => {e.render(ctx); /* e.renderHitBox(ctx) */});
-        this.objects.forEach((e) => {if (!e.getIsInFocus()) e.render(ctx); /* e.renderHitBox(ctx) */});
+        this.npcs.forEach((e) => { e.render(ctx); /* e.renderHitBox(ctx) */ });
+        this.objects.forEach((e) => { if (!e.getIsInFocus()) e.render(ctx); /* e.renderHitBox(ctx) */ });
         //this.interactiveAreas.forEach((e) => e.render(ctx));
     }
 
@@ -133,10 +160,11 @@ export default class GameScene extends SceneType {
     }
 
     onEnter(): void {
-
+        this.onEnterFunctions.forEach(f => f());
     }
 
     onExit(): void {
-
+        console.log("A");
+        this.onExitFunctions.forEach(f => f());
     }
 }
