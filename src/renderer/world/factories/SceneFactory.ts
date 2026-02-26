@@ -2,7 +2,7 @@ import type { LevelsKey } from "../../assets/data/levels";
 import type { MenusKey } from "../../assets/data/menus";
 import type GameContext from "../../core/GameContext";
 import GameScene from "../../scenes/GameScene";
-import MainMenuScene from "../../scenes/MainMenuScene";
+import MainMenuScene from "../../scenes/MenuScene";
 import type { SceneType } from "../../types/SceneType";
 
 export const SceneFactory: Record<

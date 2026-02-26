@@ -3,7 +3,7 @@ import type { MenuData } from "../../../types/MenuData";
 export const OptionsMenu: MenuData = {
     id: "optionsMenu",
     background: "computador",
-    elements: [
+    buttons: [
         {
             id: "backButton",
             x: 840,
@@ -27,24 +27,38 @@ export const OptionsMenu: MenuData = {
         {
             id: "textSpeed",
             x: 400,
-            y: 300,
-            width: 100,
+            y: 270,
+            width: 200,
             height: 15,
             interactType: "action",
             button: {
                 type: "sliderButton",
                 props: {
                     backgroundColor: "hsl(0, 50%, 0%)",
-                    max: 100,
-                    value: 50,
-                    min: 0,
+                    max: 3,
+                    value: 2,
+                    min: 1,
                     borderRadius: 10,
                     sliderBorderRadius: 10,
                     sliderBackgroundColor: "hsl(300, 50%, 50%)",
                     sliderSize: 20
                 }
-            },
-            action: () => console.log("a"),
+            }
+        }
+    ],
+    labels: [
+        {
+            id: "textSpeedLabel",
+            labelToId: "textSpeed",
+            text: "Velocidade do Texto:",
+            color: "white",
+            fontSize: 20,
+            textAlign: "left",
+            textBaseline: "middle",
+            x: 400,
+            y: 250,
+            width: 200,
+            height: 20,
         }
     ]
 }

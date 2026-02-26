@@ -128,6 +128,15 @@ export class DialogBox extends UiElement {
         this.interaction();
     }
 
+    clearText() {
+        this.fullText = "";
+        this.text = [];
+    }
+
+    hasText() {
+        return this.fullText !== "" || this.text.length > 0;
+    }
+
     show() {
         this.visible = true;
     }

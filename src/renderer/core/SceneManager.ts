@@ -16,11 +16,17 @@ export default class SceneManager {
         })
 
         context.eventBus.on("scene:push", (scene: Scenes) => {
+            context.eventBus.emit("dialog:stopped");
+            context.eventBus.emit("audio:pauseAll");
             this.pushScene(scene);
         })
 
         context.eventBus.on("scene:pop", () => {
             this.popScene();
+            if (this.currentScene.length === 1) {
+                context.eventBus.emit("dialog:unstop");
+                context.eventBus.emit("audio:unpauseAll");
+            };
         })
 
         context.eventBus.on("scene:setPause", (val: boolean) => {
@@ -47,7 +53,7 @@ export default class SceneManager {
 
     public pushScene(scene: Scenes) {
         if (!this.loadedScenes.has(scene)) {
-            this.setCurrentScene(scene); 
+            this.setCurrentScene(scene);
         }
         this.currentScene.push(this.loadedScenes.get(scene)!);
     }

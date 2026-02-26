@@ -5,8 +5,24 @@ import type { InteractionType } from "./InteractionData";
 export type MenuData = {
     id: string;
     background: ScenarioAssetsKey;
-    elements: MenuDataElement[];
+    buttons: MenuDataElement[];
+    labels: MenuLabelElement[]
 };
+
+export type MenuLabelElement = {
+    id: string;
+    labelToId: string;
+    text: string;
+    fontSize: number;
+    textAlign: CanvasTextAlign;
+    textBaseline: CanvasTextBaseline;
+    color: string;
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    action?: Function
+}
 
 export type MenuDataElement = {    
     id: string;

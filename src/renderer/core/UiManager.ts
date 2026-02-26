@@ -39,9 +39,23 @@ export default class UiManager {
             this.context.eventBus.emit("scene:setPause", true);
             this.dialogBox.show();
         });
+
+        this.context.eventBus.on("dialog:stopped", () => {
+            this.context.eventBus.emit("scene:setPause", false);
+            this.dialogBox.hide();
+        });
+
+        this.context.eventBus.on("dialog:unstop", () => {            
+            if (this.dialogBox.hasText()) {
+                this.context.eventBus.emit("scene:setPause", true);
+                this.dialogBox.show();
+            }
+        });
+
         this.context.eventBus.on("dialog:ended", () => {
             this.context.eventBus.emit("scene:setPause", false);
             this.dialogBox.hide();
+            this.dialogBox.clearText();
             if (this.interactingObject.getIsVisible()) {
                 this.context.eventBus.emit("ui:object:interacted");
                 this.interactingObject.setVisible(false);

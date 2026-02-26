@@ -3,7 +3,8 @@ import type { MenuData } from "../../../types/MenuData";
 export const MainMenu: MenuData = {
     id: "mainMenu",
     background: "computador",
-    elements: [
+    labels: [],
+    buttons: [
         {
             id: "play",
             x: 400,

@@ -1,4 +1,4 @@
-import { MenuElementsFactory } from "../world/factories/MenuElementsFactory";
+import { MenuButtonsFactory, MenuLabelsFactory } from "../world/factories/MenuElementsFactory";
 import { SceneType } from "../types/SceneType";
 import { menus, type MenusKey } from "../assets/data/menus";
 import type GameContext from "../core/GameContext";
@@ -24,8 +24,11 @@ export default class MainMenuScene extends SceneType {
     }
 
     private createObjects(data: MenuData) : void {
-        data.elements.forEach(b => {
-            this.elements.push(MenuElementsFactory(this.context, b));
+        data.buttons.forEach(b => {
+            this.elements.push(MenuButtonsFactory(this.context, b));
+        })
+        data.labels.forEach(l => {
+            this.elements.push(MenuLabelsFactory(l));
         })
     }
 

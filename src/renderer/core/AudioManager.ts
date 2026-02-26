@@ -21,6 +21,10 @@ export default class AudioManager {
     constructor(gameContext: GameContext) {
         gameContext.eventBus.on("audio:play", (data: { id: SoundsKey, category: AudioCategory, options?: PlayOptions }) => this.play(data.id, data.category, data.options));
         gameContext.eventBus.on("audio:stop", (data: { id: SoundsKey }) => this.stop(data.id));
+        gameContext.eventBus.on("audio:pause", (data: { id: SoundsKey }) => this.pause(data.id));
+        gameContext.eventBus.on("audio:pauseAll", () => this.pauseAll());
+        gameContext.eventBus.on("audio:unpause", (data: { id: SoundsKey }) => this.unpause(data.id));
+        gameContext.eventBus.on("audio:unpauseAll", () => this.unpauseAll());
     }
 
     loadAll() : void {
@@ -51,6 +55,28 @@ export default class AudioManager {
         audio.play();
 
         this.playingSounds.set(id, audio);
+    }
+
+    pause(id: string) {
+        const audio = this.playingSounds.get(id);
+        if (!audio) return;
+
+        audio.pause();
+    }
+
+    unpause(id: string) {
+        const audio = this.playingSounds.get(id);
+        if (!audio) return;
+
+        audio.play();
+    }
+
+    pauseAll() {
+        this.playingSounds.forEach(p => p.pause());
+    }
+
+    unpauseAll() {
+        this.playingSounds.forEach(p => p.play());
     }
 
     stop(id: string) {

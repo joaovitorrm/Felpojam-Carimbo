@@ -1,7 +1,8 @@
 import type GameContext from "../../core/GameContext";
-import type { MenuDataElement } from "../../types/MenuData"
+import type { MenuDataElement, MenuLabelElement } from "../../types/MenuData"
 import { Button } from "../../ui/Button";
 import DialogOptionButton from "../../ui/DialogOptionButton";
+import { Label } from "../../ui/Label";
 import Slider from "../../ui/Slider";
 import type { UiElement } from "../../ui/UiElement"
 import { Rect } from "../../util/utils";
@@ -32,7 +33,7 @@ const interactionFactory = (context: GameContext, data: MenuDataElement) => {
 }
 
 
-export function MenuElementsFactory(context: GameContext, data: MenuDataElement): UiElement {
+export function MenuButtonsFactory(context: GameContext, data: MenuDataElement): UiElement {
 
     switch (data.button.type) {
         case "labelButton": {
@@ -79,4 +80,15 @@ export function MenuElementsFactory(context: GameContext, data: MenuDataElement)
             )
         }
     }    
+}
+
+export function MenuLabelsFactory(data: MenuLabelElement): UiElement {
+    return new Label(
+        new Rect(data.x, data.y, data.width, data.height),
+        data.text,
+        data.color,
+        data.fontSize,
+        data.textAlign,
+        data.textBaseline
+    )
 }
