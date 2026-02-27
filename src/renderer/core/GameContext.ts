@@ -1,5 +1,4 @@
 import DialogSystem from "../systems/DialogueSystem";
-import NPCFactory from "../world/factories/NPCFactory";
 import AssetManager from "./AssetManager";
 import AudioManager from "./AudioManager";
 import DialogState from "./DialogState";
@@ -18,7 +17,6 @@ export default class GameContext {
     readonly eventBus: EventBus = new EventBus();
 
     readonly audioManager: AudioManager = new AudioManager(this);
-    readonly npcFactory: NPCFactory = new NPCFactory(this);
     readonly sceneManager: SceneManager = new SceneManager(this);    
     readonly dialogSystem: DialogSystem = new DialogSystem(this.dialogState, this.worldState, this.eventBus);    
 

@@ -6,6 +6,7 @@ import Prop from "../entities/base/Prop";
 import type { LevelData } from "../types/LevelData";
 import { SceneType } from "../types/SceneType";
 import { Rect } from "../util/utils";
+import { createInteractiveArea, createNPC, createObject, createOnEnter, createOnExit } from "../world/factories/LevelFactory";
 
 export default class GameScene extends SceneType {
 
@@ -44,62 +45,21 @@ export default class GameScene extends SceneType {
 
     private createNPCs(data: LevelData): void {
         for (const npcData of data.npcs) {
-            const npc = this.context.npcFactory.createNPC(npcData);
+            const npc = createNPC(this.context, npcData);
             this.npcs.push(npc);
         }
     }
 
     private createObjects(data: LevelData): void {
         for (const obj of data.objects) {
-            const interaction = () => {
-                switch (obj.interactType.type) {
-                    case "dialog":
-                        this.context.eventBus.emit("ui:object:interact", {obj: obj, npcId: obj.interactType.npcId, target: obj.interactType.target});
-                        prop.setInFocus(true);
-                        this.context.eventBus.once("ui:object:interacted", () => { prop.setInFocus(false) });
-                        break;
-                    case "sceneChange":
-                        this.context.eventBus.emit("scene:change", obj.next!);
-                        break;
-                    default:
-                        break;
-                }
-            };
-
-            const prop = new Prop(
-                obj.id,
-                new Rect(obj.x, obj.y, obj.width, obj.height),
-                this.context.assetManager.get(obj.sprite),
-                obj.sprite_clip,
-                interaction,
-                () => { }
-            );
-
+            const prop = createObject(this.context, obj);
             this.objects.push(prop);
         }
     }
 
     private createInteractiveAreas(data: LevelData): void {
         for (const area of data.interactiveAreas) {
-            const interaction = () => {
-                switch (area.interactType.type) {
-                    case "sceneChange":
-                        this.context.eventBus.emit("scene:change", area.interactType.next);
-                        break;
-                    case "dialog":
-                        this.context.eventBus.emit("dialog:npc:interact", {npcId: area.interactType.npcId, target: area.interactType.target});
-                        break;
-                    default:
-                        break;
-                }
-            };
-
-            const ia = new InteractiveArea(
-                new Rect(area.x, area.y, area.width, area.height),
-                interaction,
-                () => { }
-            );
-
+            const ia = createInteractiveArea(this.context, area);
             this.interactiveAreas.push(ia);
         }
     }
@@ -107,30 +67,7 @@ export default class GameScene extends SceneType {
     private handleOnEnter(data: LevelData): void {
         if (data.onEnter) {
             data.onEnter.forEach((command) => {
-                let func;
-                switch (command.type) {
-                    case "dialog": {
-                        func = () => this.context.eventBus.emit("dialog:start", { npcId: command.npcId, target: command.target });
-                        break;
-                    }
-                    case "sceneChange": {
-                        func = () => this.context.eventBus.emit("scene:change", command.next);
-                        break;
-                    }
-                    case "sound": {
-                        func = () => this.context.eventBus.emit("audio:play", { id: command.sound, category: command.category, options: command.options });
-                        break;
-                    }
-                    case "fadeIn": {
-                        func = () => this.context.eventBus.emit("fade:in", command.seconds);
-                        break;
-                    }
-                    case "hold": {
-                        func = () => this.context.eventBus.emit("fade:hold", command.seconds);
-                        break;
-                    }
-                }
-
+                const func = createOnEnter(this.context, command);
                 if (func) this.onEnterFunctions.push(func);
             })
 
@@ -140,22 +77,7 @@ export default class GameScene extends SceneType {
     private handleOnExit(data: LevelData) {
         if (data.onExit) {
             data.onExit.forEach((command) => {
-                let func;
-                switch (command.type) {
-                    case "stopSound": {
-                        func = () => this.context.eventBus.emit("audio:stop", { id: command.sound });
-                        break;
-                    }
-                    case "fadeOut": {
-                        func = async () => await this.context.eventBus.emit("fade:out", command.seconds);
-                        break;
-                    }
-                    case "hold": {
-                        func = async () => await this.context.eventBus.emit("fade:hold", command.seconds);
-                        break;
-                    }
-                }
-
+                const func = createOnExit(this.context, command);
                 if (func) this.onExitFunctions.push(func);
             })
         }

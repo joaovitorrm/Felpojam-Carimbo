@@ -1,4 +1,4 @@
-import type GameContext from "../../core/GameContext";
+/* import type GameContext from "../../core/GameContext";
 import NPC from "../../entities/base/NPC";
 import type { NPCData } from "../../types/LevelData";
 import { Rect } from "../../util/utils";
@@ -17,4 +17,4 @@ export default class NPCFactory {
             () => this.gameContext.eventBus.emit("dialog:npc:interact", {npcId: data.id})
         );
     }
-}
+} */

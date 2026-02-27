@@ -3,7 +3,6 @@ import type { LevelsKey } from "../assets/data/levels";
 import type { CharacterAssetsKey } from "../assets/images/characters";
 import type { ObjectAssetsKey } from "../assets/images/objects";
 import type { ScenarioAssetsKey } from "../assets/images/scenarios";
-import type { InteractionType } from "./InteractionData";
 import type { PropsKey } from "../assets/data/props";
 import type { SoundsKey } from "../assets/sounds";
 import type { AudioCategory, PlayOptions } from "../core/AudioManager";
@@ -11,14 +10,14 @@ import type { AudioCategory, PlayOptions } from "../core/AudioManager";
 export type LevelData = {
     id: string;
     background: ScenarioAssetsKey;
-    npcs: NPCData[];
-    objects: ObjectData[];
-    interactiveAreas: InteractiveArea[];
-    onEnter?: LevelCommand[];
-    onExit?: LevelCommand[]
+    npcs: NPCDataType[];
+    objects: ObjectDataType[];
+    interactiveAreas: InteractiveAreaType[];
+    onEnter?: LevelCommandType[];
+    onExit?: LevelCommandType[]
 }
 
-export type NPCData = {
+export type NPCDataType = {
     id: NPCId;
     sprite: CharacterAssetsKey;
     sprite_clip: [number, number, number, number];
@@ -28,7 +27,7 @@ export type NPCData = {
     height: number;
 }
 
-export type ObjectData = {
+export type ObjectDataType = {
     id: string;
     sprite: ObjectAssetsKey;
     sprite_clip: [number, number, number, number];
@@ -36,20 +35,20 @@ export type ObjectData = {
     y: number;
     width: number;
     height: number;
-    interactType: LevelCommand;
+    interactType: LevelCommandType;
     next?: LevelsKey
 }
 
-export type InteractiveArea = {
+export type InteractiveAreaType = {
     id: string;
     x: number;
     y: number;
     width: number;
     height: number;
-    interactType: LevelCommand;
+    interactType: LevelCommandType;
 }
 
-export type LevelCommand = 
+export type LevelCommandType = 
 { type: "say", text: string, speaker: string } |
 { type: "dialog"; target: string; npcId: NPCId } |
 { type: "jump"; target: string } |
