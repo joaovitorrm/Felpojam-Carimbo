@@ -23,9 +23,17 @@ export const reportagem: LevelData = {
         }
     ],
     onExit: [
+        /* {
+            type: "fadeOut",
+            seconds: 1
+        },
+        {
+            type: "hold",
+            seconds: 2
+        }, */
         {
             type: "stopSound",
             sound: "musica_triste"
-        }
+        }        
     ]
 }

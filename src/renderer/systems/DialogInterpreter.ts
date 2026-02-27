@@ -42,9 +42,10 @@ export class DialogInterpreter {
                 break;
 
             case "choice":
-                const validOptions = cmd.options.filter(o => !o.condition || this.state.getVar(o.condition));
-                cmd.options = validOptions;
-                this.events.emit("dialog:choice", cmd);
+                const cmdCopy = structuredClone(cmd);
+                const validOptions = cmdCopy.options.filter(o => !o.condition || this.state.hasFlag(o.condition));
+                cmdCopy.options = validOptions;
+                this.events.emit("dialog:choice", cmdCopy);
                 break;
 
             case "jump":
@@ -73,6 +74,14 @@ export class DialogInterpreter {
             case "sceneChange":
                 this.events.emit("dialog:ended");
                 this.events.emit("scene:change", cmd.next);
+                break;
+            
+            case "collect": {
+                this.events.emit("scene:object:collect", cmd.key);
+                this.next();
+                break;
+            }
+
         }
     }
     next() {

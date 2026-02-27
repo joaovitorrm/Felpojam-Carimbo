@@ -19,21 +19,17 @@ export const envelope : DialogScript = {
                     {
                         text: "Deixar",
                         jump: "deixar"
-                    },
-                    {
-                        text: "Tirar uma foto do envelope",
-                        jump: "deixar"
-                    },
-                    {
-                        text: "Deixar",
-                        jump: "deixar"
-                    },
+                    }
                 ]
             }
         ],
         levar: [
             {
                 type: "setFlag",
+                key: "hasEnvelope",
+            },
+            {
+                type: "collect",
                 key: "envelope",
             }
         ],

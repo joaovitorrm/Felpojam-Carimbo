@@ -1,13 +1,13 @@
 export default class EventBus {
 
-    private events : Map<string, Function[]> = new Map();
+    private events: Map<string, Function[]> = new Map();
 
-    constructor() {}
+    constructor() { }
 
     on(eventName: string, callback: Function) {
         if (!this.events.has(eventName)) {
-            this.events.set(eventName, []);            
-        } 
+            this.events.set(eventName, []);
+        }
         this.events.get(eventName)!.push(callback);
     }
 
@@ -19,8 +19,13 @@ export default class EventBus {
         this.on(eventName, wrapper);
     }
 
-    emit(eventName: string, payload?: any) {
-        this.events.get(eventName)?.forEach(e => e(payload));        
+    async emit(eventName: string, payload?: any): Promise<any[]> {
+        const listeners = this.events.get(eventName);
+        if (!listeners) return [];
+
+        const results = listeners.map(listener => listener(payload));
+
+        return Promise.all(results);
     }
 
     off(eventName: string, callback: Function) {

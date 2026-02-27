@@ -1,18 +1,9 @@
 import type { DialogScript } from "../../../types/DialogTypes"
 
 export const Daniel: DialogScript = {
-  entry: "start",
+  entry: "blocked",
 
   nodes: {
-    start: [
-      {
-        type: "if",
-        condition: "gateOpen",
-        then: "alreadyOpen",
-        else: "blocked"
-      }
-    ],
-
     blocked: [
       { type: "say", speaker: "Daniel", text: "Bom dia, quem és tu?" },
 
@@ -23,6 +14,11 @@ export const Daniel: DialogScript = {
           {
             text: "Mostrar passe",
             jump: "showPass"
+          },
+          {
+            text: "Mostrar Envelope",
+            jump: "showEnvelope",
+            condition: "hasEnvelope"
           }
         ]
       }
@@ -39,6 +35,10 @@ export const Daniel: DialogScript = {
 
     alreadyOpen: [
       { type: "say", speaker: "Daniel", text: "Já está aberto. Pode ir." }
+    ],
+
+    showEnvelope: [
+      { type: "say", speaker: "Daniel", text: "BORA MATAR A SEITA." },
     ]
   }
 }

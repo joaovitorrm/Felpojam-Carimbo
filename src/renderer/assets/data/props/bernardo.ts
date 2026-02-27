@@ -12,8 +12,13 @@ export const bernardo: DialogScript = {
             {
                 type: "say",
                 speaker: "",
-                text: "Era um garoto de só 23 anos, espirituoso, roubado de sua vida como se não fosse nada. Alguém com quem cruzava caminho todos os dias quando saia de casa, contava seus grandes planos para o futuro e nunca largava aquele sorriso idiota do rosto. Era como um sobrinho que nunca tive."
+                text: "Era um garoto de só 23 anos, espirituoso, roubado de sua vida como se não fosse nada. Alguém com quem cruzava caminho todos os dias quando saia de casa, contava seus grandes planos para o futuro e nunca largava aquele sorriso idiota do rosto."
             },
+            {
+                type: "say",
+                speaker: "",
+                text: "Era como um sobrinho que nunca tive."
+            },            
             {
                 type: "say",
                 speaker: "",

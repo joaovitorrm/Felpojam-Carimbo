@@ -25,6 +25,7 @@ export type DialogCommand =
   | { type: "setFlag"; key: string }
   | { type: "if"; condition: string; then: string; else?: string }
   | { type: "sceneChange"; next: LevelsKey }
+  | { type: "collect"; key: string }
 
 export type DialogChoice = {
   text: string;

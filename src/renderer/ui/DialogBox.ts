@@ -1,3 +1,4 @@
+import type InputManager from "../core/InputManager";
 import type { Rect } from "../util/utils";
 import { UiElement } from "./UiElement";
 
@@ -17,9 +18,22 @@ export class DialogBox extends UiElement {
         super(rect);
     }
 
-    update(deltaTime: number): void {
+    update(input: InputManager, dt: number): void {
+        super.update(input);
+
+        if (!this.visible) return;
+
+        this.updateWriting(dt);
+
+        if (input.isMouseDown() && !input.isMouseConsumed()) {
+            input.consumeMouse();
+            this.interact();
+        }
+    }
+
+    private updateWriting(dt: number) {
         if (this.visible && this.writing) {
-            this.timer += deltaTime;
+            this.timer += dt;
             if (this.timer > this.writeSpeed) {
                 if (this.fullText.length > 0) {
                     const firstChar = this.fullText.slice(0, 1);
@@ -27,7 +41,7 @@ export class DialogBox extends UiElement {
                         this.textLine++;
                         this.text.push("");
                     } else {
-                        this.text[this.textLine] += this.fullText.slice(0, 1);                        
+                        this.text[this.textLine] += this.fullText.slice(0, 1);
                     }
                     this.fullText = this.fullText.slice(1);
                     this.timer = 0;
@@ -36,10 +50,6 @@ export class DialogBox extends UiElement {
                 }
             }
         }
-    }
-
-    show() {
-        this.visible = true;
     }
 
     write(text: string, speaker: string = "") {
@@ -70,30 +80,6 @@ export class DialogBox extends UiElement {
         return textWords.join("");
     }
 
-    hide() {
-        this.visible = false;
-    }
-
-    getIsWriting() : boolean {
-        return this.writing;
-    }
-
-    getIsTextFinished() : boolean {
-        return this.fullText.length === 0;
-    }
- 
-    pause() {
-        this.paused = true;
-    }
-
-    unpause() {
-        this.paused = false;
-    }
-
-    getIsVisible() {
-        return this.visible;
-    }
-
     render(ctx: CanvasRenderingContext2D) {
         if (!this.visible) return;
 
@@ -121,9 +107,7 @@ export class DialogBox extends UiElement {
             ctx.fillText(line, this.rect.x + 30, this.rect.y + 30 + index * 40);
         });
     }
-    hover(): void {
-
-    }
+    
     interact(): void {
 
         if (!this.visible || this.paused) return;
@@ -142,5 +126,46 @@ export class DialogBox extends UiElement {
         };
 
         this.interaction();
+    }
+
+    clearText() {
+        this.fullText = "";
+        this.text = [];
+    }
+
+    hasText() {
+        return this.fullText !== "" || this.text.length > 0;
+    }
+
+    show() {
+        this.visible = true;
+    }
+
+    getIsTextFinished(): boolean {
+        return this.fullText.length === 0;
+    }
+
+    getRect() : Rect {
+        return this.rect;
+    }
+
+    pause() {
+        this.paused = true;
+    }
+
+    unpause() {
+        this.paused = false;
+    }
+
+    getIsVisible() {
+        return this.visible;
+    }
+
+    hide() {
+        this.visible = false;
+    }
+
+    getIsWriting(): boolean {
+        return this.writing;
     }
 }

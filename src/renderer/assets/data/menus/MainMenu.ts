@@ -3,7 +3,8 @@ import type { MenuData } from "../../../types/MenuData";
 export const MainMenu: MenuData = {
     id: "mainMenu",
     background: "computador",
-    elements: [
+    labels: [],
+    buttons: [
         {
             id: "play",
             x: 400,
@@ -18,7 +19,8 @@ export const MainMenu: MenuData = {
                     color: "hsl(0, 0%, 90%)",
                     backgroundColor: "hsl(0, 0%, 6%)",
                     textBaseline: "middle",
-                    textAlign: "center"
+                    textAlign: "center",
+                    borderRadius: 5
                 }
             },
             interactType: "changeScene",
@@ -38,7 +40,8 @@ export const MainMenu: MenuData = {
                     color: "hsl(0, 0%, 90%)",
                     backgroundColor: "hsl(0, 0%, 6%)",
                     textBaseline: "middle",
-                    textAlign: "center"
+                    textAlign: "center",
+                    borderRadius: 5
                 }
             },
             interactType: "pushScene",
@@ -58,7 +61,8 @@ export const MainMenu: MenuData = {
                     color: "hsl(0, 0%, 90%)",
                     backgroundColor: "hsl(0, 0%, 6%)",
                     textBaseline: "middle",
-                    textAlign: "center"
+                    textAlign: "center",
+                    borderRadius: 5
                 }
             },            
             interactType: "action",

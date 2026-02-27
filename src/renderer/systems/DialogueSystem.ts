@@ -19,7 +19,6 @@ export default class DialogSystem {
 
   start(node: string, script: DialogScript) {
     this.events.emit("dialog:started");
-    //this.state.player.lock()
 
     this.interpreter.load(node, script);
     this.interpreter.run();
@@ -27,13 +26,13 @@ export default class DialogSystem {
 
   private registerEvents() {
 
-    this.events.on("dialog:npc:interact", (npcId: string) => {
-      const { node, script } = this.world.getNpcState(npcId);
+    this.events.on("dialog:npc:interact", (data: {npcId: string, target?: string}) => {
+      const { node, script } = this.world.getNpcState(data.npcId, data.target);
       this.start(node, script);
     });
 
-    this.events.on("dialog:object:interact", (objId: string) => {
-      const { node, script } = this.world.getPropState(objId);
+    this.events.on("dialog:object:interact", (data : {npcId: string, target?: string}) => {
+      const { node, script } = this.world.getPropState(data.npcId, data.target);
       this.start(node, script);
     })
 
@@ -48,10 +47,6 @@ export default class DialogSystem {
 
     this.events.on("dialog:jump", (target: string) => {
       this.interpreter.goTo(target);
-    });
-
-    this.events.on("dialog:ended", () => {
-      //this.state.player.unlock();
     });
   }
 }

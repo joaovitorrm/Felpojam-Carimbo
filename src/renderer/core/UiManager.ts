@@ -3,8 +3,10 @@ import type { ObjectData } from "../types/LevelData";
 import type { SceneType } from "../types/SceneType";
 import { DialogBox } from "../ui/DialogBox";
 import DialogOptionButton from "../ui/DialogOptionButton";
+import FadeOverlay from "../ui/FadeOverlay";
 import GameHud from "../ui/HUD/GameHud";
 import InteractionPanel from "../ui/InteractionPanel";
+import { Label } from "../ui/Label";
 import type { UiElement } from "../ui/UiElement";
 import { Rect } from "../util/utils";
 import type GameContext from "./GameContext";
@@ -16,6 +18,8 @@ export default class UiManager {
     private dialogBox: DialogBox;
     private interactingObject: InteractionPanel;
     private gameHud: GameHud;
+    private fadeOverlay: FadeOverlay;
+    private posLabel: Label;
 
     constructor(private context: GameContext) {
 
@@ -31,6 +35,10 @@ export default class UiManager {
                 this.context.settingsManager.data.resolution.height), 40
         );
 
+        this.fadeOverlay = new FadeOverlay(this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
+
+        this.posLabel = new Label(new Rect(0, 0, 0, 0), "", "white", 20, "left", "top");
+
         this.registerEvents();
     }
 
@@ -39,10 +47,27 @@ export default class UiManager {
             this.context.eventBus.emit("scene:setPause", true);
             this.dialogBox.show();
         });
+
+        this.context.eventBus.on("dialog:stopped", () => {
+            this.context.eventBus.emit("scene:setPause", false);
+            this.dialogBox.hide();
+        });
+
+        this.context.eventBus.on("dialog:unstop", () => {            
+            if (this.dialogBox.hasText()) {
+                this.context.eventBus.emit("scene:setPause", true);
+                this.dialogBox.show();
+            }
+        });
+
         this.context.eventBus.on("dialog:ended", () => {
             this.context.eventBus.emit("scene:setPause", false);
             this.dialogBox.hide();
-            this.interactingObject.interact();
+            this.dialogBox.clearText();
+            if (this.interactingObject.getIsVisible()) {
+                this.context.eventBus.emit("ui:object:interacted");
+                this.interactingObject.setVisible(false);
+            }            
         });
         this.context.eventBus.on("dialog:say", (cmd: DialogCommand) => {
             this.handleDialog(cmd);
@@ -51,14 +76,19 @@ export default class UiManager {
             this.handleChoices(cmd);
         });
 
-        this.context.eventBus.on("ui:object:interact", (obj: ObjectData) => {
-            this.interactingObject.setObject(obj, this.context.assetManager.get(obj.sprite))
-            this.context.eventBus.emit("dialog:object:interact", obj.propId);
-            this.interactingObject.setInteraction(() => {
-                this.context.eventBus.emit("ui:object:interacted");
-                this.interactingObject.setVisible(false);
-                this.dialogBox.hide();
-            });
+        this.context.eventBus.on("fade:in", (duration: number) => {
+            return this.fadeOverlay.fadeIn(duration);
+        });
+        this.context.eventBus.on("fade:out", (duration: number) => {
+            return this.fadeOverlay.fadeOut(duration);
+        });
+        this.context.eventBus.on("fade:hold", (seconds: number) => {
+            return this.fadeOverlay.hold(seconds);
+        });
+
+        this.context.eventBus.on("ui:object:interact", (data: {obj: ObjectData, npcId?: string, target?: string}) => {
+            this.interactingObject.setObject(data.obj, this.context.assetManager.get(data.obj.sprite))
+            this.context.eventBus.emit("dialog:object:interact", {npcId: data.npcId, target: data.target});
         })
     }
 
@@ -86,9 +116,9 @@ export default class UiManager {
 
             const btn = new DialogOptionButton(
                 new Rect(
-                    this.context.settingsManager.data.resolution.width/2 - textWidth/2, 
-                    this.dialogBox.getRect().y - 60 - (i * 60), 
-                    textWidth, 
+                    this.context.settingsManager.data.resolution.width / 2 - textWidth / 2,
+                    this.dialogBox.getRect().y - 60 - (i * 60),
+                    textWidth,
                     50),
                 opt.text,
                 fontSize,
@@ -116,39 +146,25 @@ export default class UiManager {
 
     update(dt: number, scene: SceneType | null) {
 
-        for (const e of this.elements) {
-            if (!e.update) return;
-            e.update(dt);            
-        }
+        const input = this.context.inputManager;
 
-        this.dialogBox.update(dt);
+        this.elements.forEach(e => e.update(input));
 
         if (scene && scene.showHud()) {
             this.gameHud.update();
         }
 
-        const input = this.context.inputManager;
+        this.choiceButtons.forEach(b => b.update(input));
+
+        this.dialogBox.update(input, dt);
         
-        if (this.dialogBox.getIsVisible() || this.interactingObject.getIsVisible()) {
-            if (this.choiceButtons.length > 0) {
-                for (const b of this.choiceButtons) {
-                    b.setIsHovering(false);
-                    if (input.getMouseRect().collide(b.getRect())) {
-                        b.setIsHovering(true);
-                        if (input.isMouseDown() && !input.isMouseConsumed()) {
-                            input.consumeMouse();
-                            b.interact();
-                        }
-                    }
-                }
-            } else if (this.dialogBox.getIsVisible() && input.isMouseDown() && !input.isMouseConsumed()) {
-                input.consumeMouse();
-                this.dialogBox.interact();
-                if (!this.dialogBox.getIsVisible()) {
-                    this.interactingObject.interact();
-                }
-            }
-        }
+        this.interactingObject.update(input);
+
+        this.fadeOverlay.update(dt);
+
+        this.posLabel.setText(`(${input.getMousePosition().x.toFixed(1)}, ${input.getMousePosition().y.toFixed(1)})`);
+
+        this.posLabel.setRect(new Rect(input.getMousePosition().x - 40, input.getMousePosition().y - 20, 80, 0));
     }
 
     render(ctx: CanvasRenderingContext2D, scene: SceneType | null) {
@@ -159,13 +175,17 @@ export default class UiManager {
 
         this.elements.forEach(e => e.render(ctx));
 
-        if (this.interactingObject.getIsVisible()) this.interactingObject.render(ctx);
+        this.interactingObject.render(ctx);
 
         this.dialogBox.render(ctx);
 
         this.choiceButtons.forEach(b => b.render(ctx));
 
+        this.fadeOverlay.render(ctx);
+
         const input = this.context.inputManager.getMouseRect();
-        ctx.fillRect(input.x, input.y, 5, 5)
+        ctx.fillRect(input.x, input.y, 5, 5);
+
+        this.posLabel.render(ctx);
     }
 }

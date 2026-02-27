@@ -11,10 +11,10 @@ export default class NPCFactory {
     createNPC(data: NPCData) : NPC {
         return new NPC(
             data.id,
-            new Rect(data.x, data.y, data.width, data.height),            
+            new Rect(data.x, data.y, data.width, data.height),
             this.gameContext.assetManager.get(data.sprite),
             data.sprite_clip,
-            () => this.gameContext.eventBus.emit("dialog:npc:interact", data.id)
+            () => this.gameContext.eventBus.emit("dialog:npc:interact", {npcId: data.id})
         );
     }
 }

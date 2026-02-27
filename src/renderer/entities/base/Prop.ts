@@ -8,6 +8,7 @@ export default class Prop extends InteractiveObject {
     private whiteSprite: HTMLCanvasElement | null = null;
 
     constructor(
+        public id: string,
         rect: Rect,
         sprite: HTMLImageElement,
         sprite_clip: [number, number, number, number],

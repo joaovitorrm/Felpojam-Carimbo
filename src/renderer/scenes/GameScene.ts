@@ -29,6 +29,12 @@ export default class GameScene extends SceneType {
         this.handleOnEnter(level);
         this.handleOnExit(level);
         this.createNPCs(level);
+
+        context.eventBus.on("scene:object:collect", (obj: string) => this.handleObjectCollected(obj));
+    }
+
+    private handleObjectCollected(obj: string) : void {
+        this.objects = this.objects.filter((o) => o.id !== obj);
     }
 
     private createBackground(data: LevelData): void {
@@ -46,13 +52,13 @@ export default class GameScene extends SceneType {
     private createObjects(data: LevelData): void {
         for (const obj of data.objects) {
             const interaction = () => {
-                switch (obj.interactType) {
+                switch (obj.interactType.type) {
                     case "dialog":
-                        this.context.eventBus.emit("ui:object:interact", obj);
+                        this.context.eventBus.emit("ui:object:interact", {obj: obj, npcId: obj.interactType.npcId, target: obj.interactType.target});
                         prop.setInFocus(true);
                         this.context.eventBus.once("ui:object:interacted", () => { prop.setInFocus(false) });
                         break;
-                    case "changeScene":
+                    case "sceneChange":
                         this.context.eventBus.emit("scene:change", obj.next!);
                         break;
                     default:
@@ -61,6 +67,7 @@ export default class GameScene extends SceneType {
             };
 
             const prop = new Prop(
+                obj.id,
                 new Rect(obj.x, obj.y, obj.width, obj.height),
                 this.context.assetManager.get(obj.sprite),
                 obj.sprite_clip,
@@ -75,9 +82,12 @@ export default class GameScene extends SceneType {
     private createInteractiveAreas(data: LevelData): void {
         for (const area of data.interactiveAreas) {
             const interaction = () => {
-                switch (area.interactType) {
-                    case "changeScene":
-                        this.context.eventBus.emit("scene:change", area.next!);
+                switch (area.interactType.type) {
+                    case "sceneChange":
+                        this.context.eventBus.emit("scene:change", area.interactType.next);
+                        break;
+                    case "dialog":
+                        this.context.eventBus.emit("dialog:npc:interact", {npcId: area.interactType.npcId, target: area.interactType.target});
                         break;
                     default:
                         break;
@@ -109,6 +119,15 @@ export default class GameScene extends SceneType {
                     }
                     case "sound": {
                         func = () => this.context.eventBus.emit("audio:play", { id: command.sound, category: command.category, options: command.options });
+                        break;
+                    }
+                    case "fadeIn": {
+                        func = () => this.context.eventBus.emit("fade:in", command.seconds);
+                        break;
+                    }
+                    case "hold": {
+                        func = () => this.context.eventBus.emit("fade:hold", command.seconds);
+                        break;
                     }
                 }
 
@@ -127,6 +146,14 @@ export default class GameScene extends SceneType {
                         func = () => this.context.eventBus.emit("audio:stop", { id: command.sound });
                         break;
                     }
+                    case "fadeOut": {
+                        func = async () => await this.context.eventBus.emit("fade:out", command.seconds);
+                        break;
+                    }
+                    case "hold": {
+                        func = async () => await this.context.eventBus.emit("fade:hold", command.seconds);
+                        break;
+                    }
                 }
 
                 if (func) this.onExitFunctions.push(func);
@@ -137,7 +164,7 @@ export default class GameScene extends SceneType {
     render(ctx: CanvasRenderingContext2D): void {
         if (!this.background) return;
         ctx.drawImage(this.background, 0, 0, this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
-        this.npcs.forEach((e) => { e.render(ctx); /* e.renderHitBox(ctx) */ });
+        this.npcs.forEach((e) => { e.render(ctx); /* e.renderHitBox(ctx) */});
         this.objects.forEach((e) => { if (!e.getIsInFocus()) e.render(ctx); /* e.renderHitBox(ctx) */ });
         //this.interactiveAreas.forEach((e) => e.render(ctx));
     }
@@ -159,12 +186,11 @@ export default class GameScene extends SceneType {
         });
     }
 
-    onEnter(): void {
-        this.onEnterFunctions.forEach(f => f());
+    async onEnter(): Promise<void> {
+        for (const f of this.onEnterFunctions) await f();
     }
 
-    onExit(): void {
-        console.log("A");
-        this.onExitFunctions.forEach(f => f());
+    async onExit(): Promise<void> {
+        for (const f of this.onExitFunctions) await f();
     }
 }

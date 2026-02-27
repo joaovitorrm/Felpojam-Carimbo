@@ -8,19 +8,25 @@ export default class SceneManager {
 
     private currentScene: SceneType[] = [];
     private loadedScenes: Map<string, SceneType> = new Map();
-    private isPaused : boolean = false;
+    private isPaused: boolean = false;
 
     constructor(private context: GameContext) {
-        context.eventBus.on("scene:change", (scene: Scenes) => {
-            this.changeScene(scene);
-        })
+        context.eventBus.on("scene:change", async (scene: Scenes) => {
+            await this.changeScene(scene);
+        });
 
         context.eventBus.on("scene:push", (scene: Scenes) => {
+            context.eventBus.emit("dialog:stopped");
+            context.eventBus.emit("audio:pauseAll");
             this.pushScene(scene);
         })
 
         context.eventBus.on("scene:pop", () => {
             this.popScene();
+            if (this.currentScene.length === 1) {
+                context.eventBus.emit("dialog:unstop");
+                context.eventBus.emit("audio:unpauseAll");
+            };
         })
 
         context.eventBus.on("scene:setPause", (val: boolean) => {
@@ -28,32 +34,37 @@ export default class SceneManager {
         })
     }
 
-    public setCurrentScene(scene: Scenes) {
-        if (this.currentScene.at(-1) !== undefined) {
-            this.currentScene.at(-1)!.onExit();
+    public async changeScene(scene: Scenes) {
+
+        const current = this.currentScene.at(-1);
+
+        if (current) {
+            await current.onExit();
         }
+
         if (!this.loadedScenes.has(scene)) {
-            this.loadedScenes.set(scene, SceneFactory[scene](this.context));            
+            this.loadedScenes.set(scene, SceneFactory[scene](this.context));
         }
-        this.loadedScenes.get(scene)!.onEnter();
+
+        const newScene = this.loadedScenes.get(scene)!;
+
+        this.currentScene = [newScene];
+
+        await newScene.onEnter();
     }
 
-    public changeScene(scene: Scenes) {
-        if (!this.loadedScenes.has(scene)) {
-            this.setCurrentScene(scene);
-        }
-        this.currentScene = [this.loadedScenes.get(scene)!];
+    public async pushScene(scene: Scenes) {
+        const newScene = SceneFactory[scene](this.context);
+        this.currentScene.push(newScene);
+        await newScene.onEnter();
     }
 
-    public pushScene(scene: Scenes) {
-        if (!this.loadedScenes.has(scene)) {
-            this.setCurrentScene(scene); 
-        }
-        this.currentScene.push(this.loadedScenes.get(scene)!);
-    }
+    public async popScene(): Promise<void> {
+        const top = this.currentScene.pop();
 
-    public popScene(): void {
-        this.currentScene.pop();
+        if (top) {
+            await top.onExit();
+        }
     }
 
     public getCurrentScene(): SceneType | null {

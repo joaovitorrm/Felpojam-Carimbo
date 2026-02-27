@@ -29,14 +29,14 @@ export type NPCData = {
 }
 
 export type ObjectData = {
-    propId: PropsKey;
+    id: string;
     sprite: ObjectAssetsKey;
     sprite_clip: [number, number, number, number];
     x: number;
     y: number;
     width: number;
     height: number;
-    interactType: InteractionType;
+    interactType: LevelCommand;
     next?: LevelsKey
 }
 
@@ -46,16 +46,19 @@ export type InteractiveArea = {
     y: number;
     width: number;
     height: number;
-    interactType: InteractionType;
-    next?: LevelsKey;
+    interactType: LevelCommand;
 }
 
 export type LevelCommand = 
-{ type: "say", target: PropsKey, speaker: string } |
+{ type: "say", text: string, speaker: string } |
 { type: "dialog"; target: string; npcId: NPCId } |
 { type: "jump"; target: string } |
 { type: "sceneChange"; next: LevelsKey } |
-{ type: "setFlag"; key: string; value: boolean } | 
+{ type: "setFlag"; key: string; value: boolean } |
 { type: "if"; condition: string; then: string; else?: string } |
-{ type: "sound"; sound: SoundsKey; category: AudioCategory; options?: PlayOptions } | 
-{ type: "stopSound"; sound: SoundsKey }
+{ type: "sound"; sound: SoundsKey; category: AudioCategory; options?: PlayOptions } |
+{ type: "stopSound"; sound: SoundsKey } |
+{ type: "fadeOut"; seconds: number } |
+{ type: "fadeIn"; seconds: number } |
+{ type: "hold"; seconds: number } |
+{ type: "collect"; target: PropsKey }

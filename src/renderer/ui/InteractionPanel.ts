@@ -1,3 +1,4 @@
+import type InputManager from "../core/InputManager";
 import type { ObjectData } from "../types/LevelData";
 import { Rect } from "../util/utils";
 import { UiElement } from "./UiElement";
@@ -12,8 +13,8 @@ export default class InteractionPanel extends UiElement {
     constructor(
         rect: Rect,
         private padding: number,
-        private interaction: Function = () => { },
-        private handleHover: Function = () => { }
+        public interact: Function = () => { },
+        public hover: Function = () => { }
     ) {
         super(rect);
     }
@@ -46,14 +47,16 @@ export default class InteractionPanel extends UiElement {
     }
 
     setInteraction(func: Function): void {
-        this.interaction = func;
+        this.interact = func;
     }
 
     setHover(func: Function): void {
-        this.handleHover = func;
+        this.hover = func;
     }
 
     render(ctx: CanvasRenderingContext2D): void {
+        if (!this.visible) return;
+
         ctx.drawImage(
             this.sprite!,
             ...this.object!.sprite_clip as [number, number, number, number],
@@ -62,10 +65,18 @@ export default class InteractionPanel extends UiElement {
             this.objectRect.width - this.padding * 2,
             this.objectRect.height - this.padding * 2);
     }
-    interact(): void {
-        this.interaction();
-    }
-    hover(): void {
-        this.handleHover()
+
+    update(input: InputManager) : void {
+        if (!this.visible) return;
+        
+        super.update(input);
+
+        if (this.hovered) {
+            this.hover();
+            if (input.isMouseDown() && !input.isMouseConsumed()) {
+                input.consumeMouse();
+                this.interact();
+            }
+        } 
     }
 }
