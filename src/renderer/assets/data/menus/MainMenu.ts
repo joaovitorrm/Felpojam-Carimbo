@@ -24,7 +24,7 @@ export const MainMenu: MenuData = {
                 }
             },
             interactType: "changeScene",
-            next: "reportagem"
+            next: "quadro_pistas"
         },
         {
             id: "options",
