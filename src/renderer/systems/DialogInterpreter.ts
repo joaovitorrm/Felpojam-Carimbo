@@ -60,13 +60,14 @@ export class DialogInterpreter {
                 break;
 
             case "if":
-                if (this.state.getVar(cmd.condition)) {
+                if (this.state.hasFlag(cmd.condition)) {
                     this.currentNode = cmd.then;
                     this.commandIndex = 0;
                     this.run();
                 } else {
-                    this.currentNode = cmd.else!;
-                    this.commandIndex = 0;
+                    if (!cmd.else) break;
+                    this.currentNode = cmd.else;
+                    this.commandIndex = 0;                    
                     this.run();
                 }
                 break;

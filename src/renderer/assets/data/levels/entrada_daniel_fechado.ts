@@ -20,9 +20,9 @@ export const entrada_daniel_fechado : LevelData = {
             seconds: 1
         },
         {
-            type: "say",
-            speaker: "Você",
-            text: "Que bom que foi fácil segui-lo naquele dia. E que os vizinhos gostam de fofocar."
-        }
+            type: "dialog",
+            npcId: "Protagonista",
+            target: "entrada_daniel_fechado"
+        },        
     ]
 }

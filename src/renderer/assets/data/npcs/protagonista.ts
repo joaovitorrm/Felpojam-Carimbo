@@ -1,6 +1,4 @@
 import type { DialogScript } from "../../../types/DialogTypes";
-import { bernardo } from "../props/bernardo";
-import { vinicius } from "../props/vinicius";
 
 //const protagonistaName = "Marcos Carvalho";
 
@@ -60,7 +58,7 @@ export const Protagonista: DialogScript = {
                 type: "say",
                 speaker: "",
                 text: "Era como um sobrinho que nunca tive."
-            },            
+            },
             {
                 type: "say",
                 speaker: "",
@@ -167,7 +165,7 @@ export const Protagonista: DialogScript = {
                     }
                 ]
             }
-        ],        
+        ],
         pegarEnvelope: [
             {
                 type: "setFlag",
@@ -203,6 +201,35 @@ export const Protagonista: DialogScript = {
                 type: "sceneChange",
                 next: "entrada_daniel_fechado"
             }
+        ],
+        entrada_daniel_fechado: [
+            {
+                type: "if",
+                condition: "danielSemEnvelope",
+                then: "daniel_sem_envelope",
+            },
+            {
+                type: "say",
+                speaker: "Você",
+                text: "Que bom que foi fácil segui-lo naquele dia. E que os vizinhos gostam de fofocar."
+            },
+            {
+                type: "say",
+                speaker: "",
+                text: "Ding Dong!"
+            },
+            {
+                type: "sceneChange",
+                next: "entrada_daniel_aberto"
+            }
+        ],
+
+        daniel_sem_envelope: [
+            {
+                type: "say",
+                speaker: "Você",
+                text: "Espera! Daniel, você está em perigo!"
+            },
         ],
         nada: []
     }
