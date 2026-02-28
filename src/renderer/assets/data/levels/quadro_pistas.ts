@@ -4,7 +4,7 @@ import type { LevelData } from "../../../types/LevelData";
 export const quadro_pistas: LevelData = {
     id: "quadro_de_pistas",
     background: "quadro_pistas",
-
+    type: "level",
     npcs: [],
 
     objects: [
@@ -147,23 +147,24 @@ export const quadro_pistas: LevelData = {
                 target: "envelope",
                 npcId: "Protagonista"
             }
-        }
-    ],
-
-    interactiveAreas: [
+        },
         {
-            id: "quadro_sair",
-            height: 100,
-            width: 500,
-            x: 600,
-            y: 700,
+            id: "chave",
+            sprite: "chave",
+            sprite_clip: [290, 340, 550, 480],
+            x: 80,
+            y: 650,
+            width: 90,
+            height: 45,
             interactType: {
                 type: "dialog",
-                npcId: "Protagonista",
-                target: "quadro_saindo"
+                target: "quadro_saindo",
+                npcId: "Protagonista"
             }
         }
     ],
+
+    interactiveAreas: [],
 
     onEnter: [
         {
@@ -174,6 +175,21 @@ export const quadro_pistas: LevelData = {
             type: "dialog",
             npcId: "Protagonista",
             target: "quadro"
+        }
+    ],
+
+    onExit: [
+        {
+            type: "fadeOut",
+            seconds: 1
+        },
+        {
+            type: "hold",
+            seconds: 2
+        },
+        {
+            type: "stopSound",
+            sound: "musica_macabra"
         }
     ]
 };

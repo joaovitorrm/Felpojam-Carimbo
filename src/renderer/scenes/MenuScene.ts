@@ -4,11 +4,14 @@ import { menus, type MenusKey } from "../assets/data/menus";
 import type GameContext from "../core/GameContext";
 import type { MenuData } from "../types/MenuData";
 import type { UiElement } from "../ui/UiElement";
+import type InteractiveArea from "../entities/base/InteractiveArea";
+import { createInteractiveArea } from "../world/factories/LevelFactory";
 
 export default class MainMenuScene extends SceneType {
 
     private elements : UiElement[] = [];
     private background : HTMLImageElement | null = null;
+    private interactiveAreas: InteractiveArea[] = [];
 
     constructor(private context: GameContext, menuKey: MenusKey) {
         super();
@@ -17,10 +20,18 @@ export default class MainMenuScene extends SceneType {
 
         this.createBackground(data);
         this.createObjects(data);
+        this.createInteractiveAreas(data);
     }
 
     private createBackground(data: MenuData) : void {
         this.background = this.context.assetManager.get(data.background);
+    }
+
+    private createInteractiveAreas(data: MenuData) : void {
+        data.interactiveAreas.forEach(i => {
+            const ia = createInteractiveArea(this.context, i);
+            this.interactiveAreas.push(ia);
+        })
     }
 
     private createObjects(data: MenuData) : void {
@@ -38,13 +49,16 @@ export default class MainMenuScene extends SceneType {
     onExit(): void {
         
     }
+    
     render(ctx: CanvasRenderingContext2D): void {
         if (!this.background) return;
         ctx.drawImage(this.background, 0, 0, this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
         this.elements.forEach(e => e.render(ctx));
+        //this.interactiveAreas.forEach(e => e.render(ctx));
     }
     update(): void {
         const input = this.context.inputManager;
         this.elements.forEach(e => e.update(input));
+        this.interactiveAreas.forEach(e => e.update(input));
     }
 }

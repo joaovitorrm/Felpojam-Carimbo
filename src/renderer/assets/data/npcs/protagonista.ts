@@ -1,4 +1,6 @@
 import type { DialogScript } from "../../../types/DialogTypes";
+import { bernardo } from "../props/bernardo";
+import { vinicius } from "../props/vinicius";
 
 //const protagonistaName = "Marcos Carvalho";
 
@@ -111,6 +113,41 @@ export const Protagonista: DialogScript = {
                 text: "Não cheguei a tempo de novo."
             },
         ],
+        simboloDaniel: [
+            {
+                type: "say",
+                speaker: "",
+                text: "Minha suspeita de ser a próxima vítima. Foi um misto de muita insistência e sorte achar ele, o que me tomou muitos dias de observação em lugares públicos. Ele será minha melhor pista."
+            }
+        ],
+        simboloClarissa: [
+            {
+                type: "say",
+                speaker: "",
+                text: "Clarissa, marca na perna esquerda."
+            }
+        ],
+        simboloOlivia: [
+            {
+                type: "say",
+                speaker: "",
+                text: "Olívia, marca no braço esquerdo."
+            }
+        ],
+        simboloBernardo: [
+            {
+                type: "say",
+                speaker: "",
+                text: "Bernardo, marca no braço direito."
+            }
+        ],
+        simboloVinicius: [
+            {
+                type: "say",
+                speaker: "",
+                text: "Vinícius, marca na perna direita."
+            }
+        ],
         envelope: [
             {
                 type: "say",
@@ -130,7 +167,7 @@ export const Protagonista: DialogScript = {
                     }
                 ]
             }
-        ],
+        ],        
         pegarEnvelope: [
             {
                 type: "setFlag",
@@ -151,11 +188,11 @@ export const Protagonista: DialogScript = {
                 type: "choice",
                 options: [
                     {
-                        text: "Sair",
+                        text: "Sim",
                         jump: "quadro_sair"
                     },
                     {
-                        text: "Ficar",
+                        text: "Melhor pensar mais um pouco",
                         jump: "nada"
                     }
                 ]
@@ -164,7 +201,7 @@ export const Protagonista: DialogScript = {
         quadro_sair: [
             {
                 type: "sceneChange",
-                next: "quarto_daniel"
+                next: "entrada_daniel_fechado"
             }
         ],
         nada: []

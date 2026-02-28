@@ -1,3 +1,4 @@
+import type InputManager from "../../core/InputManager";
 import type { Rect } from "../../util/utils";
 import { Entity } from "./Entity";
 
@@ -19,5 +20,14 @@ export default class InteractiveArea extends Entity{
     }    
     render(ctx: CanvasRenderingContext2D): void {
         ctx.strokeRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
+    }
+    update(input: InputManager) : void {
+        if (input.getMouseRect().collide(this.rect)) {
+            this.hover();
+            if (input.isMouseDown() && !input.isMouseConsumed()) {
+                input.consumeMouse();
+                this.interact();
+            }
+        }
     }
 }

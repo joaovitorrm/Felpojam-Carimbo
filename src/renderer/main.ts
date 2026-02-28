@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const gameContext = new GameContext(settingsManager)
 
+    gameContext.eventBus.on("app:quit", () => {
+        window.api.quit();
+    })
+
     await gameContext.assetManager.loadAll();
     gameContext.audioManager.loadAll();
 

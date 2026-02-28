@@ -5,5 +5,7 @@ contextBridge.exposeInMainWorld("api", {
     ipcRenderer.invoke("settings:load", defaults),
 
   saveSettings: (data: any) =>
-    ipcRenderer.invoke("settings:save", data)
+    ipcRenderer.invoke("settings:save", data),
+
+  quit: () => ipcRenderer.send("app:quit")
 })

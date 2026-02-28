@@ -52,3 +52,7 @@ ipcMain.handle("settings:load", (_, defaults) => {
 ipcMain.handle("settings:save", (_, data) => {
   fs.writeFileSync(settingsPath, JSON.stringify(data, null, 2))
 })
+
+ipcMain.on("app:quit", () => {
+    app.quit();
+});

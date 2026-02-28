@@ -5,6 +5,7 @@ declare global {
     api: {
       loadSettings: (defaults: any) => Promise<any>
       saveSettings: (data: any) => Promise<void>
+      quit: () => void
     }
   }
 }

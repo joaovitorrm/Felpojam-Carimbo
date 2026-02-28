@@ -25,7 +25,7 @@ export function createObject(context: GameContext, obj: ObjectDataType): Prop {
                 context.eventBus.once("ui:object:interacted", () => { prop.setInFocus(false) });
                 break;
             case "sceneChange":
-                context.eventBus.emit("scene:change", obj.next!);
+                context.eventBus.emit("scene:change", obj.interactType.next);
                 break;
             default:
                 break;
@@ -86,8 +86,12 @@ export function createOnEnter(context: GameContext, command: LevelCommandType): 
             func = () => context.eventBus.emit("fade:in", command.seconds);
             break;
         }
+        case "fadeOut": {
+            func = () => context.eventBus.emit("fade:out", command.seconds);
+            break;
+        }
         case "hold": {
-            func = () => context.eventBus.emit("fade:hold", command.seconds);
+            func = () => context.eventBus.emit("fade:hold", {seconds: command.seconds, alpha: command.alpha});
             break;
         }
     }
@@ -105,8 +109,12 @@ export function createOnExit(context: GameContext, command: LevelCommandType): (
             func = async () => await context.eventBus.emit("fade:out", command.seconds);
             break;
         }
+        case "fadeIn": {
+            func = async () => await context.eventBus.emit("fade:in", command.seconds);
+            break;
+        }
         case "hold": {
-            func = async () => await context.eventBus.emit("fade:hold", command.seconds);
+            func = async () => await context.eventBus.emit("fade:hold", {seconds: command.seconds, alpha: command.alpha});
             break;
         }
     }

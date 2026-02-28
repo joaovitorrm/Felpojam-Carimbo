@@ -1,5 +1,5 @@
 import type GameContext from "../../core/GameContext";
-import type { MenuDataElement, MenuLabelElement } from "../../types/MenuData"
+import type { MenuDataElement, MenuLabelElement } from "../../types/MenuData";
 import { Button } from "../../ui/Button";
 import DialogOptionButton from "../../ui/DialogOptionButton";
 import { Label } from "../../ui/Label";
@@ -9,23 +9,27 @@ import { Rect } from "../../util/utils";
 
 
 const interactionFactory = (context: GameContext, data: MenuDataElement) => {
-    switch (data.interactType) {
-        case "changeScene": {
+    switch (data.interactType.type) {
+        case "sceneChange": {
+            const next = data.interactType.next;
             return () => {
-                context.eventBus.emit("scene:change", data.next!);
+                context.eventBus.emit("scene:change", next);
             };
         }
-        case "action": {
-            return data.action!;
-        }
         case "pushScene": {
+            const next = data.interactType.next;
             return () => {
-                context.eventBus.emit("scene:push", data.next!);
+                context.eventBus.emit("scene:push", next);
             };
         }
         case "popScene": {
             return () => {
                 context.eventBus.emit("scene:pop");
+            };
+        }
+        case "quitGame": {
+            return () => {
+                context.eventBus.emit("app:quit");
             };
         }
 

@@ -30,10 +30,11 @@ export default class FadeOverlay {
         });
     }
 
-    hold(seconds: number): Promise<void> {
+    hold(seconds: number, alpha?: number): Promise<void> {
         this.holdTime = seconds;
         this.holdElapsed = 0;
         this.state = "holding";
+        this.alpha = alpha || this.alpha;
 
         return new Promise(resolve => {
             this.resolve = resolve;

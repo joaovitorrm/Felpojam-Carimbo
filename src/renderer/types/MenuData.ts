@@ -1,12 +1,12 @@
 import type { ScenarioAssetsKey } from "../assets/images/scenarios";
-import type { Scenes } from "../world/factories/SceneFactory";
-import type { InteractionType } from "./InteractionData";
+import type { InteractiveAreaType, LevelCommandType } from "./LevelData";
 
 export type MenuData = {
     id: string;
     background: ScenarioAssetsKey;
     buttons: MenuDataElement[];
-    labels: MenuLabelElement[]
+    labels: MenuLabelElement[],
+    interactiveAreas: InteractiveAreaType[]
 };
 
 export type MenuLabelElement = {
@@ -30,9 +30,8 @@ export type MenuDataElement = {
     y: number;
     width: number;
     height: number;
-    interactType: InteractionType;
+    interactType: LevelCommandType;
     button: MenuButtonType;
-    next?: Scenes;
     action?: Function;
 }
 

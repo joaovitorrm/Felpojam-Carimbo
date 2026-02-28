@@ -10,6 +10,7 @@ import simboloClarissa from "./simbolo_clarissa.png";
 import simboloOlivia from "./simbolo_olivia.png";
 import simboloVinicius from "./simbolo_vinicius.png";
 import simboloDaniel from "./simbolo_daniel.png";
+import chave from "./chave.png";
 
 export const objects = {
     fotografia,
@@ -23,7 +24,8 @@ export const objects = {
     simboloClarissa,
     simboloOlivia,
     simboloVinicius,
-    simboloDaniel
+    simboloDaniel,
+    chave
 } as const
 
 export type ObjectAssetsKey = keyof typeof objects;

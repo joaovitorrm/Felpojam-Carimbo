@@ -5,7 +5,6 @@ import type NPC from "../entities/base/NPC";
 import Prop from "../entities/base/Prop";
 import type { LevelData } from "../types/LevelData";
 import { SceneType } from "../types/SceneType";
-import { Rect } from "../util/utils";
 import { createInteractiveArea, createNPC, createObject, createOnEnter, createOnExit } from "../world/factories/LevelFactory";
 
 export default class GameScene extends SceneType {
@@ -87,7 +86,7 @@ export default class GameScene extends SceneType {
         if (!this.background) return;
         ctx.drawImage(this.background, 0, 0, this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
         this.npcs.forEach((e) => { e.render(ctx); /* e.renderHitBox(ctx) */});
-        this.objects.forEach((e) => { if (!e.getIsInFocus()) e.render(ctx); /* e.renderHitBox(ctx) */ });
+        this.objects.forEach((e) => { if (!e.getIsInFocus()) e.render(ctx);  /* e.renderHitBox(ctx) */ });
         //this.interactiveAreas.forEach((e) => e.render(ctx));
     }
 
@@ -95,7 +94,7 @@ export default class GameScene extends SceneType {
         const input = this.context.inputManager;
         const inputRect = input.getMouseRect();
 
-        [this.npcs, this.objects, this.interactiveAreas].forEach(entities => {
+        [this.npcs, this.objects].forEach(entities => {
             entities.forEach((e) => {
                 if (e.rect.collide(inputRect)) {
                     e.hover();
@@ -106,6 +105,8 @@ export default class GameScene extends SceneType {
                 }
             })
         });
+
+        this.interactiveAreas.forEach((e) => e.update(input));
     }
 
     async onEnter(): Promise<void> {

@@ -1,17 +1,17 @@
-//import { sala_de_estar } from "./sala_de_estar";
-//import { outside_house } from "./outside_house";
+import { entrada_daniel_aberto } from "./entrada_daniel_aberto";
+import { entrada_daniel_fechado } from "./entrada_daniel_fechado";
 import { quadro_pistas } from "./quadro_pistas";
 import { quarto_daniel } from "./quarto_daniel";
-//import { quarto_daniel } from "./quarto_daniel";
 import { reportagem } from "./reportagem";
+import { sala_daniel } from "./sala_daniel";
 
 export const levels = {
-    //sala_de_estar,
-    quadro_pistas,
-    //outside_house,
-    quarto_daniel,
-    //quarto_daniel,
-    reportagem
+    quadro_pistas,    
+    quarto_daniel,    
+    reportagem,
+    entrada_daniel_aberto,
+    entrada_daniel_fechado,
+    sala_daniel
 } as const;
 
 export type LevelsKey = keyof typeof levels;

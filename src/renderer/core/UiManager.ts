@@ -1,5 +1,5 @@
 import type { DialogCommand } from "../types/DialogTypes";
-import type { ObjectData } from "../types/LevelData";
+import type { ObjectDataType } from "../types/LevelData";
 import type { SceneType } from "../types/SceneType";
 import { DialogBox } from "../ui/DialogBox";
 import DialogOptionButton from "../ui/DialogOptionButton";
@@ -82,11 +82,11 @@ export default class UiManager {
         this.context.eventBus.on("fade:out", (duration: number) => {
             return this.fadeOverlay.fadeOut(duration);
         });
-        this.context.eventBus.on("fade:hold", (seconds: number) => {
-            return this.fadeOverlay.hold(seconds);
+        this.context.eventBus.on("fade:hold", (data: {seconds: number, alpha?: number}) => {
+            return this.fadeOverlay.hold(data.seconds, data.alpha);
         });
 
-        this.context.eventBus.on("ui:object:interact", (data: {obj: ObjectData, npcId?: string, target?: string}) => {
+        this.context.eventBus.on("ui:object:interact", (data: {obj: ObjectDataType, npcId?: string, target?: string}) => {
             this.interactingObject.setObject(data.obj, this.context.assetManager.get(data.obj.sprite))
             this.context.eventBus.emit("dialog:object:interact", {npcId: data.npcId, target: data.target});
         })
@@ -110,15 +110,14 @@ export default class UiManager {
         const ctx = document.createElement("canvas").getContext("2d")!;
         ctx.font = `${fontSize}px Arial`;
 
+        const width = Math.max(cmd.options.map(opt => ctx.measureText(opt.text).width).reduce((a, b) => a + b, 0), 300);
+
         cmd.options.forEach((opt, i) => {
-
-            const textWidth = ctx.measureText(opt.text).width + 25;
-
             const btn = new DialogOptionButton(
                 new Rect(
-                    this.context.settingsManager.data.resolution.width / 2 - textWidth / 2,
+                    this.context.settingsManager.data.resolution.width / 2 - width / 2,
                     this.dialogBox.getRect().y - 60 - (i * 60),
-                    textWidth,
+                    width,
                     50),
                 opt.text,
                 fontSize,

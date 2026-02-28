@@ -2,7 +2,8 @@ import type { MenuData } from "../../../types/MenuData";
 
 export const OptionsMenu: MenuData = {
     id: "optionsMenu",
-    background: "computador",
+    background: "main_menu",
+    interactiveAreas: [],
     buttons: [
         {
             id: "backButton",
@@ -10,7 +11,9 @@ export const OptionsMenu: MenuData = {
             y: 200,
             width: 50,
             height: 50,
-            interactType: "popScene",
+            interactType: {
+                type: "popScene"
+            },
             button: {
                 type: "labelButton",
                 props: {
@@ -30,7 +33,11 @@ export const OptionsMenu: MenuData = {
             y: 270,
             width: 200,
             height: 15,
-            interactType: "action",
+            interactType: {
+                type: "if",
+                condition: "textSpeed",
+                then: ""
+            },
             button: {
                 type: "sliderButton",
                 props: {
