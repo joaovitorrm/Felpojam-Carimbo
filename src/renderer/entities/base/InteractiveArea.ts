@@ -18,7 +18,8 @@ export default class InteractiveArea extends Entity{
     hover(): void {
         this.handleHover();
     }    
-    render(ctx: CanvasRenderingContext2D): void {
+    render(ctx: CanvasRenderingContext2D): void {}
+    renderHitBox(ctx: CanvasRenderingContext2D): void {
         ctx.strokeRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
     }
     update(input: InputManager) : void {

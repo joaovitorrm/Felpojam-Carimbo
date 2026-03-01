@@ -33,6 +33,7 @@ export type ObjectDataType = {
     id: string;
     sprite: ObjectAssetsKey;
     sprite_clip: [number, number, number, number];
+    hitbox?: [number, number, number, number];
     x: number;
     y: number;
     width: number;
@@ -67,4 +68,6 @@ export type LevelCommandType =
 { type: "pushScene"; next: MenusKey } |
 { type: "popScene" } |
 { type: "quitGame" } |
-{ type: "zoomObject"; npcId: string; target: string; objectAsset: ObjectAssetsKey; width: number; height: number }
+{ type: "zoomObject"; npcId: string; target: string; objectAsset: ObjectAssetsKey; width: number; height: number } |
+{ type: "pausePlayer" } |
+{ type: "unpausePlayer" }

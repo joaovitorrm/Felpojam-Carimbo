@@ -20,7 +20,7 @@ export default class UiManager {
     private interactingObject: InteractionPanel;
     private gameHud: GameHud;
     private fadeOverlay: FadeOverlay;
-    private posLabel: Label;
+    //private posLabel: Label;
 
     constructor(private context: GameContext) {
 
@@ -38,7 +38,7 @@ export default class UiManager {
 
         this.fadeOverlay = new FadeOverlay(this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
 
-        this.posLabel = new Label(new Rect(0, 0, 0, 0), "", "white", 20, "left", "top", true);
+        //this.posLabel = new Label(new Rect(0, 0, 0, 0), "", "hsl(0, 0%, 10%)", 20, "left", "top", true);
 
         this.registerEvents();
     }
@@ -46,7 +46,6 @@ export default class UiManager {
     private registerEvents() {
         this.context.eventBus.on("dialog:started", () => {
             this.context.eventBus.emit("scene:setPause", true);
-            this.dialogBox.show();
         });
 
         this.context.eventBus.on("dialog:stopped", () => {
@@ -72,6 +71,7 @@ export default class UiManager {
         });
 
         this.context.eventBus.on("dialog:say", (cmd: DialogCommand) => {
+            this.dialogBox.show();
             this.handleDialog(cmd);
         });
         this.context.eventBus.on("dialog:choice", (cmd: DialogCommand) => {
@@ -118,7 +118,7 @@ export default class UiManager {
         const ctx = document.createElement("canvas").getContext("2d")!;
         ctx.font = `${fontSize}px Arial`;
 
-        const width = Math.max(cmd.options.map(opt => ctx.measureText(opt.text).width).reduce((a, b) => a + b, 0), 300);
+        const width = Math.max(cmd.options.map(opt => ctx.measureText(opt.text).width).reduce((a, b) => a > b ? a : b, 0) + 60, 300);
 
         cmd.options.reverse().forEach((opt, i) => {
             const btn = new DialogOptionButton(
@@ -129,8 +129,8 @@ export default class UiManager {
                     50),
                 opt.text,
                 fontSize,
-                "black",
-                "white",
+                "hsla(0, 0%, 100%, 0.9)",
+                "hsla(0, 0%, 20%, 0.8)",
                 "middle",
                 "center",
                 () => {
@@ -163,17 +163,17 @@ export default class UiManager {
 
         this.choiceButtons.forEach(b => b.update(input));
 
-        this.dialogBox.update(input, dt);
+        this.dialogBox.update(input, dt * this.context.settingsManager.data.textSpeed);
         
         this.interactingObject.update(input);
 
         this.fadeOverlay.update(dt);
 
-        const posLabelText = `(${input.getMousePosition().x.toFixed(1)}, ${input.getMousePosition().y.toFixed(1)})`;
+        //const posLabelText = `(${input.getMousePosition().x.toFixed(1)}, ${input.getMousePosition().y.toFixed(1)})`;
 
-        this.posLabel.setText(posLabelText);
+        //this.posLabel.setText(posLabelText);
 
-        this.posLabel.setRect(new Rect(Math.max(input.getMousePosition().x - 40, 0), Math.max(input.getMousePosition().y - 20, 0), 80, 0));
+        //this.posLabel.setRect(new Rect(Math.max(input.getMousePosition().x - 40, 0), Math.max(input.getMousePosition().y - 20, 0), 80, 0));
     }
 
     render(ctx: CanvasRenderingContext2D, scene: SceneType | null) {
@@ -192,9 +192,9 @@ export default class UiManager {
 
         this.dialogBox.render(ctx);
 
-        const input = this.context.inputManager.getMouseRect();
-        ctx.fillRect(input.x, input.y, 5, 5);
+        //const input = this.context.inputManager.getMouseRect();
+        //ctx.fillRect(input.x, input.y, 5, 5);
 
-        this.posLabel.render(ctx);
+        //this.posLabel.render(ctx);
     }
 }

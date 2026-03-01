@@ -55,7 +55,9 @@ export default class MenuElementsFactory {
                     props.value,
                     props.min,
                     props.max,
-                    data.interactType ? InteractionFactory.create(context, data.interactType) : () => { },
+                    () => {
+                        context.eventBus.emit("slider:change", data.id);
+                    },
                     () => { }
                 )
             }

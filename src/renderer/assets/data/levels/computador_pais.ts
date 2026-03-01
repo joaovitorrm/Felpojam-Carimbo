@@ -5,24 +5,27 @@ export const computador_pais : LevelData = {
     type: "level",
     background: "pc_pais_pai",
 
-    interactiveAreas: [
-        {
-            id: "usuario_seita",
-            x: 50,
-            y: 508,
-            width: 190,
-            height: 140,
-            interactType: {
-                type: "sceneChange",
-                next: "computador_pais_seita"
-            }
-        }
-    ],
+    interactiveAreas: [],
 
     npcs: [
     ],
 
     objects: [
+        {
+            id: "usuario_seita",
+            sprite: "usuarioSeita",
+            sprite_clip: [0, 0, 1920, 1080],
+            hitbox: [50, 508, 140, 140],
+            x: 0,
+            y: 0,
+            width: 1280,
+            height: 720,
+            interactType: {
+                type: "dialog",
+                npcId: "Protagonista",
+                target: "trocar_usuario_seita"
+            }
+        }
     ],
 
     onEnter: [
@@ -31,10 +34,19 @@ export const computador_pais : LevelData = {
             seconds: 1,
         },
         {
+            type: "sound",
+            category: "bgm",
+            sound: "musica_triste",
+            options: {
+                loop: true,
+                volume: 0.2
+            }
+        },
+        {
             type: "hold",
             seconds: 2,
             firstTimeOnly: true
-        },
+        },        
         {
             type: "dialog",
             npcId: "Protagonista",
@@ -43,9 +55,5 @@ export const computador_pais : LevelData = {
     ],
 
     onExit: [
-        {
-            type: "fadeOut",
-            seconds: 1
-        }
     ]
 }

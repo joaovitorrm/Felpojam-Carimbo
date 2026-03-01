@@ -25,6 +25,7 @@ export default class LevelFactory {
             new Rect(obj.x, obj.y, obj.width, obj.height),
             context.assetManager.get(obj.sprite),
             obj.sprite_clip,
+            obj.hitbox ?? null,
             InteractionFactory.createByObjectData(context, obj),
             () => { }
         );

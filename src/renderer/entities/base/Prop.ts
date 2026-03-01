@@ -12,7 +12,8 @@ export default class Prop extends InteractiveObject {
         rect: Rect,
         sprite: HTMLImageElement,
         sprite_clip: [number, number, number, number],
-        private interact: Function,
+        private hitbox: [number, number, number, number] | null = null,
+        public interact: Function,
         private hover: Function
     ) {
         super(rect, sprite, sprite_clip);
@@ -47,9 +48,15 @@ export default class Prop extends InteractiveObject {
         this.isVisible = visible;
     }
 
-    update(input: InputManager): void {
+    override update(input: InputManager): void {
         if (!this.isVisible) return;
-        super.update(input);
+
+        if (this.hitbox !== null) {
+            this.hovered = input.getMouseRect().collide(new Rect(...this.hitbox));
+        } else {
+            this.hovered = input.getMouseRect().collide(this.rect);
+        }
+        
         if (this.hovered) {
             this.hover();
             if (input.isMouseDown() && !input.isMouseConsumed()) {
@@ -66,11 +73,11 @@ export default class Prop extends InteractiveObject {
     }
 
     renderOutline(ctx: CanvasRenderingContext2D): void {
-        const white = this.getWhiteSprite();
-        ctx.drawImage(white, this.rect.x - 3, this.rect.y - 3, this.rect.width + 6, this.rect.height + 6);
+        ctx.drawImage(this.getWhiteSprite(), this.rect.x - 3, this.rect.y - 3, this.rect.width + 6, this.rect.height + 6);
     }
 
     renderHitBox(ctx: CanvasRenderingContext2D): void {
-        ctx.strokeRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
+        if (this.hitbox === null) ctx.strokeRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
+        else ctx.strokeRect(...this.hitbox);
     }
 }

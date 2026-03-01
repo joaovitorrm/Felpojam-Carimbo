@@ -13,7 +13,7 @@ export const MainMenu: MenuData = {
             height: 70,
             interactType: {
                 type: "sceneChange",
-                next: "emails"
+                next: "reportagem"
             }
         },
         {

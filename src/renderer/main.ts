@@ -11,6 +11,7 @@ const defaultSettings: GameSettingsData = {
     masterVolume: 1,
     musicVolume: 0.8,
     sfxVolume: 0.8,
+    textSpeed: 1,
     resolution: { width: 1280, height: 720 },
     fullscreen: false
 }

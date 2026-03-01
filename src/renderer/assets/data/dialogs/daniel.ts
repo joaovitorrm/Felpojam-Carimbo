@@ -116,7 +116,7 @@ export const Daniel: DialogScript = {
         next: "sala_daniel"
       }
     ],
-    sala: [
+    sala_daniel: [
       {
         type: "say",
         speaker: "Você",
@@ -139,8 +139,8 @@ export const Daniel: DialogScript = {
       },
       {
         type: "say",
-        speaker: "Você",
-        text: "(Parece… marcas de queimadura já cicatrizadas.)"
+        speaker: "",
+        text: "Parece… marcas de queimadura já cicatrizadas."
       },
       {
         type: "say",

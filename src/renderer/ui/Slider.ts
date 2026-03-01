@@ -49,8 +49,8 @@ export default class Slider extends UiElement {
             this.hover();
             if (input.isMouseDown()) {
                 this.value = Math.round((input.getMouseRect().x - this.rect.x) / this.rect.width * (this.max - this.min)) / (this.max - this.min);
+                this.interact();
             }
-            console.log(this.getValue());
         }
 
     }

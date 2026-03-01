@@ -2,35 +2,24 @@ import type { MenuData } from "../../../types/MenuData";
 
 export const OptionsMenu: MenuData = {
     id: "optionsMenu",
-    background: "main_menu",
-    interactiveAreas: [],
-    buttons: [
+    background: "opcoes",
+    interactiveAreas: [
         {
-            id: "backButton",
-            x: 840,
-            y: 200,
-            width: 50,
+            id: "back",
+            x: 530,
+            y: 610,
+            width: 270,
             height: 50,
             interactType: {
-                type: "popScene"
-            },
-            button: {
-                type: "labelButton",
-                props: {
-                    label: "❌",
-                    fontSize: 30,
-                    color: "hsl(0, 50%, 50%)",
-                    backgroundColor: "hsl(0, 0%, 60%)",
-                    textBaseline: "middle",
-                    textAlign: "center",
-                    borderRadius: 10,
-                }
+                type: "popScene",
             }
-        },
+        }
+    ],
+    buttons: [
         {
             id: "textSpeed",
-            x: 400,
-            y: 270,
+            x: 560,
+            y: 300,
             width: 200,
             height: 15,
             button: {
@@ -38,7 +27,7 @@ export const OptionsMenu: MenuData = {
                 props: {
                     backgroundColor: "hsl(0, 50%, 0%)",
                     max: 3,
-                    value: 2,
+                    value: 1,
                     min: 1,
                     borderRadius: 10,
                     sliderBorderRadius: 10,
@@ -57,8 +46,8 @@ export const OptionsMenu: MenuData = {
             fontSize: 20,
             textAlign: "left",
             textBaseline: "middle",
-            x: 400,
-            y: 250,
+            x: 560,
+            y: 280,
             width: 200,
             height: 20,
         }

@@ -16,9 +16,10 @@ export class DialogInterpreter {
         this.currentNode = node;
         this.commandIndex = 0;
         this.running = true;
+        this.events.emit("dialog:started");
     }
 
-    async run() {
+    run() {
         if (!this.running) return;
 
         const commands = this.script.nodes[this.currentNode];
@@ -30,7 +31,7 @@ export class DialogInterpreter {
             return;
         }
 
-        await this.execute(command);
+        this.execute(command);
     }
 
     private async execute(cmd: DialogCommand) {
@@ -65,7 +66,10 @@ export class DialogInterpreter {
                     this.commandIndex = 0;
                     this.run();
                 } else {
-                    if (!cmd.else) break;
+                    if (!cmd.else) {
+                        this.next();
+                        break;
+                    };
                     this.currentNode = cmd.else;
                     this.commandIndex = 0;                    
                     this.run();
@@ -82,16 +86,26 @@ export class DialogInterpreter {
                 this.next();
                 break;
             }
+            case "sound": {
+                this.events.emit("audio:play", { id: cmd.sound, category: cmd.category, options: cmd.options });
+                this.next();
+                break;
+            }
+            case "stopSound": {
+                this.events.emit("audio:stop", { id: cmd.sound });
+                this.next();
+                break;
+            }
         }
     }
-    async next() {
+    next() {
         this.commandIndex++;
-        await this.run();
+        this.run();
     }
 
-    async goTo(target: string) {
+    goTo(target: string) {
         this.currentNode = target;
         this.commandIndex = 0;
-        await this.run();
+        this.run();
     }
 }

@@ -92,13 +92,13 @@ export default class GameScene extends SceneType {
 
     render(ctx: CanvasRenderingContext2D): void {
         if (!this.background) return;
-        ctx.drawImage(this.background, 0, 0, this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
-        this.npcs.forEach(e => e.render(ctx));
+        ctx.drawImage(this.background, 0, 0, this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);        
         this.objects.forEach(e => e.render(ctx));
-        this.interactiveAreas.forEach(e => e.render(ctx));
-
+        this.npcs.forEach(e => e.render(ctx));
+        
+        //this.interactiveAreas.forEach(e => e.renderHitBox(ctx));
+        //this.objects.forEach(e => e.renderHitBox(ctx));
         //this.npcs.forEach(e => e.renderHitBox(ctx));
-        this.objects.forEach(e => e.renderHitBox(ctx));
     }
 
     update(): void {

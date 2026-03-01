@@ -56,6 +56,11 @@ export const bad_endings: DialogScript = {
             },
             {
                 type: "say",
+                speaker: "Você",
+                text: "[ Click, som porta abrindo ]"
+            },
+            {
+                type: "say",
                 speaker: "Daniel",
                 text: "Você mora com mais alguém? Não era melhor pedir a opinião dessa pessoa também antes de eu ficar aqui?"
             },

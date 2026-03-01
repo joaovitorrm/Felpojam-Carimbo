@@ -15,7 +15,7 @@ export class DialogBox extends UiElement {
     private paused: boolean = false;
     private fontSize = 30;
     private fontFamily = "Arial";
-    private isBold = true;
+    private isItalic = true;
 
     constructor(rect: Rect, private interaction: Function) {
         super(rect);
@@ -55,9 +55,9 @@ export class DialogBox extends UiElement {
         }
     }
 
-    write(text: string, speaker: string = "") {        
+    write(text: string, speaker: string = "") {
         this.speaker = speaker;
-        this.isBold = speaker === "";
+        this.isItalic = speaker === "";
         this.fullText = this.fitText(text);
         this.text = [""];
         this.textLine = 0;
@@ -68,7 +68,7 @@ export class DialogBox extends UiElement {
     fitText(text: string): string {
 
         const ctx = document.createElement("canvas").getContext("2d")!;
-        ctx.font = `${this.isBold ? "bold " : ""} ${this.fontSize}px ${this.fontFamily}`;
+        ctx.font = `${this.isItalic ? "italic " : ""} ${this.fontSize}px ${this.fontFamily}`;
 
         let wordSize = 0;
         const textWords = text.split(" ").map((word) => {
@@ -89,10 +89,6 @@ export class DialogBox extends UiElement {
 
         if (this.speaker !== "") {
 
-            // DialogBox
-            ctx.fillStyle = "hsla(0, 0%, 10%, 0.8)";
-            ctx.fillRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
-
             ctx.font = "normal 26px Arial";
 
             // SpeakerBox
@@ -102,22 +98,22 @@ export class DialogBox extends UiElement {
             // Speaker
             ctx.fillStyle = "white";
             ctx.textAlign = "left";
-            ctx.textBaseline = "top";            
+            ctx.textBaseline = "top";
             ctx.fillText(this.speaker, this.rect.x + 25, this.rect.y - 50 + 15);
         }
 
         ctx.textAlign = "left";
         ctx.textBaseline = "top";
 
-        ctx.font = `${this.isBold ? "bold " : ""} ${this.fontSize}px ${this.fontFamily}`;
-        
+        // DialogBox
+        ctx.fillStyle = "hsla(0, 0%, 10%, 0.8)";
+        ctx.fillRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
+
+        ctx.font = `${this.isItalic ? "italic " : ""} ${this.fontSize}px ${this.fontFamily}`;
+
         ctx.fillStyle = "white";
 
-        ctx.strokeStyle = "hsl(0, 0%, 10%)";
-        ctx.lineWidth = 2;
-
         this.text.forEach((line, index) => {
-            if (this.speaker === "") ctx.strokeText(line, this.rect.x + 30, this.rect.y + 30 + index * 40);
             ctx.fillText(line, this.rect.x + 30, this.rect.y + 30 + index * 40);
         });
     }

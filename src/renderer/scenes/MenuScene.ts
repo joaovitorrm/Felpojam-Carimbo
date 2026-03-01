@@ -5,10 +5,11 @@ import type { MenuData } from "../types/MenuData";
 import type { UiElement } from "../ui/UiElement";
 import type InteractiveArea from "../entities/base/InteractiveArea";
 import MenuElementsFactory from "../world/factories/MenuElementsFactory";
+import Slider from "../ui/Slider";
 
 export default class MenuScene extends SceneType {
 
-    private elements : UiElement[] = [];
+    private elements : {id: string, element: UiElement}[] = [];
     private background : HTMLImageElement | null = null;
     private interactiveAreas: InteractiveArea[] = [];
 
@@ -20,6 +21,22 @@ export default class MenuScene extends SceneType {
         this.createBackground(data);
         this.createObjects(data);
         this.createInteractiveAreas(data);
+        this.registerEvents();
+    }
+
+    private registerEvents() : void {
+        this.context.eventBus.on("slider:change", (id: string) => {
+            switch (id) {
+                case "textSpeed": {
+                    const btn = this.elements.find(e => e.id === id);
+                    if (!btn) return;
+                    if (btn.element instanceof Slider) {
+                        this.context.settingsManager.update({ textSpeed: btn.element.getValue() });
+                    }
+                    break;
+                }
+            }
+        })
     }
 
     private createBackground(data: MenuData) : void {
@@ -34,15 +51,20 @@ export default class MenuScene extends SceneType {
 
     private createObjects(data: MenuData) : void {
         data.buttons.forEach(b => {
-            this.elements.push(MenuElementsFactory.createButton(this.context, b));
+            this.elements.push({id: b.id, element: MenuElementsFactory.createButton(this.context, b)});
         })
         data.labels.forEach(l => {
-            this.elements.push(MenuElementsFactory.createLabel(l));
+            this.elements.push({id: l.id, element: MenuElementsFactory.createLabel(l)});
         })
     }
 
     onEnter(): void {
-        
+        this.elements.forEach(e => {
+            if (e.id === "textSpeed") {
+                const btn = e.element as Slider;
+                btn.setValue(this.context.settingsManager.data.textSpeed);
+            }
+        })
     }
     onExit(): void {
         
@@ -51,12 +73,12 @@ export default class MenuScene extends SceneType {
     render(ctx: CanvasRenderingContext2D): void {
         if (!this.background) return;
         ctx.drawImage(this.background, 0, 0, this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
-        this.elements.forEach(e => e.render(ctx));
+        this.elements.forEach(e => e.element.render(ctx));
         //this.interactiveAreas.forEach(e => e.render(ctx));
     }
     update(): void {
         const input = this.context.inputManager;
-        this.elements.forEach(e => e.update(input));
+        this.elements.forEach(e => e.element.update(input));
         this.interactiveAreas.forEach(e => e.update(input));
     }
 }

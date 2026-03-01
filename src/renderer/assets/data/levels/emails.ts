@@ -86,10 +86,5 @@ export const emails : LevelData = {
             type: "fadeOut",
             seconds: 1
         },
-        {
-            type: "dialog",
-            npcId: "Protagonista",
-            target: "emails"
-        }
     ]
 }

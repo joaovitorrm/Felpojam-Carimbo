@@ -14,10 +14,14 @@ export default class SceneManager {
     private currentScene: SceneType[] = [];
     private loadedScenes: Map<string, SceneType> = new Map();
     private isPaused: boolean = false;
+    private isPlayerPaused: boolean = false;
+    private isChangingScene: boolean = false;
 
     constructor(private context: GameContext) {
         context.eventBus.on("scene:change", async (scene: Scenes) => {
+            this.isChangingScene = true;
             await this.changeScene(scene);
+            this.isChangingScene = false;
         });
 
         context.eventBus.on("scene:push", (scene: Scenes) => {
@@ -37,13 +41,15 @@ export default class SceneManager {
         context.eventBus.on("scene:setPause", (val: boolean) => {
             this.isPaused = val;
         })
+
+        context.eventBus.on("scene:playerPause", (val: boolean) => {
+            this.isPlayerPaused = val;
+        })
     }
 
     public async changeScene(scene: Scenes) {
 
         const current = this.currentScene.at(-1);
-
-        this.isPaused = true;
 
         if (current) {            
             await current.onExit();
@@ -58,8 +64,6 @@ export default class SceneManager {
         this.currentScene = [newScene];
 
         await newScene.onEnter();
-
-        this.isPaused = false;
     }
 
     private createScene(scene: Scenes): SceneType {
@@ -102,7 +106,7 @@ export default class SceneManager {
     }
 
     public update(deltaTime: number) {
-        if (this.currentScene && !this.isPaused) {
+        if (this.currentScene && !this.isPaused && !this.isChangingScene && !this.isPlayerPaused) {
             this.currentScene.at(-1)?.update(deltaTime, this.context.inputManager);
         }
     }

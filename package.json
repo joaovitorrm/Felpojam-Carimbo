@@ -33,6 +33,7 @@
     ],
 
     "win": {
+      "icon": "build/componentes.ico",
       "target": [
         {
           "target": "nsis",
@@ -42,6 +43,7 @@
     },
 
     "linux": {
+      "icon": "build/componentes.png",
       "target": ["AppImage"],
       "category": "Game"
     }

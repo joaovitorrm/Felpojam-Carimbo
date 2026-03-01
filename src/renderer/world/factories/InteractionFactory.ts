@@ -35,6 +35,10 @@ export class InteractionFactory {
                 return async () => context.eventBus.emit("scene:pop");
             case "quitGame":
                 return async () => context.eventBus.emit("app:quit");
+            case "pausePlayer":
+                return async () => context.eventBus.emit("scene:playerPause", true);
+            case "unpausePlayer":
+                return async () => context.eventBus.emit("scene:playerPause", false);
             default:
                 throw new Error("Interaction type not implemented.");
         }

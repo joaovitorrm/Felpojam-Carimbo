@@ -16,18 +16,6 @@ export const computador_pais_seita : LevelData = {
                 type: "sceneChange",
                 next: "computador_pais"
             }
-        },
-        {
-            id: "senha",
-            x: 540,
-            y: 290,
-            width: 425,
-            height: 45,
-            interactType: {
-                type: "dialog",
-                npcId: "Protagonista",
-                target: "senha_computador_seita"
-            }
         }
     ],
 
@@ -35,6 +23,36 @@ export const computador_pais_seita : LevelData = {
     ],
 
     objects: [
+        
+        {
+            id: "senha",
+            sprite: "senhaComputadorSeita",
+            sprite_clip: [0, 0, 1920, 1080],
+            hitbox: [540, 290, 425, 45],
+            x: 0,
+            y: 0,
+            width: 1280,
+            height: 720,
+            interactType: {
+                type: "dialog",
+                npcId: "Protagonista",
+                target: "senha_computador_seita"
+            }
+        },
+        {
+            id: "dica",
+            sprite: "dicaComputadorSeita",
+            sprite_clip: [0, 0, 1920, 1080],
+            hitbox: [550, 360, 55, 30],
+            x: 0,
+            y: 0,
+            width: 1280,
+            height: 720,
+            interactType: {
+                type: "sceneChange",
+                next: "computador_pais_seita_dica"
+            }
+        }
     ],
 
     onEnter: [
@@ -45,9 +63,5 @@ export const computador_pais_seita : LevelData = {
     ],
 
     onExit: [
-        {
-            type: "fadeOut",
-            seconds: 1
-        }
     ]
 }

@@ -3,6 +3,7 @@ export type GameSettingsData = {
   masterVolume: number
   musicVolume: number
   sfxVolume: number
+  textSpeed: number
   resolution: {
     width: number
     height: number
@@ -19,7 +20,7 @@ export default class SettingsManager {
       this.settings = await window.api.loadSettings(defaults);
     } else {
       this.settings = defaults
-    }    
+    }
   }
 
   async save() {

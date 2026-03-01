@@ -18,8 +18,6 @@ export default class DialogSystem {
   }
 
   async start(node: string, script: DialogScript) {
-    this.events.emit("dialog:started");
-
     this.interpreter.load(node, script);
     await this.interpreter.run();
   }

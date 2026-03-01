@@ -46,7 +46,20 @@ export const sala_daniel: LevelData = {
     ],
 
     npcs: [
-
+        {
+            id: "Daniel",
+            x: 520,
+            y: 300,
+            width: 80,
+            height: 240,
+            sprite: "Daniel",
+            sprite_clip: [220, 300, 550, 1700],
+            interactType: {
+                type: "dialog",
+                npcId: "Daniel",
+                target: "sala_daniel"
+            }
+        }
     ],
 
     objects: [
@@ -64,12 +77,12 @@ export const sala_daniel: LevelData = {
             }
         },
         {
-            id: "porta_quarto_daniel",
+            id: "porta_quarto_daniel_sala",
             x: 860,
             y: 252,
             width: 134,
             height: 240,
-            sprite: "portaQuartoDaniel",
+            sprite: "portaQuartoDanielSala",
             sprite_clip: [1286, 378, 200, 360],
             interactType: {
                 type: "sceneChange",
