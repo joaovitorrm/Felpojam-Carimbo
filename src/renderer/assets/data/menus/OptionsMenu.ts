@@ -33,11 +33,6 @@ export const OptionsMenu: MenuData = {
             y: 270,
             width: 200,
             height: 15,
-            interactType: {
-                type: "if",
-                condition: "textSpeed",
-                then: ""
-            },
             button: {
                 type: "sliderButton",
                 props: {

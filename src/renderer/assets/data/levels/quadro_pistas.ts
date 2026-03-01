@@ -17,9 +17,9 @@ export const quadro_pistas: LevelData = {
             width: 145,
             height: 210,
             interactType: {
-                type: "dialog",
+                type: "object",
                 target: "olivia",
-                npcId: "Protagonista"
+                npcId: "Protagonista",
             },
         },
         {
@@ -31,9 +31,9 @@ export const quadro_pistas: LevelData = {
             width: 90,
             height: 140,
             interactType: {
-                type: "dialog",
+                type: "object",
                 npcId: "Protagonista",
-                target: "simboloOlivia"
+                target: "simboloOlivia",
             }
         },
         {
@@ -45,9 +45,9 @@ export const quadro_pistas: LevelData = {
             width: 230,
             height: 140,
             interactType: {
-                type: "dialog",
+                type: "object",
                 target: "vinicius",
-                npcId: "Protagonista"
+                npcId: "Protagonista",
             },
         },
         {
@@ -59,9 +59,9 @@ export const quadro_pistas: LevelData = {
             width: 115,
             height: 110,
             interactType: {
-                type: "dialog",
+                type: "object",
                 npcId: "Protagonista",
-                target: "simboloVinicius"
+                target: "simboloVinicius",
             }
         },
         {
@@ -73,9 +73,9 @@ export const quadro_pistas: LevelData = {
             width: 120,
             height: 160,
             interactType: {
-                type: "dialog",
+                type: "object",
                 target: "clarissa",
-                npcId: "Protagonista"
+                npcId: "Protagonista",
             },
         },
         {
@@ -87,9 +87,9 @@ export const quadro_pistas: LevelData = {
             width: 120,
             height: 110,
             interactType: {
-                type: "dialog",
+                type: "object",
                 npcId: "Protagonista",
-                target: "simboloClarissa"
+                target: "simboloClarissa",
             }
         },
         {
@@ -101,9 +101,9 @@ export const quadro_pistas: LevelData = {
             width: 200,
             height: 180,
             interactType: {
-                type: "dialog",
+                type: "object",
                 target: "bernardo",
-                npcId: "Protagonista"
+                npcId: "Protagonista",
             },
         },
         {
@@ -115,9 +115,9 @@ export const quadro_pistas: LevelData = {
             width: 95,
             height: 125,
             interactType: {
-                type: "dialog",
+                type: "object",
                 npcId: "Protagonista",
-                target: "simboloBernardo"
+                target: "simboloBernardo",
             }
         },
         {
@@ -129,9 +129,9 @@ export const quadro_pistas: LevelData = {
             width: 210,
             height: 160,
             interactType: {
-                type: "dialog",
+                type: "object",
                 npcId: "Protagonista",
-                target: "simboloDaniel"
+                target: "simboloDaniel",
             }
         },
         {
@@ -143,9 +143,9 @@ export const quadro_pistas: LevelData = {
             width: 400,
             height: 100,
             interactType: {
-                type: "dialog",
+                type: "object",
                 target: "envelope",
-                npcId: "Protagonista"
+                npcId: "Protagonista",
             }
         },
         {
@@ -157,9 +157,9 @@ export const quadro_pistas: LevelData = {
             width: 90,
             height: 45,
             interactType: {
-                type: "dialog",
+                type: "object",
                 target: "quadro_saindo",
-                npcId: "Protagonista"
+                npcId: "Protagonista",
             }
         }
     ],

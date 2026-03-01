@@ -1,5 +1,6 @@
 {
-  "name": "felpojam-carimbo",
+  "name": "componentes",
+  "productName": "Componentes",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -21,8 +22,8 @@
   },
 
   "build": {
-    "appId": "com.felpojam.carimbo",
-    "productName": "Felpojam Carimbo",
+    "appId": "com.componentes",
+    "productName": "Componentes",
     "directories": {
       "output": "release"
     },

@@ -17,28 +17,17 @@ export default class DialogSystem {
     this.registerEvents();
   }
 
-  start(node: string, script: DialogScript) {
+  async start(node: string, script: DialogScript) {
     this.events.emit("dialog:started");
 
     this.interpreter.load(node, script);
-    this.interpreter.run();
+    await this.interpreter.run();
   }
 
   private registerEvents() {
-
-    this.events.on("dialog:npc:interact", (data: {npcId: string, target?: string}) => {
+    this.events.on("dialog:start", (data : { npcId: string, target: string}) => {
       const { node, script } = this.world.getNpcState(data.npcId, data.target);
       this.start(node, script);
-    });
-
-    this.events.on("dialog:object:interact", (data : {npcId: string, target?: string}) => {
-      const { node, script } = this.world.getPropState(data.npcId, data.target);
-      this.start(node, script);
-    })
-
-    this.events.on("dialog:start", (data : { npcId: string, target: string}) => {
-      const { script } = this.world.getNpcState(data.npcId);
-      this.start(data.target, script);
     })
 
     this.events.on("dialog:continue", () => {

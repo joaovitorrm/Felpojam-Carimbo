@@ -1,10 +1,10 @@
+import type InputManager from "../../core/InputManager";
 import { Rect } from "../../util/utils";
 import { InteractiveObject } from "./InteractiveObjects";
 
 export default class Prop extends InteractiveObject {
 
-    private inFocus: boolean = false;
-    private isHovering: boolean = false;
+    private isVisible: boolean = true;
     private whiteSprite: HTMLCanvasElement | null = null;
 
     constructor(
@@ -12,8 +12,8 @@ export default class Prop extends InteractiveObject {
         rect: Rect,
         sprite: HTMLImageElement,
         sprite_clip: [number, number, number, number],
-        private handleInteraction: Function,
-        private handleHover: Function
+        private interact: Function,
+        private hover: Function
     ) {
         super(rect, sprite, sprite_clip);
     }
@@ -43,38 +43,26 @@ export default class Prop extends InteractiveObject {
         return canvas;
     }
 
-    hover(): void {
-        this.isHovering = true;
-        this.handleHover();
+    setVisible(visible: boolean): void {
+        this.isVisible = visible;
     }
 
-    toggleFocus(): void {
-        this.inFocus = !this.inFocus;
+    update(input: InputManager): void {
+        if (!this.isVisible) return;
+        super.update(input);
+        if (this.hovered) {
+            this.hover();
+            if (input.isMouseDown() && !input.isMouseConsumed()) {
+                input.consumeMouse();
+                this.interact();
+            }
+        };
     }
 
-    getIsInFocus(): boolean {
-        return this.inFocus;
-    }
-
-    setInFocus(val: boolean): void {
-        this.inFocus = val;
-    }
-
-    setHover(func: Function): void {
-        this.handleHover = func;
-    }
-
-    setInteraction(func: Function): void {
-        this.handleInteraction = func;
-    }
-
-    interact(): void {
-        this.handleInteraction();
-    }
     render(ctx: CanvasRenderingContext2D): void {
-        if (this.isHovering) this.renderOutline(ctx);
+        if (!this.isVisible) return;
+        if (this.hovered) this.renderOutline(ctx);
         ctx.drawImage(this.sprite, ...this.sprite_clip!, this.rect.x, this.rect.y, this.rect.width, this.rect.height);
-        this.isHovering = false;
     }
 
     renderOutline(ctx: CanvasRenderingContext2D): void {

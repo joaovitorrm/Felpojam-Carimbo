@@ -10,6 +10,7 @@ export class Label extends UiElement {
         private fontSize: number,
         private textAlign: CanvasTextAlign,
         private textBaseline: CanvasTextBaseline,
+        private stroke: boolean = false
     ) {
         super(rect);
     }
@@ -28,5 +29,12 @@ export class Label extends UiElement {
 
         ctx.fillText(this.text, this.rect.x, this.rect.y, this.rect.width);
         ctx.closePath();
+
+        if (this.stroke) {
+            ctx.beginPath();
+            ctx.lineWidth = 0.4;
+            ctx.strokeText(this.text, this.rect.x, this.rect.y, this.rect.width);
+            ctx.closePath();
+        }
     }
 }

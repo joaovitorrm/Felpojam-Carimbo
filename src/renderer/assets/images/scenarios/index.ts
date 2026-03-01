@@ -5,6 +5,18 @@ import quarto_daniel from "./quarto_daniel.png";
 import reportagem from "./reportagem.png";
 import sala_daniel from "./sala_daniel.png";
 import main_menu from "./main_menu.png";
+import cafeteria from "./cafeteria.png";
+import casa_seita_aberta from "./casa_seita_aberta.png";
+import casa_seita_fechada from "./casa_seita_fechada.png";
+import dogtag from "./doggtag.png";
+import email from "./e-mail.png";
+import homem from "./homem.png";
+import marcos_ferrolho from "./marcos_ferrolho.png";
+import passagem_escadaria from "./passagem_escadaria.png";
+import pc_pais_pai from "./pc_pais_pai.png";
+import pc_pais_seita from "./pc_pais_seita.png";
+import quarto_pais_daniel from "./quarto_pais_daniel.png";
+import salao_seita from "./salao_seita.png";
 
 export const scenarios = {    
     quadro_pistas,    
@@ -13,7 +25,19 @@ export const scenarios = {
     reportagem,
     entrada_daniel_fechado,
     entrada_daniel_aberto,
-    main_menu
+    main_menu,
+    cafeteria,
+    casa_seita_aberta,
+    casa_seita_fechada,
+    dogtag,
+    email,
+    homem,
+    marcos_ferrolho,
+    passagem_escadaria,
+    pc_pais_pai,
+    pc_pais_seita,
+    quarto_pais_daniel,
+    salao_seita
 } as const;
 
 export type ScenarioAssetsKey = keyof typeof scenarios; 

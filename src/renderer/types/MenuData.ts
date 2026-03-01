@@ -30,7 +30,7 @@ export type MenuDataElement = {
     y: number;
     width: number;
     height: number;
-    interactType: LevelCommandType;
+    interactType?: LevelCommandType;
     button: MenuButtonType;
     action?: Function;
 }

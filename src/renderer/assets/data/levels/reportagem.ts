@@ -9,6 +9,9 @@ export const reportagem: LevelData = {
     objects: [],
     onEnter: [
         {
+            type: "startGame"
+        },
+        {
             type: "hold",
             alpha: 1,
             seconds: 2

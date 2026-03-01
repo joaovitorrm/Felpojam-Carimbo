@@ -1,8 +1,13 @@
+import { levels } from "../assets/data/levels";
+import { menus } from "../assets/data/menus";
+import GameScene from "../scenes/GameScene";
+import MenuScene from "../scenes/MenuScene";
 import type { SceneType } from "../types/SceneType";
-import { SceneFactory, type Scenes } from "../world/factories/SceneFactory";
 import type GameContext from "./GameContext";
 
 // CLASSE QUE LIDA COM AS TELAS DO JOGO, LIDANDO COM TROCA DE TELAS E GERENCIAMENTO
+
+type Scenes = keyof typeof levels | keyof typeof menus;
 
 export default class SceneManager {
 
@@ -38,12 +43,14 @@ export default class SceneManager {
 
         const current = this.currentScene.at(-1);
 
-        if (current) {
+        this.isPaused = true;
+
+        if (current) {            
             await current.onExit();
         }
 
         if (!this.loadedScenes.has(scene)) {
-            this.loadedScenes.set(scene, SceneFactory[scene](this.context));
+            this.createScene(scene);
         }
 
         const newScene = this.loadedScenes.get(scene)!;
@@ -51,10 +58,29 @@ export default class SceneManager {
         this.currentScene = [newScene];
 
         await newScene.onEnter();
+
+        this.isPaused = false;
+    }
+
+    private createScene(scene: Scenes): SceneType {
+        let sceneType = levels[scene as keyof typeof levels] ?? menus[scene as keyof typeof menus];
+        let newScene: SceneType;
+        if (sceneType.type === "level") {
+            newScene = new GameScene(this.context, scene as keyof typeof levels);
+            this.loadedScenes.set(scene, newScene);
+        } else {
+            newScene = new MenuScene(this.context, scene as keyof typeof menus);
+            this.loadedScenes.set(scene, newScene);
+        }
+        return newScene;
     }
 
     public async pushScene(scene: Scenes) {
-        const newScene = SceneFactory[scene](this.context);
+        if (!this.loadedScenes.has(scene)) {
+            this.createScene(scene);
+        }
+
+        const newScene = this.loadedScenes.get(scene)!;
         this.currentScene.push(newScene);
         await newScene.onEnter();
     }
@@ -65,6 +91,10 @@ export default class SceneManager {
         if (top) {
             await top.onExit();
         }
+    }
+
+    public clear() {
+        this.loadedScenes.clear();
     }
 
     public getCurrentScene(): SceneType | null {

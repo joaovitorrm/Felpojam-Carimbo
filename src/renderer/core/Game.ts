@@ -6,6 +6,12 @@ export default class Game {
 
     public constructor(private ctx: GameContext) {
         this.ctx.eventBus.emit("scene:change", 'MainMenu');
+
+        this.ctx.eventBus.on("game:start", () => {
+            this.ctx.sceneManager.clear();
+            this.ctx.worldState.reset();
+            this.ctx.dialogState.clear();
+        })
     }
 
     render(ctx: CanvasRenderingContext2D) {

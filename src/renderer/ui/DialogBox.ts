@@ -13,6 +13,9 @@ export class DialogBox extends UiElement {
     private timer: number = 0;
     private writing: boolean = false;
     private paused: boolean = false;
+    private fontSize = 30;
+    private fontFamily = "Arial";
+    private isBold = true;
 
     constructor(rect: Rect, private interaction: Function) {
         super(rect);
@@ -52,9 +55,10 @@ export class DialogBox extends UiElement {
         }
     }
 
-    write(text: string, speaker: string = "") {
-        this.fullText = this.fitText(text);
+    write(text: string, speaker: string = "") {        
         this.speaker = speaker;
+        this.isBold = speaker === "";
+        this.fullText = this.fitText(text);
         this.text = [""];
         this.textLine = 0;
         this.timer = 0;
@@ -64,7 +68,7 @@ export class DialogBox extends UiElement {
     fitText(text: string): string {
 
         const ctx = document.createElement("canvas").getContext("2d")!;
-        ctx.font = "30px Arial";
+        ctx.font = `${this.isBold ? "bold " : ""} ${this.fontSize}px ${this.fontFamily}`;
 
         let wordSize = 0;
         const textWords = text.split(" ").map((word) => {
@@ -83,31 +87,41 @@ export class DialogBox extends UiElement {
     render(ctx: CanvasRenderingContext2D) {
         if (!this.visible) return;
 
-        ctx.fillStyle = "hsla(0, 0%, 10%, 0.8)";
-        ctx.fillRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
-
         if (this.speaker !== "") {
-            ctx.fillStyle = "hsla(0, 0%, 10%, 0.5)";
-            ctx.fillRect(this.rect.x, this.rect.y - 50, 200, 50);
 
+            // DialogBox
+            ctx.fillStyle = "hsla(0, 0%, 10%, 0.8)";
+            ctx.fillRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
+
+            ctx.font = "normal 26px Arial";
+
+            // SpeakerBox
+            ctx.fillStyle = "hsla(0, 0%, 10%, 0.5)";
+            ctx.fillRect(this.rect.x, this.rect.y - 50, ctx.measureText(this.speaker).width + 50, 50);
+
+            // Speaker
             ctx.fillStyle = "white";
             ctx.textAlign = "left";
-            ctx.textBaseline = "top";
-            ctx.font = "26px Arial";
-            ctx.fillText(this.speaker, this.rect.x + 15, this.rect.y - 50 + 15);
+            ctx.textBaseline = "top";            
+            ctx.fillText(this.speaker, this.rect.x + 25, this.rect.y - 50 + 15);
         }
 
         ctx.textAlign = "left";
         ctx.textBaseline = "top";
 
+        ctx.font = `${this.isBold ? "bold " : ""} ${this.fontSize}px ${this.fontFamily}`;
+        
         ctx.fillStyle = "white";
-        ctx.font = "30px Arial";
+
+        ctx.strokeStyle = "hsl(0, 0%, 10%)";
+        ctx.lineWidth = 2;
 
         this.text.forEach((line, index) => {
+            if (this.speaker === "") ctx.strokeText(line, this.rect.x + 30, this.rect.y + 30 + index * 40);
             ctx.fillText(line, this.rect.x + 30, this.rect.y + 30 + index * 40);
         });
     }
-    
+
     interact(): void {
 
         if (!this.visible || this.paused) return;
@@ -145,7 +159,7 @@ export class DialogBox extends UiElement {
         return this.fullText.length === 0;
     }
 
-    getRect() : Rect {
+    getRect(): Rect {
         return this.rect;
     }
 

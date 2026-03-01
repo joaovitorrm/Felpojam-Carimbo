@@ -1,5 +1,6 @@
 import type GameContext from "../../core/GameContext";
 import { Rect } from "../../util/utils";
+import { InteractionFactory } from "../../world/factories/InteractionFactory";
 import { Button } from "../Button";
 import { UiElement } from "../UiElement";
 
@@ -19,9 +20,7 @@ export default class GameHud extends UiElement{
             "middle",
             "center",
             0,
-            () => {
-                context.eventBus.emit("scene:push", "OptionsMenu");
-            }
+            InteractionFactory.create(context, { type: "pushScene", next: "OptionsMenu" })
         )
 
         this.elements.push(configButton);

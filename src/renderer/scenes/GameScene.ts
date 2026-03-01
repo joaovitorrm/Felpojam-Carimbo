@@ -3,9 +3,9 @@ import type GameContext from "../core/GameContext";
 import InteractiveArea from "../entities/base/InteractiveArea";
 import type NPC from "../entities/base/NPC";
 import Prop from "../entities/base/Prop";
-import type { LevelData } from "../types/LevelData";
+import type { LevelData, ObjectDataType } from "../types/LevelData";
 import { SceneType } from "../types/SceneType";
-import { createInteractiveArea, createNPC, createObject, createOnEnter, createOnExit } from "../world/factories/LevelFactory";
+import LevelFactory from "../world/factories/LevelFactory";
 
 export default class GameScene extends SceneType {
 
@@ -15,8 +15,8 @@ export default class GameScene extends SceneType {
     private npcs: NPC[] = [];
     private objects: Prop[] = [];
     private interactiveAreas: InteractiveArea[] = [];
-    private onEnterFunctions: Function[] = [];
-    private onExitFunctions: Function[] = [];
+    private onEnterFunctions: {func: Function, once: boolean}[] = [];
+    private onExitFunctions: {func: Function, once: boolean}[] = [];
 
     constructor(private context: GameContext, sceneId: LevelsKey) {
         super();
@@ -26,14 +26,21 @@ export default class GameScene extends SceneType {
         this.createInteractiveAreas(level);
         this.createBackground(level);
         this.createObjects(level);
-        this.handleOnEnter(level);
         this.handleOnExit(level);
+        this.handleOnEnter(level);
         this.createNPCs(level);
 
-        context.eventBus.on("scene:object:collect", (obj: string) => this.handleObjectCollected(obj));
+        context.eventBus.on("scene:object:collect", (object: string) => this.handleObjectCollected(object));
+        context.eventBus.on("ui&scene:object:interact", (data: { obj: ObjectDataType }) => this.setObjectIsVisible(false, data.obj.id));
+        context.eventBus.on("scene:object:interacted", () => this.setObjectIsVisible(true));
     }
 
-    private handleObjectCollected(obj: string) : void {
+    private setObjectIsVisible(visible: boolean, obj?: string): void {
+        if (obj === undefined) this.objects.forEach((o) => o.setVisible(visible));
+        else this.objects.forEach((o) => { if (o.id === obj) o.setVisible(visible) });
+    }
+
+    private handleObjectCollected(obj: string): void {
         this.objects = this.objects.filter((o) => o.id !== obj);
     }
 
@@ -44,21 +51,21 @@ export default class GameScene extends SceneType {
 
     private createNPCs(data: LevelData): void {
         for (const npcData of data.npcs) {
-            const npc = createNPC(this.context, npcData);
+            const npc = LevelFactory.createNPC(this.context, npcData);
             this.npcs.push(npc);
         }
     }
 
     private createObjects(data: LevelData): void {
         for (const obj of data.objects) {
-            const prop = createObject(this.context, obj);
+            const prop = LevelFactory.createObject(this.context, obj);
             this.objects.push(prop);
         }
     }
 
     private createInteractiveAreas(data: LevelData): void {
         for (const area of data.interactiveAreas) {
-            const ia = createInteractiveArea(this.context, area);
+            const ia = LevelFactory.createInteractiveArea(this.context, area);
             this.interactiveAreas.push(ia);
         }
     }
@@ -66,18 +73,19 @@ export default class GameScene extends SceneType {
     private handleOnEnter(data: LevelData): void {
         if (data.onEnter) {
             data.onEnter.forEach((command) => {
-                const func = createOnEnter(this.context, command);
-                if (func) this.onEnterFunctions.push(func);
+                const func = LevelFactory.createOnEnter(this.context, command)!;
+                if (command.type === "fadeIn" || command.type === "fadeOut" || command.type === "hold") this.onEnterFunctions.push({func, once: command.firstTimeOnly ?? false});
+                else this.onEnterFunctions.push({func, once: false});
             })
-
         }
     }
 
     private handleOnExit(data: LevelData) {
         if (data.onExit) {
             data.onExit.forEach((command) => {
-                const func = createOnExit(this.context, command);
-                if (func) this.onExitFunctions.push(func);
+                const func = LevelFactory.createOnEnter(this.context, command)!;
+                if (command.type === "fadeIn" || command.type === "fadeOut" || command.type === "hold") this.onExitFunctions.push({func, once: command.firstTimeOnly ?? false});
+                else this.onExitFunctions.push({func, once: false});
             })
         }
     }
@@ -85,35 +93,32 @@ export default class GameScene extends SceneType {
     render(ctx: CanvasRenderingContext2D): void {
         if (!this.background) return;
         ctx.drawImage(this.background, 0, 0, this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
-        this.npcs.forEach((e) => { e.render(ctx); /* e.renderHitBox(ctx) */});
-        this.objects.forEach((e) => { if (!e.getIsInFocus()) e.render(ctx);  /* e.renderHitBox(ctx) */ });
-        //this.interactiveAreas.forEach((e) => e.render(ctx));
+        this.npcs.forEach(e => e.render(ctx));
+        this.objects.forEach(e => e.render(ctx));
+        this.interactiveAreas.forEach(e => e.render(ctx));
+
+        //this.npcs.forEach(e => e.renderHitBox(ctx));
+        this.objects.forEach(e => e.renderHitBox(ctx));
     }
 
     update(): void {
         const input = this.context.inputManager;
-        const inputRect = input.getMouseRect();
-
-        [this.npcs, this.objects].forEach(entities => {
-            entities.forEach((e) => {
-                if (e.rect.collide(inputRect)) {
-                    e.hover();
-                    if (input.isMouseDown() && !input.isMouseConsumed()) {
-                        input.consumeMouse();
-                        e.interact();
-                    }
-                }
-            })
-        });
-
+        this.npcs.forEach((e) => e.update(input));
+        this.objects.forEach((e) => e.update(input));
         this.interactiveAreas.forEach((e) => e.update(input));
     }
 
     async onEnter(): Promise<void> {
-        for (const f of this.onEnterFunctions) await f();
+        for (const f of this.onEnterFunctions) {            
+            await f.func();
+            if (f.once) this.onEnterFunctions = this.onEnterFunctions.filter((e) => e !== f);
+        };
     }
 
     async onExit(): Promise<void> {
-        for (const f of this.onExitFunctions) await f();
+        for (const f of this.onExitFunctions) {
+            await f.func();
+            if (f.once) this.onExitFunctions = this.onExitFunctions.filter((e) => e !== f);
+        };
     }
 }

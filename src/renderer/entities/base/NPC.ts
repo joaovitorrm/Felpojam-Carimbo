@@ -1,3 +1,4 @@
+import type InputManager from "../../core/InputManager";
 import { Rect } from "../../util/utils";
 import { InteractiveObject } from "./InteractiveObjects";
 
@@ -10,15 +11,21 @@ export default class NPC extends InteractiveObject {
         rect: Rect,        
         sprite: HTMLImageElement,
         sprite_clip: [number, number, number, number],
-        private interaction: Function
+        private interact: Function,
+        private hover: Function = () => {}
     ) {
         super(rect, sprite, sprite_clip);
     }
-    hover(): void {
-        
-    }
-    interact(): void {
-        this.interaction();
+
+    update(input: InputManager): void {
+        super.update(input);
+        if (this.hovered) {
+            this.hover();
+            if (input.isMouseDown() && !input.isMouseConsumed()) {
+                input.consumeMouse();
+                this.interact();
+            }
+        };
     }
 
     render(ctx: CanvasRenderingContext2D): void {

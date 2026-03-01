@@ -1,3 +1,4 @@
+import type InputManager from "../../core/InputManager";
 import { Rect } from "../../util/utils";
 import { Entity } from "./Entity";
 
@@ -6,6 +7,7 @@ import { Entity } from "./Entity";
 
 export abstract class InteractiveObject extends Entity {
 
+    protected hovered : boolean = false;
     constructor(
         rect: Rect,
         protected sprite: HTMLImageElement,
@@ -14,7 +16,9 @@ export abstract class InteractiveObject extends Entity {
         super(rect);
     }
 
+    update(input: InputManager) : void {
+        this.hovered = input.getMouseRect().collide(this.rect);
+    }
+
     abstract render(ctx: CanvasRenderingContext2D): void
-    abstract interact() : void;
-    abstract hover() : void;
 }

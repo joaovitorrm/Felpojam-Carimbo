@@ -17,7 +17,8 @@ export const entrada_daniel_fechado : LevelData = {
     onEnter: [
         {
             type: "fadeIn",
-            seconds: 1
+            seconds: 1,
+            firstTimeOnly: true
         },
         {
             type: "dialog",

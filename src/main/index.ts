@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, Menu } from 'electron'
 import path, { join } from 'path'
 import fs from "fs"
 
@@ -6,6 +6,7 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 1280,
     height: 720,
+    icon: join(process.cwd(), 'assets/componentes_vermelho.png'),
     webPreferences: {
       preload: join(__dirname, '../preload/index.mjs'),
       contextIsolation: true,
@@ -18,6 +19,7 @@ function createWindow() {
   if (isDev) {
     win.loadURL("http://localhost:5173")
   } else {
+    Menu.setApplicationMenu(null);
     win.loadFile(join(__dirname, "../renderer/index.html"))
   }
 }

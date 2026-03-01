@@ -7,7 +7,8 @@ export default class DialogState {
     }
 
     hasFlag(flag: string) {
-        return this.flags.has(flag);
+        const flags = flag.split("&&").map((f) => f.trim());
+        return flags.every((f) => this.flags.has(f));
     }
 
     setVar(key: string, value: number) {
@@ -16,5 +17,10 @@ export default class DialogState {
 
     getVar(key: string) {
         return this.variables.get(key) ?? 0;
+    }
+
+    clear() {
+        this.flags.clear();
+        this.variables.clear();
     }
 }

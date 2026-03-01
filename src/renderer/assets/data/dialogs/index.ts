@@ -1,14 +1,13 @@
-//import { danielDialog } from "./npc_daniel";
-//import { guardDialog } from "./npc_guard";
+import { bad_endings } from "./bad_endings";
 import { Daniel } from "./daniel";
 import { Marcos } from "./marcos";
 import { Protagonista } from "./protagonista";
-//import { merchantDialog } from "./npc_merchant";
 
 export const dialogues = {
     Marcos,
     Protagonista,
-    Daniel
+    Daniel,
+    bad_endings
 } as const;
 
 export type NPCId = keyof typeof dialogues;

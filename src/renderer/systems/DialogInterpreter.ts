@@ -18,7 +18,7 @@ export class DialogInterpreter {
         this.running = true;
     }
 
-    run() {
+    async run() {
         if (!this.running) return;
 
         const commands = this.script.nodes[this.currentNode];
@@ -30,10 +30,10 @@ export class DialogInterpreter {
             return;
         }
 
-        this.execute(command);
+        await this.execute(command);
     }
 
-    private execute(cmd: DialogCommand) {
+    private async execute(cmd: DialogCommand) {
 
         switch (cmd.type) {
 
@@ -82,17 +82,16 @@ export class DialogInterpreter {
                 this.next();
                 break;
             }
-
         }
     }
-    next() {
+    async next() {
         this.commandIndex++;
-        this.run();
+        await this.run();
     }
 
-    goTo(target: string) {
+    async goTo(target: string) {
         this.currentNode = target;
         this.commandIndex = 0;
-        this.run();
+        await this.run();
     }
 }

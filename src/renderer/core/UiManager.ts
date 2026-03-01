@@ -1,3 +1,4 @@
+import type { ObjectAssetsKey } from "../assets/images/objects";
 import type { DialogCommand } from "../types/DialogTypes";
 import type { ObjectDataType } from "../types/LevelData";
 import type { SceneType } from "../types/SceneType";
@@ -37,7 +38,7 @@ export default class UiManager {
 
         this.fadeOverlay = new FadeOverlay(this.context.settingsManager.data.resolution.width, this.context.settingsManager.data.resolution.height);
 
-        this.posLabel = new Label(new Rect(0, 0, 0, 0), "", "white", 20, "left", "top");
+        this.posLabel = new Label(new Rect(0, 0, 0, 0), "", "white", 20, "left", "top", true);
 
         this.registerEvents();
     }
@@ -65,10 +66,11 @@ export default class UiManager {
             this.dialogBox.hide();
             this.dialogBox.clearText();
             if (this.interactingObject.getIsVisible()) {
-                this.context.eventBus.emit("ui:object:interacted");
+                this.context.eventBus.emit("scene:object:interacted");
                 this.interactingObject.setVisible(false);
             }            
         });
+
         this.context.eventBus.on("dialog:say", (cmd: DialogCommand) => {
             this.handleDialog(cmd);
         });
@@ -86,9 +88,15 @@ export default class UiManager {
             return this.fadeOverlay.hold(data.seconds, data.alpha);
         });
 
-        this.context.eventBus.on("ui:object:interact", (data: {obj: ObjectDataType, npcId?: string, target?: string}) => {
-            this.interactingObject.setObject(data.obj, this.context.assetManager.get(data.obj.sprite))
-            this.context.eventBus.emit("dialog:object:interact", {npcId: data.npcId, target: data.target});
+        this.context.eventBus.on("ui&scene:object:interact", (data: {obj: ObjectDataType, npcId?: string, target?: string}) => {
+            console.log(data)
+            this.interactingObject.setObject(this.context.assetManager.get(data.obj.sprite), data.obj);
+            this.context.eventBus.emit("dialog:start", {npcId: data.npcId, target: data.target});
+        })
+
+        this.context.eventBus.on("ui:zoomObject", (data: {npcId: string, target: string, objectAsset: ObjectAssetsKey, width: number, height: number}) => {
+            this.interactingObject.setObject(this.context.assetManager.get(data.objectAsset), new Rect(0, 0, data.width, data.height));
+            this.context.eventBus.emit("dialog:start", {npcId: data.npcId, target: data.target});
         })
     }
 
@@ -112,7 +120,7 @@ export default class UiManager {
 
         const width = Math.max(cmd.options.map(opt => ctx.measureText(opt.text).width).reduce((a, b) => a + b, 0), 300);
 
-        cmd.options.forEach((opt, i) => {
+        cmd.options.reverse().forEach((opt, i) => {
             const btn = new DialogOptionButton(
                 new Rect(
                     this.context.settingsManager.data.resolution.width / 2 - width / 2,
@@ -161,9 +169,11 @@ export default class UiManager {
 
         this.fadeOverlay.update(dt);
 
-        this.posLabel.setText(`(${input.getMousePosition().x.toFixed(1)}, ${input.getMousePosition().y.toFixed(1)})`);
+        const posLabelText = `(${input.getMousePosition().x.toFixed(1)}, ${input.getMousePosition().y.toFixed(1)})`;
 
-        this.posLabel.setRect(new Rect(input.getMousePosition().x - 40, input.getMousePosition().y - 20, 80, 0));
+        this.posLabel.setText(posLabelText);
+
+        this.posLabel.setRect(new Rect(Math.max(input.getMousePosition().x - 40, 0), Math.max(input.getMousePosition().y - 20, 0), 80, 0));
     }
 
     render(ctx: CanvasRenderingContext2D, scene: SceneType | null) {
@@ -176,11 +186,11 @@ export default class UiManager {
 
         this.interactingObject.render(ctx);
 
-        this.dialogBox.render(ctx);
+        this.fadeOverlay.render(ctx);
 
         this.choiceButtons.forEach(b => b.render(ctx));
 
-        this.fadeOverlay.render(ctx);
+        this.dialogBox.render(ctx);
 
         const input = this.context.inputManager.getMouseRect();
         ctx.fillRect(input.x, input.y, 5, 5);

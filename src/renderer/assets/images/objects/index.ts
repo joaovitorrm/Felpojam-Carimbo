@@ -11,6 +11,11 @@ import simboloOlivia from "./simbolo_olivia.png";
 import simboloVinicius from "./simbolo_vinicius.png";
 import simboloDaniel from "./simbolo_daniel.png";
 import chave from "./chave.png";
+import calendarioParede from "./calendario_parede.png";
+import portaEntradaSala from "./porta_entrada_sala.png";
+import portaQuartoDaniel from "./porta_quarto_daniel.png";
+import portaQuartoPais from "./porta_quarto_pais.png";
+import pcPais from "./pc_pais.png";
 
 export const objects = {
     fotografia,
@@ -25,7 +30,12 @@ export const objects = {
     simboloOlivia,
     simboloVinicius,
     simboloDaniel,
-    chave
+    chave,
+    calendarioParede,
+    portaEntradaSala,
+    portaQuartoDaniel,
+    portaQuartoPais,
+    pcPais
 } as const
 
 export type ObjectAssetsKey = keyof typeof objects;

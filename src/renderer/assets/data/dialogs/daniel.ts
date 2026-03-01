@@ -115,6 +115,50 @@ export const Daniel: DialogScript = {
         type: "sceneChange",
         next: "sala_daniel"
       }
+    ],
+    sala: [
+      {
+        type: "say",
+        speaker: "Você",
+        text: "Essa marca que você tem no pescoço…"
+      },
+      {
+        type: "say",
+        speaker: "Daniel",
+        text: "Ela? Tenho desde que me lembro como gente."
+      },
+      {
+        type: "say",
+        speaker: "Você",
+        text: "Posso olhar ela melhor?"
+      },
+      {
+        type: "say",
+        speaker: "Daniel",
+        text: "Acho… que não tem problema, se for ajudar no caso."
+      },
+      {
+        type: "say",
+        speaker: "Você",
+        text: "(Parece… marcas de queimadura já cicatrizadas.)"
+      },
+      {
+        type: "say",
+        speaker: "Você",
+        text: "Você sofreu algum tipo de acidente quando criança?"
+      },
+      {
+        type: "say",
+        speaker: "Daniel",
+        text: "Tirando uma perna andando de bicicleta, nada grave."
+      },
+    ],
+    quarto_daniel: [
+      {
+        type: "say",
+        speaker: "Daniel",
+        text: "Estou de olho em ti."
+      },
     ]
   }
 }

@@ -1,13 +1,12 @@
-import { MenuButtonsFactory, MenuLabelsFactory } from "../world/factories/MenuElementsFactory";
 import { SceneType } from "../types/SceneType";
 import { menus, type MenusKey } from "../assets/data/menus";
 import type GameContext from "../core/GameContext";
 import type { MenuData } from "../types/MenuData";
 import type { UiElement } from "../ui/UiElement";
 import type InteractiveArea from "../entities/base/InteractiveArea";
-import { createInteractiveArea } from "../world/factories/LevelFactory";
+import MenuElementsFactory from "../world/factories/MenuElementsFactory";
 
-export default class MainMenuScene extends SceneType {
+export default class MenuScene extends SceneType {
 
     private elements : UiElement[] = [];
     private background : HTMLImageElement | null = null;
@@ -29,17 +28,16 @@ export default class MainMenuScene extends SceneType {
 
     private createInteractiveAreas(data: MenuData) : void {
         data.interactiveAreas.forEach(i => {
-            const ia = createInteractiveArea(this.context, i);
-            this.interactiveAreas.push(ia);
+            this.interactiveAreas.push(MenuElementsFactory.createInteractiveArea(this.context, i));
         })
     }
 
     private createObjects(data: MenuData) : void {
         data.buttons.forEach(b => {
-            this.elements.push(MenuButtonsFactory(this.context, b));
+            this.elements.push(MenuElementsFactory.createButton(this.context, b));
         })
         data.labels.forEach(l => {
-            this.elements.push(MenuLabelsFactory(l));
+            this.elements.push(MenuElementsFactory.createLabel(l));
         })
     }
 

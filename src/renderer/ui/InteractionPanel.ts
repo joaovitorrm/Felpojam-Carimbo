@@ -1,11 +1,12 @@
 import type InputManager from "../core/InputManager";
-import type { ObjectData } from "../types/LevelData";
+import type { ObjectDataType } from "../types/LevelData";
+
 import { Rect } from "../util/utils";
 import { UiElement } from "./UiElement";
 
 export default class InteractionPanel extends UiElement {
 
-    private object: ObjectData | null = null;
+    private object: ObjectDataType | Rect | null = null;
     private sprite: HTMLImageElement | null = null;
     private objectRect: Rect = new Rect(0, 0, 0, 0);
     private visible: boolean = false;
@@ -19,17 +20,18 @@ export default class InteractionPanel extends UiElement {
         super(rect);
     }
 
-    setObject(obj: ObjectData, sprite: HTMLImageElement): void {
+    setObject(sprite: HTMLImageElement, obj: ObjectDataType | Rect): void {
+
         this.object = obj;
         this.sprite = sprite;
 
-        const maxObjectSide = Math.max(obj.width, obj.height);
+        const maxObjectSide = Math.max(this.object.width, this.object.height);
         const maxPanelSide = Math.min(this.rect.width, this.rect.height);
 
         const scale = maxPanelSide / maxObjectSide;
 
-        this.objectRect.width = obj.width * scale;
-        this.objectRect.height = obj.height * scale;
+        this.objectRect.width = this.object.width * scale;
+        this.objectRect.height = this.object.height * scale;
 
         this.setVisible(true);
     }
@@ -57,9 +59,17 @@ export default class InteractionPanel extends UiElement {
     render(ctx: CanvasRenderingContext2D): void {
         if (!this.visible) return;
 
+        let clip : [number, number, number, number] | null = null;
+
+        if (this.object instanceof Rect) {
+            clip = [0, 0, this.object.width, this.object.height];
+        } else {
+            clip = this.object!.sprite_clip;
+        }
+
         ctx.drawImage(
             this.sprite!,
-            ...this.object!.sprite_clip as [number, number, number, number],
+            ...clip!,
             this.rect.x + ((this.rect.width - this.objectRect.width) / 2) + this.padding,
             this.rect.y + ((this.rect.height - this.objectRect.height) / 2) + this.padding,
             this.objectRect.width - this.padding * 2,
